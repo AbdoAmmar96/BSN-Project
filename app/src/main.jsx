@@ -7,7 +7,6 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { initSentry } from './lib/sentry';
-import './lib/i18n';
 import './styles/index.css';
 
 // Fire-and-forget Sentry init — no-op if package missing or DSN not set.

@@ -821,6 +821,14 @@ input, select, textarea { font: inherit; }
   gap: 24px;
 }
 
+/* "Extra services" — 6 small cards on /services. 3 cols on desktop, 2 cols on
+   mobile (the user wanted side-by-side pairs instead of three cramped cols). */
+.extra-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
 .feature-card {
   background: var(--w);
   color: var(--ink);
@@ -1984,7 +1992,13 @@ input, select, textarea { font: inherit; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  /* The "+" glyph sits high in most fonts because of its baseline offset; force
+     line-height:1 and a 1px nudge so the cross lands on the optical centre. */
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+  padding-top: 1px;
   border: 1.5px solid var(--w);
   transition: transform 0.3s var(--ease);
 }
@@ -2073,6 +2087,18 @@ input, select, textarea { font: inherit; }
   transform: translate(-2px, -2px);
   box-shadow: 4px 4px 0 var(--t);
 }
+/* The footer-col element is <details> on mobile (accordion) and a plain block
+   on desktop. Strip the default disclosure marker — we draw our own chevron. */
+.footer-col { display: block; }
+.footer-col > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default;
+  margin-bottom: 18px;
+}
+.footer-col > summary::-webkit-details-marker { display: none; }
 .footer-col h5 {
   font-family: var(--f-display);
   font-weight: 800;
@@ -2080,7 +2106,22 @@ input, select, textarea { font: inherit; }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--o);
-  margin-bottom: 18px;
+  margin: 0;
+}
+/* Chevron only visible on mobile (see media query below) */
+.footer-col-chevron {
+  display: none;
+  font-family: var(--f-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--o);
+  line-height: 1;
+  transition: transform 0.2s var(--ease);
+}
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 .footer-col ul li { margin-bottom: 10px; }
 .footer-col ul a {
@@ -2089,6 +2130,17 @@ input, select, textarea { font: inherit; }
   transition: all 0.2s var(--ease);
 }
 .footer-col ul a:hover { opacity: 1; color: var(--t); padding-inline-start: 6px; }
+
+/* Contact column: each line is "label + value" stacked, in mono. */
+.footer-contact ul { font-family: var(--f-mono); font-size: 13px; }
+.footer-contact ul li { display: flex; flex-direction: column; gap: 2px; }
+.footer-contact ul li strong {
+  font-size: 11px;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-block: 22px;
@@ -3371,6 +3423,17 @@ input, select, textarea { font: inherit; }
   .marquee-item { font-size: 22px; }
 
   .features-right { grid-template-columns: 1fr; }
+
+  /* Extra services: 2 per row on mobile + tighter padding so the cards
+     actually fit without title-clipping. */
+  .extra-services-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .extra-services-grid .feature-card { padding: 22px 18px; box-shadow: 5px 5px 0 var(--o); }
+  .extra-services-grid .feature-card.feat-teal { box-shadow: 5px 5px 0 var(--t); }
+  .extra-services-grid .feature-card.feat-purple { box-shadow: 5px 5px 0 var(--p); }
+  .extra-services-grid .feature-card.feat-ink { box-shadow: 5px 5px 0 var(--o); }
+  .extra-services-grid .feature-card .feature-icon { width: 56px; height: 56px; font-size: 24px; margin-bottom: 14px; }
+  .extra-services-grid .feature-card h3 { font-size: 16px; margin-bottom: 8px; line-height: 1.3; }
+  .extra-services-grid .feature-card p { font-size: 12.5px; line-height: 1.55; }
   /* Big featured card — collapse to same size as small ones on mobile */
   .feature-card.big {
     min-height: 0;
@@ -3406,7 +3469,52 @@ input, select, textarea { font: inherit; }
   .form-row { grid-template-columns: 1fr; }
   .contact-form { padding: 26px 22px; }
 
-  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  /* === FOOTER on mobile === */
+  .site-footer { padding-top: 56px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 0; margin-bottom: 28px; }
+
+  /* Brand block sits above the accordion, centered for balance. */
+  .footer-brand {
+    text-align: center;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 8px;
+  }
+  .footer-brand .brand-mark { font-size: 48px; }
+  .footer-brand p { margin-inline: auto; font-size: 13.5px; }
+  .footer-socials { justify-content: center; flex-wrap: wrap; }
+  .footer-socials a { width: 40px; height: 40px; font-size: 12px; }
+
+  /* Each column becomes a tap-to-expand accordion row. */
+  .footer-col {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer-col > summary {
+    padding-block: 16px;
+    cursor: pointer;
+    margin-bottom: 0;
+    min-height: 44px; /* iOS-friendly tap target */
+  }
+  .footer-col-chevron { display: inline-block; }
+  .footer-col[open] .footer-col-chevron { transform: rotate(45deg); }
+  .footer-col[open] > summary { margin-bottom: 4px; }
+  .footer-col ul { padding-block: 4px 20px; }
+  .footer-col ul li { margin-bottom: 14px; }
+  .footer-col ul a { font-size: 15px; opacity: 0.85; }
+
+  .footer-contact ul li a { font-size: 14px; }
+
+  /* Copyright row stacks neatly and centers. */
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding-block: 20px;
+  }
+  .footer-bottom p { font-size: 11.5px; line-height: 1.6; }
+
+  .footer-mega { font-size: clamp(60px, 22vw, 140px); bottom: -10px; }
   .office-strip { grid-template-columns: 1fr 1fr; }
 
   .cta-banner { padding-block: 60px; }

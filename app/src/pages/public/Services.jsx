@@ -213,36 +213,36 @@ export default function Services() {
             <p>خدمات داعمة بتكمل منظومتك الرقمية بكفاءة.</p>
           </div>
 
-          <div className="features-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          <div className="extra-services-grid">
             <article className="feature-card reveal is-visible">
               <div className="feature-icon">📱</div>
               <h3>تطبيقات الموبايل</h3>
-              <p>تطبيقات iOS و Android بـ React Native و Flutter لتجربة مستخدم سلسة.</p>
+              <p>iOS و Android بـ React Native و Flutter.</p>
             </article>
             <article className="feature-card feat-teal reveal is-visible">
               <div className="feature-icon" style={{ background: 'var(--t)', color: 'var(--p)' }}>🤖</div>
               <h3>أتمتة وذكاء اصطناعي</h3>
-              <p>دمج حلول AI: شات بوت، أتمتة المهام، تحليل بيانات، وأنظمة CRM ذكية.</p>
+              <p>شات بوت، أتمتة المهام، وأنظمة CRM ذكية.</p>
             </article>
             <article className="feature-card feat-purple reveal is-visible">
               <div className="feature-icon" style={{ background: 'var(--p)' }}>✍️</div>
               <h3>كتابة المحتوى</h3>
-              <p>محتوى تسويقي وتحريري مدروس بالعربي والإنجليزي بيخدم أهدافك.</p>
+              <p>محتوى تسويقي بالعربي والإنجليزي.</p>
             </article>
             <article className="feature-card feat-ink reveal is-visible">
               <div className="feature-icon">🎬</div>
               <h3>الموشن جرافيك</h3>
-              <p>فيديوهات تعريفية، انفوجرافيك متحرك، ومحتوى بصري للسوشيال.</p>
+              <p>فيديوهات تعريفية وانفوجرافيك متحرك.</p>
             </article>
             <article className="feature-card reveal is-visible">
               <div className="feature-icon">🛠️</div>
               <h3>الصيانة والدعم</h3>
-              <p>باقات صيانة شهرية وسنوية، تحديثات، نسخ احتياطي، وحماية.</p>
+              <p>باقات شهرية، تحديثات، ونسخ احتياطي.</p>
             </article>
             <article className="feature-card feat-teal reveal is-visible">
               <div className="feature-icon" style={{ background: 'var(--t)', color: 'var(--p)' }}>☁️</div>
               <h3>الاستضافة والدومين</h3>
-              <p>استضافة سريعة وآمنة، تسجيل دومينات، شهادات SSL، ودعم 24/7.</p>
+              <p>استضافة سريعة، دومينات، وSSL.</p>
             </article>
           </div>
         </div>

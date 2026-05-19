@@ -235,7 +235,6 @@ Shipped:
 - ✅ Audit logging for every admin write (`audit_logs` + `LogAdminActions` middleware)
 - ✅ PWA: manifest + service worker (network-first pages, stale-while-revalidate assets)
 - ✅ SEO basics: `robots.txt` + `sitemap.xml` + Open Graph meta
-- ✅ i18n (i18next, AR/EN, automatic RTL/LTR)
 - ✅ Zod client-side validation
 - ✅ Deep health endpoint (`/api/health/deep`) for uptime monitoring
 - ✅ Docker + docker-compose + Supervisor deployment templates
@@ -243,7 +242,7 @@ Shipped:
 - ✅ 20 PHPUnit feature tests (auth, packages, contact, slug, health)
 
 Next:
-- Frontend Vitest coverage
+- English localization (i18n) — currently Arabic-only
 - Sentry DSN wired in production
 - Real merchant accounts for Paymob / Fawry / Kashier
 - Audit log viewer UI in the admin dashboard

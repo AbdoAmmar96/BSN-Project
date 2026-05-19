@@ -1,7 +1,6 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
-import LangSwitcher from '@/components/ui/LangSwitcher';
 
 const NAV_LINKS = [
   { to: '/',          label: 'الرئيسية' },
@@ -19,6 +18,18 @@ export default function PublicLayout() {
 
   // Close menu on route change
   useEffect(() => setMenuOpen(false), [location.pathname]);
+
+  // Footer accordions: open by default on desktop, collapsed on mobile.
+  // Tracks the viewport so resizing reflows the disclosure state.
+  const [footerDesktop, setFooterDesktop] = useState(() =>
+    typeof window === 'undefined' ? true : window.matchMedia('(min-width: 901px)').matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 901px)');
+    const onChange = (e) => setFooterDesktop(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   const dashboardPath = user?.role === 'admin' ? '/admin'
                       : user?.role === 'developer' ? '/dev'
@@ -69,7 +80,6 @@ export default function PublicLayout() {
             </ul>
 
             <div className="nav-actions">
-              <LangSwitcher className="me-2" />
               {user ? (
                 <Link to={dashboardPath} className="nav-cta">
                   لوحة التحكم <span className="arrow">←</span>
@@ -125,18 +135,20 @@ export default function PublicLayout() {
               </div>
             </div>
 
-            <div className="footer-col">
-              <h5>الشركة</h5>
+            {/* Each <details> stays open on desktop (forced by CSS) and turns
+                into a tap-to-expand accordion on mobile. */}
+            <details className="footer-col" open={footerDesktop}>
+              <summary><h5>الشركة</h5><span className="footer-col-chevron" aria-hidden="true">+</span></summary>
               <ul>
                 <li><Link to="/about">من نحن</Link></li>
                 <li><Link to="/portfolio">أعمالنا</Link></li>
                 <li><Link to="/services">خدماتنا</Link></li>
                 <li><Link to="/contact">تواصل معنا</Link></li>
               </ul>
-            </div>
+            </details>
 
-            <div className="footer-col">
-              <h5>خدماتنا</h5>
+            <details className="footer-col" open={footerDesktop}>
+              <summary><h5>خدماتنا</h5><span className="footer-col-chevron" aria-hidden="true">+</span></summary>
               <ul>
                 <li><Link to="/service-web">تطوير المواقع</Link></li>
                 <li><Link to="/service-ecommerce">المتاجر الإلكترونية</Link></li>
@@ -144,23 +156,23 @@ export default function PublicLayout() {
                 <li><Link to="/service-marketing">التسويق الرقمي</Link></li>
                 <li><Link to="/pricing"><strong>الأسعار ←</strong></Link></li>
               </ul>
-            </div>
+            </details>
 
-            <div className="footer-col">
-              <h5>تواصل</h5>
-              <ul style={{ fontFamily: 'var(--f-mono)', fontSize: '13px' }}>
+            <details className="footer-col footer-contact" open={footerDesktop}>
+              <summary><h5>تواصل</h5><span className="footer-col-chevron" aria-hidden="true">+</span></summary>
+              <ul>
                 <li>
-                  <strong style={{ fontSize: '11px', opacity: 0.7, letterSpacing: '0.05em' }}>المبيعات</strong><br />
-                  <a href="tel:+201500156690" style={{ direction: 'ltr', display: 'inline-block' }}>+20 150 015 6690</a>
+                  <strong>المبيعات</strong>
+                  <a href="tel:+201500156690" dir="ltr">+20 150 015 6690</a>
                 </li>
                 <li>
-                  <strong style={{ fontSize: '11px', opacity: 0.7, letterSpacing: '0.05em' }}>الدعم الفني</strong><br />
-                  <a href="tel:+201068758847" style={{ direction: 'ltr', display: 'inline-block' }}>+20 106 875 8847</a>
+                  <strong>الدعم الفني</strong>
+                  <a href="tel:+201068758847" dir="ltr">+20 106 875 8847</a>
                 </li>
                 <li><a href="mailto:hello@bp-eg.com">hello@bp-eg.com</a></li>
                 <li><a href="https://bp-eg.com">bp-eg.com</a></li>
               </ul>
-            </div>
+            </details>
           </div>
 
           <div className="footer-bottom">
