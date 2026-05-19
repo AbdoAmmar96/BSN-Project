@@ -191,6 +191,14 @@ class PaymobService implements PaymentGatewayInterface
         $hmacFromHeader = $request->header('Hmac') ?? $request->query('hmac');
         $hmacSecret = config('services.paymob.hmac_secret');
 
+        // Refuse the request if either side of the comparison is empty —
+        // otherwise hash_equals('', '') returns true and we'd accept unsigned
+        // payloads in misconfigured environments.
+        if (empty($hmacSecret) || empty($hmacFromHeader)) {
+            Log::warning('Paymob webhook rejected: missing secret or signature header');
+            return ['ok' => false, 'reason' => 'missing_signature'];
+        }
+
         $obj = $payload['obj'] ?? $payload;
         $concatenated = implode('', [
             $obj['amount_cents'] ?? '',

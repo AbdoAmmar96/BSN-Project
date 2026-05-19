@@ -1,0 +1,111 @@
+# Production-ready compose for BSN.
+# Local dev still uses `php artisan serve` + `npm run dev` per SETUP.md — this
+# file targets staging/production deployments (single host or used as a base
+# for Swarm / k8s manifests).
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-bsn}
+      MYSQL_USER: ${DB_USERNAME:-bsn}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-changeme}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootchangeme}
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 10s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    volumes:
+      - apistorage:/var/www/html/storage/app
+      - apilogs:/var/www/html/storage/logs
+    expose:
+      - '9000'
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on: [api]
+    ports:
+      - '${API_PORT:-8000}:80'
+    volumes:
+      - ./api:/var/www/html:ro
+      - ./deploy/nginx-api.conf:/etc/nginx/conf.d/default.conf:ro
+
+  queue:
+    build:
+      context: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    volumes:
+      - apistorage:/var/www/html/storage/app
+      - apilogs:/var/www/html/storage/logs
+    command: ['php', 'artisan', 'queue:work', '--tries=3', '--timeout=120']
+
+  scheduler:
+    build:
+      context: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    volumes:
+      - apistorage:/var/www/html/storage/app
+      - apilogs:/var/www/html/storage/logs
+    # Run schedule:run every minute, like a cron entry
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - >-
+        while true; do
+          php artisan schedule:run --no-interaction;
+          sleep 60;
+        done
+
+  reverb:
+    build:
+      context: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    ports:
+      - '${REVERB_PORT:-8080}:8080'
+    command: ['php', 'artisan', 'reverb:start', '--host=0.0.0.0', '--port=8080']
+
+  app:
+    build:
+      context: ./app
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+        VITE_REVERB_APP_KEY: ${VITE_REVERB_APP_KEY:-bsn-key}
+        VITE_REVERB_HOST: ${VITE_REVERB_HOST:-localhost}
+        VITE_REVERB_PORT: ${VITE_REVERB_PORT:-8080}
+        VITE_REVERB_SCHEME: ${VITE_REVERB_SCHEME:-http}
+    restart: unless-stopped
+    ports:
+      - '${APP_PORT:-5173}:80'
+
+volumes:
+  dbdata:
+  apistorage:
+  apilogs:

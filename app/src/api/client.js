@@ -11,6 +11,20 @@ const apiClient = axios.create({
   },
 });
 
+// Rewrite unversioned /api/* paths to /api/v1/* so the rest of the codebase
+// can keep writing `/api/projects` while we migrate to versioned routes.
+// Unversioned infrastructure paths (health, webhooks) are left alone.
+const UNVERSIONED_PREFIXES = ['/api/health', '/api/payments/paymob/webhook', '/api/payments/fawry/webhook', '/api/payments/kashier/webhook'];
+apiClient.interceptors.request.use((config) => {
+  if (config.url && config.url.startsWith('/api/') && !config.url.startsWith('/api/v1/')) {
+    const skip = UNVERSIONED_PREFIXES.some((p) => config.url.startsWith(p));
+    if (!skip) {
+      config.url = config.url.replace(/^\/api\//, '/api/v1/');
+    }
+  }
+  return config;
+});
+
 // Request interceptor — attach Bearer token from storage
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('bsn_token');

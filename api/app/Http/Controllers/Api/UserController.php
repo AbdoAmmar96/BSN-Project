@@ -37,14 +37,32 @@ class UserController extends Controller
 
         return response()->json([
             'data' => $query->paginate($request->query('per_page', 15)),
-            'totals' => [
-                'all' => User::count(),
-                'admin' => User::where('role', 'admin')->count(),
-                'developer' => User::where('role', 'developer')->count(),
-                'user' => User::where('role', 'user')->count(),
-                'active' => User::where('is_active', true)->count(),
-            ],
+            'totals' => $this->userTotals(),
         ]);
+    }
+
+    /**
+     * Collapse the per-role + active counters into a single grouped query
+     * instead of 5 separate COUNT(*) round-trips. Cached for 60s — the totals
+     * shown on the admin index don't need real-time accuracy.
+     */
+    private function userTotals(): array
+    {
+        return \Cache::remember('admin.users.totals', 60, function () {
+            $byRole = User::query()
+                ->selectRaw('role, COUNT(*) as c, SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_c')
+                ->groupBy('role')
+                ->get()
+                ->keyBy('role');
+
+            return [
+                'all' => $byRole->sum('c'),
+                'admin' => (int) ($byRole['admin']->c ?? 0),
+                'developer' => (int) ($byRole['developer']->c ?? 0),
+                'user' => (int) ($byRole['user']->c ?? 0),
+                'active' => (int) $byRole->sum('active_c'),
+            ];
+        });
     }
 
     /**

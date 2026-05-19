@@ -114,6 +114,13 @@ class FawryService implements PaymentGatewayInterface
     {
         $payload = $request->all();
 
+        // Refuse if either the secret or the inbound signature is missing —
+        // hash_equals('', '') returns true and would accept unsigned payloads.
+        if (empty($this->secureKey) || empty($payload['messageSignature'] ?? '')) {
+            Log::warning('Fawry webhook rejected: missing secret or signature');
+            return ['ok' => false, 'reason' => 'missing_signature'];
+        }
+
         // Fawry signature verification
         // signature = SHA-256(fawryRefNumber + merchantRefNumber + paymentAmount + orderAmount + orderStatus + paymentMethod + paymentRefrenceNumber + secureKey)
         $expectedSignature = hash('sha256',

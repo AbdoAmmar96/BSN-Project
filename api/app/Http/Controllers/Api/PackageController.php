@@ -5,21 +5,28 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PackageController extends Controller
 {
+    private const PUBLIC_CACHE_PREFIX = 'packages.public';
+    private const PUBLIC_CACHE_TTL = 600; // 10 minutes
+
     // GET /api/packages — public list (only active)
     public function index(Request $request)
     {
-        $query = Package::query()->where('is_active', true);
+        $type = $request->query('service_type');
+        $cacheKey = self::PUBLIC_CACHE_PREFIX . ':' . ($type ?: 'all');
 
-        if ($type = $request->query('service_type')) {
-            $query->where('service_type', $type);
-        }
+        $packages = Cache::remember($cacheKey, self::PUBLIC_CACHE_TTL, function () use ($type) {
+            $query = Package::query()->where('is_active', true);
+            if ($type) {
+                $query->where('service_type', $type);
+            }
+            return $query->orderBy('service_type')->orderBy('sort_order')->get();
+        });
 
-        return response()->json([
-            'data' => $query->orderBy('service_type')->orderBy('sort_order')->get(),
-        ]);
+        return response()->json(['data' => $packages]);
     }
 
     // Admin endpoints
@@ -35,6 +42,8 @@ class PackageController extends Controller
         $data = $this->validateData($request);
         $package = Package::create($data);
 
+        $this->forgetPublicCache();
+
         return response()->json(['package' => $package], 201);
     }
 
@@ -43,6 +52,8 @@ class PackageController extends Controller
         $data = $this->validateData($request, true);
         $package->update($data);
 
+        $this->forgetPublicCache();
+
         return response()->json(['package' => $package->fresh()]);
     }
 
@@ -50,7 +61,20 @@ class PackageController extends Controller
     {
         $package->delete();
 
+        $this->forgetPublicCache();
+
         return response()->json(['ok' => true]);
+    }
+
+    /**
+     * Drop the public packages cache after any admin mutation so the
+     * marketing site sees the change on the next request.
+     */
+    private function forgetPublicCache(): void
+    {
+        foreach (['all', 'web', 'ecommerce', 'branding', 'marketing'] as $type) {
+            Cache::forget(self::PUBLIC_CACHE_PREFIX . ':' . $type);
+        }
     }
 
     private function validateData(Request $request, bool $partial = false): array

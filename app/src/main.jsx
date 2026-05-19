@@ -6,7 +6,21 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
+import { initSentry } from './lib/sentry';
+import './lib/i18n';
 import './styles/index.css';
+
+// Fire-and-forget Sentry init — no-op if package missing or DSN not set.
+initSentry();
+
+// Register the service worker only in production builds — dev needs HMR to work uninterrupted.
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.warn('SW registration failed:', err);
+    });
+  });
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -67,6 +67,17 @@ class Payment extends Model
 
     public function markCompleted(array $gatewayData = []): void
     {
+        // Idempotency guard — gateways routinely retry webhooks. We still
+        // refresh the stored gateway response (it may have richer fields the
+        // second time around) but skip the side effects: invoice update,
+        // project paid_amount roll-up, notification, and receipt email.
+        if ($this->isCompleted()) {
+            $this->update([
+                'gateway_response' => array_merge($this->gateway_response ?? [], $gatewayData),
+            ]);
+            return;
+        }
+
         $this->update([
             'status' => self::STATUS_COMPLETED,
             'paid_at' => now(),

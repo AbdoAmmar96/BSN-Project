@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState, useEffect } from 'react';
+import LangSwitcher from '@/components/ui/LangSwitcher';
 
 const NAV_LINKS = [
   { to: '/',          label: 'الرئيسية' },
@@ -53,7 +54,7 @@ export default function PublicLayout() {
               </span>
             </Link>
 
-            <ul className={'nav-links' + (menuOpen ? ' open' : '')}>
+            <ul id="primary-navigation" className={'nav-links' + (menuOpen ? ' open' : '')}>
               {NAV_LINKS.map((l) => (
                 <li key={l.to}>
                   <NavLink
@@ -68,6 +69,7 @@ export default function PublicLayout() {
             </ul>
 
             <div className="nav-actions">
+              <LangSwitcher className="me-2" />
               {user ? (
                 <Link to={dashboardPath} className="nav-cta">
                   لوحة التحكم <span className="arrow">←</span>
@@ -85,11 +87,16 @@ export default function PublicLayout() {
             </div>
 
             <button
+              type="button"
               className={'menu-toggle' + (menuOpen ? ' active' : '')}
-              aria-label="القائمة"
+              aria-label={menuOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
+              aria-expanded={menuOpen}
+              aria-controls="primary-navigation"
               onClick={() => setMenuOpen((s) => !s)}
             >
-              <span></span><span></span><span></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
             </button>
           </nav>
         </div>

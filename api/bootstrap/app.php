@@ -26,11 +26,21 @@ return Application::configure(basePath: dirname(__DIR__))
         // Role middleware alias
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureRole::class,
+            'audit' => \App\Http\Middleware\LogAdminActions::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(function ($request, $e) {
             return $request->is('api/*') || $request->expectsJson();
+        });
+
+        // Forward unhandled exceptions to Sentry when the package is installed
+        // and a DSN is configured. Wrapped so missing dependencies never break
+        // boot.
+        $exceptions->reportable(function (\Throwable $e) {
+            if (app()->bound('sentry') && env('SENTRY_LARAVEL_DSN')) {
+                \Sentry\Laravel\Integration::captureUnhandledException($e);
+            }
         });
     })
     ->create();

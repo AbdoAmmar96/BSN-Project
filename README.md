@@ -228,14 +228,26 @@ Symlinked at `api/public/storage` via `php artisan storage:link`.
 
 ---
 
-## 🛣️ Roadmap (next)
+## 🛣️ Roadmap
 
-- API versioning (`/api/v1/`)
-- PHPUnit + Vitest coverage
-- Audit logging for admin actions
-- PWA manifest + offline shell
-- i18n switcher (Arabic / English)
-- robots.txt + sitemap.xml
+Shipped:
+- ✅ API versioning under `/api/v1/*` (legacy paths return a 404 with hint)
+- ✅ Audit logging for every admin write (`audit_logs` + `LogAdminActions` middleware)
+- ✅ PWA: manifest + service worker (network-first pages, stale-while-revalidate assets)
+- ✅ SEO basics: `robots.txt` + `sitemap.xml` + Open Graph meta
+- ✅ i18n (i18next, AR/EN, automatic RTL/LTR)
+- ✅ Zod client-side validation
+- ✅ Deep health endpoint (`/api/health/deep`) for uptime monitoring
+- ✅ Docker + docker-compose + Supervisor deployment templates
+- ✅ GitHub Actions CI (PHPUnit + Vite build)
+- ✅ 20 PHPUnit feature tests (auth, packages, contact, slug, health)
+
+Next:
+- Frontend Vitest coverage
+- Sentry DSN wired in production
+- Real merchant accounts for Paymob / Fawry / Kashier
+- Audit log viewer UI in the admin dashboard
+- API response refactor onto the new `ApiResponses` trait
 
 ---
 

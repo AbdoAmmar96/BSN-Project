@@ -2,6 +2,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import SEO from '@/components/SEO';
 import { contactApi } from '@/api/contact';
+import { contactSchema } from '@/lib/schemas';
 
 const FAQS = [
   ['قد إيه ميزانية المشاريع اللي بتشتغلوا عليها؟', 'بنشتغل على مشاريع بميزانيات متنوعة، من مواقع صغيرة لشركات ناشئة لحد أنظمة متكاملة. أفضل طريقة تعرف هي إنك تتواصل معانا وتحكيلنا عن مشروعك، وهنقدّملك عرض سعر مفصّل ومناسب.'],
@@ -25,14 +26,26 @@ export default function Contact() {
     const budget = (fd.get('budget') || '').toString();
     const subjectParts = [service, budget].filter(Boolean).join(' · ');
 
+    const payload = {
+      name: [fname, lname].filter(Boolean).join(' '),
+      email: (fd.get('email') || '').toString().trim(),
+      phone: (fd.get('phone') || '').toString().trim() || '',
+      subject: subjectParts || '',
+      message: (fd.get('message') || '').toString().trim(),
+    };
+
+    const parsed = contactSchema.safeParse(payload);
+    if (!parsed.success) {
+      toast.error(parsed.error.errors[0]?.message || 'تأكد من بيانات النموذج');
+      return;
+    }
+
     setSubmitting(true);
     try {
       await contactApi.send({
-        name: [fname, lname].filter(Boolean).join(' '),
-        email: (fd.get('email') || '').toString().trim(),
-        phone: (fd.get('phone') || '').toString().trim() || null,
-        subject: subjectParts || null,
-        message: (fd.get('message') || '').toString().trim(),
+        ...parsed.data,
+        phone: parsed.data.phone || null,
+        subject: parsed.data.subject || null,
         source: 'contact_page',
         website: (fd.get('website') || '').toString(), // honeypot
       });

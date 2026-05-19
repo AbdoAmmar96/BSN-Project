@@ -82,6 +82,11 @@ class KashierService implements PaymentGatewayInterface
         $payload = $request->all();
         $signature = $request->header('x-kashier-signature') ?? '';
 
+        if (empty($this->apiKey) || empty($signature)) {
+            Log::warning('Kashier webhook rejected: missing api key or signature header');
+            return ['ok' => false, 'reason' => 'missing_signature'];
+        }
+
         // Kashier signature: HMAC-SHA256 of sorted query string with API key
         ksort($payload);
         $queryString = http_build_query($payload);

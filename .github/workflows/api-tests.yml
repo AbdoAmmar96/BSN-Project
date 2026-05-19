@@ -1,0 +1,60 @@
+name: API tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api/**'
+      - '.github/workflows/api-tests.yml'
+  pull_request:
+    paths:
+      - 'api/**'
+      - '.github/workflows/api-tests.yml'
+
+jobs:
+  phpunit:
+    name: PHPUnit on PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, pdo, pdo_sqlite, sqlite3, gd, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: api/vendor
+          key: composer-${{ matrix.php }}-${{ hashFiles('api/composer.lock') }}
+          restore-keys: composer-${{ matrix.php }}-
+
+      - name: Install dependencies
+        working-directory: api
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Copy .env
+        working-directory: api
+        run: cp .env.example .env
+
+      - name: Generate app key
+        working-directory: api
+        run: php artisan key:generate
+
+      - name: Run PHPUnit
+        working-directory: api
+        run: ./vendor/bin/phpunit --testdox
+
+      - name: Run Laravel Pint (style check)
+        working-directory: api
+        run: ./vendor/bin/pint --test
+        continue-on-error: true
