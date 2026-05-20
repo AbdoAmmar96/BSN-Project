@@ -27,6 +27,9 @@ class Invoice extends Model
         'items' => 'array',
     ];
 
+    // Expose computed paid/remaining in API responses.
+    protected $appends = ['paid_amount', 'remaining_amount'];
+
     protected static function booted(): void
     {
         static::creating(function (Invoice $invoice) {

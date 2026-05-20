@@ -22,7 +22,7 @@ export default function WizardLayout({ children, footer }) {
   return (
     <div className="pb-28">
       {/* Stepper */}
-      <ol className="flex items-center justify-between gap-1 mb-8 max-w-2xl mx-auto">
+      <ol className="flex items-center justify-between gap-1 mb-5 max-w-xl mx-auto">
         {STEPS.map((s, i) => {
           const done = step > s.n;
           const active = step === s.n;
@@ -30,7 +30,7 @@ export default function WizardLayout({ children, footer }) {
             <li key={s.n} className="flex items-center flex-1 last:flex-none">
               <div className="flex flex-col items-center gap-1">
                 <span
-                  className={`w-9 h-9 rounded-full flex items-center justify-center font-display font-black text-sm border-2 border-brand-ink transition ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-display font-black text-sm border-2 border-brand-ink transition ${
                     done ? 'bg-brand-teal text-brand-ink'
                       : active ? 'bg-brand-purple text-white'
                       : 'bg-white text-brand-ink/40'
@@ -38,7 +38,7 @@ export default function WizardLayout({ children, footer }) {
                 >
                   {done ? <Check size={16} /> : s.n}
                 </span>
-                <span className={`text-[11px] font-bold ${active ? 'text-brand-ink' : 'text-brand-ink/50'}`}>
+                <span className={`text-[11px] font-bold ${active ? 'text-white' : 'text-white/50'}`}>
                   {s.label}
                 </span>
               </div>
@@ -50,8 +50,13 @@ export default function WizardLayout({ children, footer }) {
         })}
       </ol>
 
-      {/* Step body */}
-      <div className="max-w-3xl mx-auto">{children}</div>
+      {/* Step body — wrapped in a light card so dark text reads against the
+          dashboard's dark-purple background. */}
+      <div className="max-w-3xl mx-auto">
+        <div className="rounded-3xl border-[2.5px] border-brand-ink bg-white text-brand-ink p-5 sm:p-7 shadow-[6px_6px_0_#5C15CC]">
+          {children}
+        </div>
+      </div>
 
       {/* Sticky footer */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t-[2.5px] border-brand-ink">

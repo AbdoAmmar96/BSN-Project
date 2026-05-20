@@ -17,6 +17,7 @@ import Portfolio from '@/pages/public/Portfolio';
 import About from '@/pages/public/About';
 import Contact from '@/pages/public/Contact';
 import ServiceDetail from '@/pages/public/ServiceDetail';
+import PackageDetail from '@/pages/public/PackageDetail';
 import Terms from '@/pages/public/legal/Terms';
 import Privacy from '@/pages/public/legal/Privacy';
 import Refund from '@/pages/public/legal/Refund';
@@ -125,6 +126,7 @@ export default function App() {
         <Route path="/service-ecommerce" element={<ServiceDetail serviceId="ecommerce" />} />
         <Route path="/service-branding"  element={<ServiceDetail serviceId="branding" />} />
         <Route path="/service-marketing" element={<ServiceDetail serviceId="marketing" />} />
+        <Route path="/package/:id" element={<PackageDetail />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/refund" element={<Refund />} />

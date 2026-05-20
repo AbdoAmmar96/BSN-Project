@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { packagesApi } from '@/api/packages';
 import SEO from '@/components/SEO';
 
 // ============================================
@@ -132,6 +134,20 @@ const SERVICES = {
 // ============================================
 export default function ServiceDetail({ serviceId }) {
   const svc = SERVICES[serviceId];
+
+  // Fetch the real DB packages for this service so each card can link to its
+  // detail page. Match the static plan to its DB row by name.
+  const { data } = useQuery({
+    queryKey: ['packages', 'public', serviceId],
+    queryFn: () => packagesApi.publicList(serviceId),
+    enabled: !!svc,
+    staleTime: 60_000,
+  });
+  const idByName = (data?.data || []).reduce((acc, p) => {
+    acc[p.name] = p.id;
+    return acc;
+  }, {});
+
   if (!svc) {
     return (
       <section className="hero hero-inner">
@@ -200,24 +216,30 @@ export default function ServiceDetail({ serviceId }) {
             <p>{svc.pricingDesc}</p>
           </div>
           <div className="price-grid reveal is-visible">
-            {svc.plans.map((p) => (
-              <div key={p.name} className={'price-card' + (p.featured ? ' is-featured' : '')}>
-                {p.ribbon && <span className="ribbon">{p.ribbon}</span>}
-                <span className="price-tier-name">{p.name}</span>
-                <div className="price-amount">
-                  <span className="currency">{p.currency}</span>
-                  <span className="num">{p.num}</span>
-                  {p.period && <span className="period">{p.period}</span>}
+            {svc.plans.map((p) => {
+              const pkgId = idByName[p.name];
+              return (
+                <div key={p.name} className={'price-card' + (p.featured ? ' is-featured' : '')}>
+                  {p.ribbon && <span className="ribbon">{p.ribbon}</span>}
+                  <span className="price-tier-name">{p.name}</span>
+                  <div className="price-amount">
+                    <span className="currency">{p.currency}</span>
+                    <span className="num">{p.num}</span>
+                    {p.period && <span className="period">{p.period}</span>}
+                  </div>
+                  <p className="price-note">{p.note}</p>
+                  <ul className="price-feats">
+                    {p.feats.map((f, i) => <li key={i}>{f}</li>)}
+                  </ul>
+                  <Link
+                    to={pkgId ? `/package/${pkgId}` : '/contact'}
+                    className={'btn ' + (p.featured ? 'btn-primary' : 'btn-ghost') + ' price-cta'}
+                  >
+                    {pkgId ? 'التفاصيل' : 'اطلب الباقة'} <span className="arrow">←</span>
+                  </Link>
                 </div>
-                <p className="price-note">{p.note}</p>
-                <ul className="price-feats">
-                  {p.feats.map((f, i) => <li key={i}>{f}</li>)}
-                </ul>
-                <Link to="/contact" className={'btn ' + (p.featured ? 'btn-primary' : 'btn-ghost') + ' price-cta'}>
-                  اطلب الباقة <span className="arrow">←</span>
-                </Link>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="addons-strip reveal is-visible" style={{ marginTop: 40 }}>
             {svc.addons.map((a) => <span key={a} className="addon-pill">{a}</span>)}

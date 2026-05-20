@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -15,8 +16,13 @@ export default function UserDashboard() {
   const { data: onboardingData, isSuccess: onboardingLoaded } = useQuery({
     queryKey: ['onboarding'],
     queryFn: () => onboardingApi.show(),
+    staleTime: Infinity, // one fetch per session — the result rarely changes
   });
-  const showOnboarding = onboardingLoaded && !onboardingData?.onboarding?.completed;
+  // Local dismissal so the modal disappears instantly and never flickers back
+  // while the save/skip request is in flight.
+  const [dismissed, setDismissed] = useState(false);
+  const showOnboarding =
+    !dismissed && onboardingLoaded && !onboardingData?.onboarding?.completed;
 
   const { data: projects } = useQuery({
     queryKey: ['projects', 'user'],
@@ -39,7 +45,7 @@ export default function UserDashboard() {
 
   return (
     <div className="space-y-6">
-      {showOnboarding && <OnboardingModal />}
+      {showOnboarding && <OnboardingModal onDone={() => setDismissed(true)} />}
 
       <div className="card relative overflow-hidden">
         <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-brand-orange/10" />

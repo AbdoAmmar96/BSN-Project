@@ -6,6 +6,13 @@ import { persist } from 'zustand/middleware';
  * survives a refresh. `orderId` is set once the draft is saved server-side;
  * pricing always comes back from the API (never trusted client-side).
  */
+// Local YYYY-MM-DD (matches <input type="date">), avoiding UTC off-by-one.
+const todayISO = () => {
+  const d = new Date();
+  const off = d.getTimezoneOffset();
+  return new Date(d.getTime() - off * 60_000).toISOString().slice(0, 10);
+};
+
 const initialState = {
   step: 1,
   orderId: null,
@@ -16,7 +23,7 @@ const initialState = {
   couponCode: '',
   projectName: '',
   description: '',
-  expectedLaunchDate: '',
+  expectedLaunchDate: todayISO(), // default to today
   pricing: null, // last server breakdown
 };
 
@@ -31,6 +38,10 @@ export const useOrderWizard = create(
 
       setServiceType: (serviceType) => set({ serviceType, packageId: null, addonIds: [] }),
       setPackage: (packageId) => set({ packageId, addonIds: [] }),
+      // Preselect a package coming from the public package-detail CTA: sets both
+      // service + package at once and jumps to the add-ons step.
+      preselectPackage: (serviceType, packageId) =>
+        set({ serviceType, packageId, addonIds: [], step: 3 }),
       toggleAddon: (id) => set((s) => ({
         addonIds: s.addonIds.includes(id)
           ? s.addonIds.filter((x) => x !== id)

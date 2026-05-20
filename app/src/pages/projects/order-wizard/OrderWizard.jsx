@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -15,9 +15,30 @@ import Step5Review from './Step5Review';
 
 export default function OrderWizard() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const w = useOrderWizard();
   const [busy, setBusy] = useState(false);
   const debounceRef = useRef(null);
+
+  // Preselected package coming from the public detail page (?package=ID).
+  const preselectId = searchParams.get('package');
+  const { data: preselectData } = useQuery({
+    queryKey: ['package', preselectId],
+    queryFn: () => packagesApi.show(preselectId),
+    enabled: !!preselectId,
+  });
+
+  useEffect(() => {
+    const pkg = preselectData?.package;
+    if (!pkg) return;
+    // Only apply when it's actually a different package than the current draft.
+    if (w.packageId !== pkg.id) {
+      w.preselectPackage(pkg.service_type, pkg.id);
+    }
+    // Clear the query param so refresh/back doesn't re-trigger or overwrite edits.
+    setSearchParams({}, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [preselectData]);
 
   // Catalog data
   const { data: pkgData } = useQuery({

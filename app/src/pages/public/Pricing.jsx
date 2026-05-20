@@ -98,7 +98,10 @@ function PriceBlock({ tier, plans }) {
               <ul className="price-feats">
                 {p.feats.map((f, i) => <li key={i}>{f}</li>)}
               </ul>
-              <Link to={tier.cta} className={'btn ' + (p.featured ? 'btn-primary' : 'btn-ghost') + ' price-cta'}>
+              <Link
+                to={p.id ? `/package/${p.id}` : tier.cta}
+                className={'btn ' + (p.featured ? 'btn-primary' : 'btn-ghost') + ' price-cta'}
+              >
                 التفاصيل <span className="arrow">←</span>
               </Link>
             </div>
@@ -112,6 +115,7 @@ function PriceBlock({ tier, plans }) {
 /** Convert DB package → plan shape used by PriceBlock */
 function toPlan(pkg) {
   return {
+    id: pkg.id, // real DB id → links to the package detail page
     name: pkg.name,
     currency: pkg.price_prefix ? `${pkg.price_prefix} ${pkg.currency}` : pkg.currency,
     num: Number(pkg.price).toLocaleString('en-US'),

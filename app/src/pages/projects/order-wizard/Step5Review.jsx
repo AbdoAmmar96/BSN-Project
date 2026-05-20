@@ -15,10 +15,10 @@ export default function Step5Review({ packages, addons, labels }) {
 
   return (
     <div>
-      <h2 className="font-display font-black text-2xl text-brand-ink mb-1">المراجعة والدفع</h2>
+      <h2 className="font-display font-black text-xl text-brand-ink mb-1">المراجعة والدفع</h2>
       <p className="text-brand-ink/60 text-sm mb-6">راجع طلبك قبل الدفع.</p>
 
-      <div className="rounded-2xl border-[2.5px] border-brand-ink bg-white p-5 shadow-[5px_5px_0_#5C15CC]">
+      <div className="rounded-2xl border-2 border-brand-ink/15 bg-brand-cream/40 p-5">
         <div className="text-xs font-bold text-brand-ink/50 mb-2">
           {labels[w.serviceType]} {w.projectName ? `· ${w.projectName}` : ''}
         </div>

@@ -15,8 +15,8 @@ export default function Step3Addons({ addons }) {
 
   return (
     <div>
-      <h2 className="font-display font-black text-2xl text-brand-ink mb-1">إضافات (اختياري)</h2>
-      <p className="text-brand-ink/60 text-sm mb-6">ضيف اللي محتاجه — السعر بيتحدّث تلقائياً.</p>
+      <h2 className="font-display font-black text-xl text-brand-ink mb-1">إضافات (اختياري)</h2>
+      <p className="text-brand-ink/60 text-sm mb-6">اختار اللي محتاجه (تقدر تختار أكتر من واحد) — السعر بيتحدّث تلقائياً.</p>
 
       {addons.length === 0 && (
         <p className="text-brand-ink/50 text-sm">مفيش إضافات متاحة للخدمة دي.</p>
@@ -35,11 +35,16 @@ export default function Step3Addons({ addons }) {
                 checked ? 'border-brand-teal bg-brand-teal/10' : 'border-brand-ink/20 bg-white hover:border-brand-ink'
               }`}
             >
-              <span className="flex items-center gap-3">
-                <span className={`w-6 h-6 rounded-md border-2 border-brand-ink flex items-center justify-center ${checked ? 'bg-brand-teal' : 'bg-white'}`}>
-                  {checked && <Check size={14} className="text-brand-ink" />}
+              <span className="flex items-center gap-3 min-w-0">
+                <span
+                  className={`w-7 h-7 shrink-0 rounded-md border-[2.5px] border-brand-ink flex items-center justify-center transition ${
+                    checked ? 'bg-brand-teal' : 'bg-brand-ink/5'
+                  }`}
+                  aria-hidden="true"
+                >
+                  {checked && <Check size={18} strokeWidth={3} className="text-brand-ink" />}
                 </span>
-                <span className="font-bold text-brand-ink text-sm">{a.name_ar}</span>
+                <span className="font-bold text-brand-ink text-sm truncate">{a.name_ar}</span>
               </span>
               <span className="font-display font-black text-brand-purple text-sm">
                 {checked && lp != null ? `+${Number(lp).toLocaleString()} ${currency}` : label(a)}

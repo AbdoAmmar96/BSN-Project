@@ -45,8 +45,14 @@ class PaymentController extends Controller
      */
     public function initiate(Request $request): JsonResponse
     {
+        // The mock gateway is dev-only — accepted only when explicitly enabled.
+        $gateways = 'fawry,paymob_card,paymob_wallet,paymob_installments,kashier';
+        if (config('services.mock_payments.enabled')) {
+            $gateways .= ',mock';
+        }
+
         $data = $request->validate([
-            'gateway' => 'required|in:fawry,paymob_card,paymob_wallet,paymob_installments,kashier',
+            'gateway' => "required|in:{$gateways}",
             'amount' => 'required|numeric|min:1',
             'currency' => 'sometimes|string|size:3',
             'project_id' => 'nullable|exists:projects,id',

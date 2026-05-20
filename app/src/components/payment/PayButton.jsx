@@ -40,7 +40,11 @@ export default function PayButton({ amount, currency = 'EGP', invoiceId, project
     onSuccess: ({ payment, checkout }) => {
       setOpen(false);
 
-      if (checkout.type === 'redirect') {
+      if (checkout.type === 'success') {
+        // Mock gateway — payment already completed server-side.
+        toast.success('تم الدفع بنجاح ✅');
+        navigate(`/payment/success/${payment.id}`);
+      } else if (checkout.type === 'redirect') {
         // Paymob wallet / installments / Kashier — open gateway URL
         toast.success('بنحوّلك للدفع...');
         window.location.href = checkout.data.redirect_url;

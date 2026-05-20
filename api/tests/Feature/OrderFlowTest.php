@@ -109,6 +109,45 @@ class OrderFlowTest extends TestCase
         $this->assertNull($project->lead_developer_id, 'no developer assigned yet');
     }
 
+    public function test_deposit_payment_links_to_invoice_and_marks_it_partial(): void
+    {
+        Mail::fake();
+        Notification::fake();
+
+        $user = $this->actingAsRole('user');
+        $package = Package::factory()->create(['service_type' => 'web', 'price' => 20000]);
+        $order = Order::factory()->create([
+            'user_id' => $user->id,
+            'package_id' => $package->id,
+            'status' => Order::STATUS_PENDING_PAYMENT,
+            'project_name' => 'متجر',
+            'total' => 20000,
+            'subtotal' => 20000,
+            'deposit_amount' => 8000,
+        ]);
+
+        // Pay the 40% deposit through the real payment path.
+        $payment = \App\Models\Payment::create([
+            'user_id' => $user->id,
+            'order_id' => $order->id,
+            'amount' => 8000,
+            'currency' => 'EGP',
+            'gateway' => \App\Models\Payment::GATEWAY_MOCK,
+            'status' => \App\Models\Payment::STATUS_PENDING,
+        ]);
+        $payment->markCompleted();
+
+        $order->refresh();
+        $invoice = $order->invoice;
+
+        // Payment is now linked to the generated invoice.
+        $this->assertSame($invoice->id, $payment->fresh()->invoice_id);
+        // Invoice reflects the partial deposit.
+        $this->assertSame('partial', $invoice->status);
+        $this->assertEqualsWithDelta(8000, $invoice->paid_amount, 0.01);
+        $this->assertEqualsWithDelta(12000, $invoice->remaining_amount, 0.01);
+    }
+
     public function test_user_cannot_view_another_users_order(): void
     {
         $package = Package::factory()->create();

@@ -52,10 +52,28 @@ class OrderObserver
                 'project_id' => $project->id,
                 'paid_at' => $order->paid_at ?? now(),
             ])->saveQuietly();
+
+            // Link the deposit payment(s) to the freshly created invoice/project
+            // so the invoice can report how much was paid vs. what's left. The
+            // payment(s) were made against the order before the invoice existed.
+            $order->payments()->update([
+                'invoice_id' => $invoice->id,
+                'project_id' => $project->id,
+            ]);
+            $this->syncInvoiceStatus($invoice);
         });
 
         $this->notifyAdmins($order);
         $this->notifyClient($order);
+    }
+
+    /** Recompute invoice status from its completed payments. */
+    private function syncInvoiceStatus(Invoice $invoice): void
+    {
+        $paid = $invoice->payments()->where('status', 'completed')->sum('amount');
+        $invoice->update([
+            'status' => $paid >= (float) $invoice->total ? 'paid' : 'partial',
+        ]);
     }
 
     private function createProject(Order $order): Project

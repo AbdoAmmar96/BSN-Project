@@ -29,6 +29,7 @@ class Payment extends Model
     public const GATEWAY_PAYMOB_INSTALLMENTS = 'paymob_installments';
     public const GATEWAY_KASHIER = 'kashier';
     public const GATEWAY_MANUAL = 'manual';
+    public const GATEWAY_MOCK = 'mock'; // dev-only: simulate a successful payment
 
     protected $fillable = [
         'reference', 'invoice_id', 'project_id', 'order_id', 'user_id',

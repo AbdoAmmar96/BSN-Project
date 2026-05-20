@@ -1,11 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { couponsApi } from '@/api/orders';
 import { useOrderWizard } from '@/store/orderWizard';
 
+const todayISO = () => {
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+};
+
 export default function Step4ProjectDetails() {
   const w = useOrderWizard();
   const [checking, setChecking] = useState(false);
+
+  // Persisted drafts may carry an empty date — default it to today.
+  useEffect(() => {
+    if (!w.expectedLaunchDate) w.setDetails({ expectedLaunchDate: todayISO() });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const applyCoupon = async () => {
     if (!w.couponCode.trim()) return;
@@ -29,7 +40,7 @@ export default function Step4ProjectDetails() {
 
   return (
     <div>
-      <h2 className="font-display font-black text-2xl text-brand-ink mb-1">تفاصيل المشروع</h2>
+      <h2 className="font-display font-black text-xl text-brand-ink mb-1">تفاصيل المشروع</h2>
       <p className="text-brand-ink/60 text-sm mb-6">عرّفنا أكتر عن مشروعك.</p>
 
       <div className="space-y-4">

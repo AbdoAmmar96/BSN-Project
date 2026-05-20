@@ -43,4 +43,10 @@ return [
         'base_url' => env('KASHIER_BASE_URL', 'https://test-api.kashier.io'),
     ],
 
+    // Dev-only simulated payments. Defaults to on outside production so the
+    // checkout flow is testable before real gateways are configured.
+    'mock_payments' => [
+        'enabled' => env('MOCK_PAYMENTS_ENABLED', env('APP_ENV') !== 'production'),
+    ],
+
 ];

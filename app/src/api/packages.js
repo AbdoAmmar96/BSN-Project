@@ -5,6 +5,9 @@ export const packagesApi = {
     const params = serviceType ? { service_type: serviceType } : {};
     return client.get('/api/packages', { params }).then(r => r.data);
   },
+  show(id) {
+    return client.get(`/api/packages/${id}`).then(r => r.data);
+  },
   adminList() {
     return client.get('/api/admin/packages').then(r => r.data);
   },

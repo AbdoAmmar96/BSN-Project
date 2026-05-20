@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CreditCard, Smartphone, Calendar, Receipt, Check } from 'lucide-react';
+import { CreditCard, Smartphone, Calendar, Receipt, Check, FlaskConical } from 'lucide-react';
 import clsx from 'clsx';
 
 const GATEWAYS = [
@@ -45,6 +45,17 @@ const GATEWAYS = [
     color: 'bg-brand-purple-deep',
     badges: ['آمن'],
   },
+  // Dev-only: simulate a successful payment instantly (real gateways pending).
+  ...(import.meta.env.DEV
+    ? [{
+        id: 'mock',
+        label: 'دفع تجريبي (Mock)',
+        desc: 'محاكاة دفع ناجح فوراً — للتطوير فقط',
+        icon: FlaskConical,
+        color: 'bg-green-600',
+        badges: ['تجريبي', 'فوري'],
+      }]
+    : []),
 ];
 
 export default function GatewaySelector({ amount, selected, onSelect, phone, onPhoneChange, months, onMonthsChange }) {

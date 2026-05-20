@@ -30,6 +30,14 @@ class PackageController extends Controller
         return response()->json(['data' => $packages]);
     }
 
+    // GET /api/v1/packages/{package} — public single package (only active)
+    public function show(Package $package)
+    {
+        abort_unless($package->is_active, 404);
+
+        return response()->json(['package' => $package]);
+    }
+
     // GET /api/v1/packages/addons?service_type=web — active addons for a service (+ "any")
     public function addons(Request $request)
     {

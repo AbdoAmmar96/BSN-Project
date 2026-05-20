@@ -27,13 +27,15 @@ export default function OnboardingModal({ onDone }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({ looking_for: '', company_name: '', team_size: '' });
 
-  const finish = () => {
-    qc.invalidateQueries({ queryKey: ['onboarding'] });
-    onDone?.();
-  };
+  const refresh = () => qc.invalidateQueries({ queryKey: ['onboarding'] });
 
-  const save = useMutation({ mutationFn: () => onboardingApi.save(form), onSuccess: finish });
-  const skip = useMutation({ mutationFn: () => onboardingApi.skip(), onSuccess: finish });
+  const save = useMutation({ mutationFn: () => onboardingApi.save(form), onSuccess: refresh });
+  const skip = useMutation({ mutationFn: () => onboardingApi.skip(), onSuccess: refresh });
+
+  // Dismiss the modal immediately (optimistic) and persist in the background, so
+  // it disappears on click and never flickers back while the request is in flight.
+  const handleSave = () => { onDone?.(); save.mutate(); };
+  const handleSkip = () => { onDone?.(); skip.mutate(); };
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -47,7 +49,7 @@ export default function OnboardingModal({ onDone }) {
             ))}
             <span className="text-xs font-bold text-brand-ink/60 mr-2">خطوة {step} من 3</span>
           </div>
-          <button onClick={() => skip.mutate()} className="p-1.5 rounded-lg hover:bg-brand-ink/10" aria-label="تخطّي" disabled={skip.isPending}>
+          <button onClick={handleSkip} className="p-1.5 rounded-lg hover:bg-brand-ink/10" aria-label="تخطّي" disabled={skip.isPending}>
             <X size={18} />
           </button>
         </div>
@@ -106,7 +108,7 @@ export default function OnboardingModal({ onDone }) {
         </div>
 
         <div className="flex items-center justify-between gap-3 px-6 py-4 border-t-2 border-brand-ink/10">
-          <button onClick={() => skip.mutate()} disabled={skip.isPending} className="text-sm font-bold text-brand-ink/50 hover:text-brand-ink">
+          <button onClick={handleSkip} disabled={skip.isPending} className="text-sm font-bold text-brand-ink/50 hover:text-brand-ink">
             تخطّي
           </button>
           <div className="flex gap-2">
@@ -125,7 +127,7 @@ export default function OnboardingModal({ onDone }) {
               </button>
             ) : (
               <button
-                onClick={() => save.mutate()}
+                onClick={handleSave}
                 disabled={save.isPending}
                 className="inline-flex items-center gap-2 bg-brand-orange text-white font-display font-black text-sm px-5 py-2.5 rounded-full border-2 border-brand-ink shadow-brutal-sm hover:-translate-y-0.5 transition-transform disabled:opacity-60"
               >

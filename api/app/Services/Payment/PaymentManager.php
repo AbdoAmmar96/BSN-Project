@@ -25,6 +25,7 @@ class PaymentManager
         return match ($gateway) {
             'fawry' => new FawryService(),
             'kashier' => new KashierService(),
+            'mock' => new MockGateway(),
             default => throw new InvalidArgumentException("Unknown gateway: {$gateway}"),
         };
     }

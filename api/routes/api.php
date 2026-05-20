@@ -90,6 +90,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/verify-email', [AuthController::class, 'verifyEmail'])->middleware('throttle:10,1');
 
     Route::get('/packages', [PackageController::class, 'index']);
+    Route::get('/packages/{package}', [PackageController::class, 'show'])->whereNumber('package');
     Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1');
 
     // ----- AUTH (any role) -----

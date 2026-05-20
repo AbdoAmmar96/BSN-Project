@@ -59,6 +59,7 @@ class Order extends Model
 
     public function addons(): HasMany { return $this->hasMany(OrderAddon::class); }
     public function attachments(): HasMany { return $this->hasMany(OrderAttachment::class); }
+    public function payments(): HasMany { return $this->hasMany(Payment::class); }
 
     // ============================================
     // HELPERS

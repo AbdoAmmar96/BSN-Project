@@ -110,6 +110,10 @@
   <div class="t-row"><div class="t-label">خصم</div><div class="t-value">- {{ number_format((float)$invoice->discount, 2) }} {{ $invoice->currency }}</div></div>
   @endif
   <div class="t-row grand"><div class="t-label">الإجمالي</div><div class="t-value">{{ number_format((float)$invoice->total, 2) }} {{ $invoice->currency }}</div></div>
+  @if((float)$invoice->paid_amount > 0 && $invoice->status !== 'paid')
+  <div class="t-row"><div class="t-label">المدفوع</div><div class="t-value" style="color:#16a34a">{{ number_format((float)$invoice->paid_amount, 2) }} {{ $invoice->currency }}</div></div>
+  <div class="t-row"><div class="t-label">المتبقي</div><div class="t-value" style="color:#F15A24">{{ number_format((float)$invoice->remaining_amount, 2) }} {{ $invoice->currency }}</div></div>
+  @endif
 </div>
 
 @if($invoice->notes)

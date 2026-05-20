@@ -12,7 +12,9 @@ export default function Login() {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const from = location.state?.from?.pathname || null;
+  // Preserve the full intended destination (path + query, e.g. ?package=3).
+  const fromLoc = location.state?.from;
+  const from = fromLoc ? `${fromLoc.pathname}${fromLoc.search || ''}` : null;
 
   const onSubmit = async (data) => {
     try {
