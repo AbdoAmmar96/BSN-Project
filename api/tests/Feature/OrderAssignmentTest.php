@@ -63,7 +63,7 @@ class OrderAssignmentTest extends TestCase
         $this->assertSame(Order::STATUS_IN_PROGRESS, $order->status);
         $this->assertSame($dev->id, $order->assigned_developer_id);
         $this->assertNotNull($order->developer_assigned_at);
-        $this->assertSame('active', $order->project->fresh()->status);
+        $this->assertSame('in_progress', $order->project->fresh()->status);
         $this->assertSame($dev->id, $order->project->fresh()->lead_developer_id);
     }
 

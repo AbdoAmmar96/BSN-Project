@@ -73,8 +73,10 @@ class OrderAssignmentController extends Controller
                 'developer_assigned_at' => now(),
             ]);
 
+            // 'in_progress' is the enum value for an active project (there is no
+            // 'active' state in projects.status — see the projects migration).
             $project = $order->project;
-            $project->update(['status' => 'active', 'lead_developer_id' => $developer->id]);
+            $project->update(['status' => 'in_progress', 'lead_developer_id' => $developer->id]);
 
             // Add the developer to the project's chat room.
             $room = $project->chatRoom;
