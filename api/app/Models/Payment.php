@@ -31,7 +31,7 @@ class Payment extends Model
     public const GATEWAY_MANUAL = 'manual';
 
     protected $fillable = [
-        'reference', 'invoice_id', 'project_id', 'user_id',
+        'reference', 'invoice_id', 'project_id', 'order_id', 'user_id',
         'amount', 'currency',
         'gateway', 'gateway_transaction_id', 'gateway_order_id', 'status',
         'installment_provider', 'installment_months',
@@ -99,6 +99,13 @@ class Payment extends Model
             $project->save();
         }
 
+        // Order deposit: flip the order to `paid`, which fires OrderObserver
+        // (creates the project at pending_assignment, invoice, chat room, and
+        // admin/client notifications). Applies to Path A and accepted Path B.
+        if ($this->order_id && $this->order && ! $this->order->isPaid()) {
+            $this->order->update(['status' => Order::STATUS_PAID, 'paid_at' => now()]);
+        }
+
         // Notify the client (in-app + email receipt)
         if ($this->user) {
             $this->user->notify(new PaymentUpdateNotification(
@@ -107,7 +114,11 @@ class Payment extends Model
                 "تم تأكيد دفع {$this->amount} {$this->currency}",
                 ['payment_id' => $this->id, 'invoice_id' => $this->invoice_id, 'url' => '/dashboard/invoices/' . $this->invoice_id],
             ));
-            Mail::to($this->user->email)->send(new PaymentReceiptMail($this->load('invoice', 'user')));
+            // Receipt email only when there's an invoice (order deposits get
+            // their confirmation via the order notification in OrderObserver).
+            if ($this->invoice_id) {
+                Mail::to($this->user->email)->send(new PaymentReceiptMail($this->load('invoice', 'user')));
+            }
         }
     }
 
@@ -139,6 +150,11 @@ class Payment extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public function user(): BelongsTo

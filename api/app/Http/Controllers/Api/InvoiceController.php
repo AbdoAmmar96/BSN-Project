@@ -182,6 +182,22 @@ class InvoiceController extends Controller
                     ->where('paid_at', '>=', now()->startOfMonth())->sum('amount'),
                 'pending' => Invoice::whereIn('status', ['sent', 'partial', 'overdue'])->sum('total'),
             ],
+            'orders' => [
+                'total' => \App\Models\Order::count(),
+                'this_month' => \App\Models\Order::where('created_at', '>=', now()->startOfMonth())->count(),
+                // Paid orders still waiting on a developer assignment (Flow E queue).
+                'needs_assignment' => \App\Models\Order::where('status', \App\Models\Order::STATUS_PAID)
+                    ->whereNull('developer_assigned_at')->count(),
+            ],
+            'leads' => [
+                'total' => \App\Models\Lead::count(),
+                // Open leads in the sales pipeline (not yet won/lost/archived).
+                'open' => \App\Models\Lead::whereIn('status', [
+                    \App\Models\Lead::STATUS_NEW,
+                    \App\Models\Lead::STATUS_REVIEWING,
+                    \App\Models\Lead::STATUS_QUOTED,
+                ])->count(),
+            ],
         ]);
     }
 }

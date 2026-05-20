@@ -1,0 +1,3299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BSN Platform — Master Spec · شريك الأعمال</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700;800&family=Archivo+Black&family=Space+Mono:wght@400;700&family=Reem+Kufi+Fun:wght@700;800&display=swap" rel="stylesheet" />
+<style>
+/* ============ BRAND TOKENS ============ */
+:root {
+  --p: #5C15CC; --p-deep: #3A0B85; --p-mid: #4A11AB; --p-soft: #7634D9;
+  --o: #F15A24; --o-deep: #C73E0F; --o-soft: #FF7E4D;
+  --t: #65C8D0; --t-deep: #3FA4AC;
+  --ink: #0F0830; --w: #FFFFFF; --paper: #FAF3FF; --cream: #FFF6EE;
+  --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB;
+  --gray-400: #9CA3AF; --gray-600: #4B5563; --gray-800: #1F2937;
+  --f-display: 'Cairo', sans-serif;
+  --f-body: 'Tajawal', sans-serif;
+  --f-latin: 'Archivo Black', sans-serif;
+  --f-mono: 'Space Mono', monospace;
+  --f-kufi: 'Reem Kufi Fun', sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --container: 1280px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--f-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+h1, h2, h3, h4, h5 { font-family: var(--f-display); font-weight: 800; line-height: 1.2; }
+h1 { font-size: 56px; letter-spacing: -1px; }
+h2 { font-size: 36px; letter-spacing: -0.5px; margin-bottom: 16px; }
+h3 { font-size: 22px; margin-bottom: 10px; }
+h4 { font-size: 17px; margin-bottom: 6px; }
+p { margin-bottom: 12px; }
+a { color: var(--p); text-decoration: none; }
+code, pre { font-family: var(--f-mono); }
+
+/* ============ LAYOUT — TWO COLUMN ============ */
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+@media print {
+  .layout { display: block; }
+  .sidebar { display: none; }
+  .main { padding: 0; }
+  body { background: white; }
+}
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+  background: var(--ink);
+  color: var(--w);
+  padding: 32px 24px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-left: 4px solid var(--o);
+}
+.sidebar-brand {
+  font-family: var(--f-latin);
+  font-style: italic;
+  font-size: 42px;
+  line-height: 1;
+  color: var(--o);
+  letter-spacing: -2px;
+  display: block;
+  margin-bottom: 6px;
+  text-shadow: 3px 3px 0 var(--t);
+}
+.sidebar-tag {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--t);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: block;
+}
+.sidebar-section {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--o);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 24px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(255,255,255,0.15);
+}
+.sidebar nav a {
+  display: block;
+  color: rgba(255,255,255,0.75);
+  padding: 7px 12px;
+  margin: 2px -12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s var(--ease);
+  border-right: 3px solid transparent;
+}
+.sidebar nav a:hover {
+  color: var(--w);
+  background: rgba(255,255,255,0.05);
+  border-color: var(--o);
+}
+
+/* ============ MAIN CONTENT ============ */
+.main {
+  padding: 0;
+  background: var(--paper);
+}
+.section {
+  padding: 80px 56px;
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+}
+.section:nth-child(even) { background: var(--w); }
+.section-light { background: var(--w); }
+.section-teal { background: var(--t); color: var(--p-deep); }
+.section-ink { background: var(--ink); color: var(--w); }
+.section-cream { background: var(--cream); }
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--o);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+}
+.eyebrow::before {
+  content: "▸ ";
+  margin-left: 4px;
+}
+
+/* ============ COVER ============ */
+.cover {
+  background: linear-gradient(135deg, var(--p-deep) 0%, var(--p) 100%);
+  color: var(--w);
+  min-height: 100vh;
+  padding: 80px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 8px solid var(--o);
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, var(--o) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, var(--t) 1px, transparent 1px);
+  background-size: 60px 60px, 50px 50px;
+  opacity: 0.08;
+}
+.cover-content { position: relative; z-index: 2; max-width: 900px; }
+.cover-tag {
+  display: inline-block;
+  background: var(--o);
+  color: var(--w);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 32px;
+  border: 2px solid var(--w);
+}
+.cover h1 {
+  font-size: 80px;
+  line-height: 0.95;
+  margin-bottom: 28px;
+  letter-spacing: -2px;
+}
+.cover h1 .accent {
+  display: inline-block;
+  color: var(--t);
+  font-family: var(--f-latin);
+  font-style: italic;
+  text-shadow: 6px 6px 0 var(--o), 12px 12px 0 var(--ink);
+}
+.cover-lede {
+  font-size: 22px;
+  line-height: 1.5;
+  max-width: 720px;
+  margin-bottom: 40px;
+  opacity: 0.95;
+}
+.cover-meta {
+  display: flex;
+  gap: 48px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+.cover-meta-item {
+  display: flex;
+  flex-direction: column;
+}
+.cover-meta-item strong {
+  font-family: var(--f-latin);
+  font-style: italic;
+  font-size: 36px;
+  color: var(--t);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.cover-meta-item span {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============ TYPOGRAPHY ============ */
+.h-section {
+  font-size: 48px;
+  margin: 8px 0 32px;
+  letter-spacing: -1px;
+}
+.h-section .accent {
+  display: inline-block;
+  color: var(--o);
+  font-family: var(--f-latin);
+  font-style: italic;
+  text-shadow: 4px 4px 0 var(--t);
+}
+.lede {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--gray-600);
+  max-width: 720px;
+  margin-bottom: 32px;
+}
+
+/* ============ CARDS ============ */
+.card {
+  background: var(--w);
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 6px 6px 0 var(--ink);
+  margin-bottom: 24px;
+}
+.card-orange { box-shadow: 6px 6px 0 var(--o); }
+.card-teal { box-shadow: 6px 6px 0 var(--t); }
+.card-purple { box-shadow: 6px 6px 0 var(--p); }
+.card-num {
+  font-family: var(--f-latin);
+  font-style: italic;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--o);
+  -webkit-text-stroke: 1.5px var(--ink);
+}
+
+/* ============ TABLES ============ */
+.tbl {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 24px 0;
+  box-shadow: 6px 6px 0 var(--ink);
+  background: var(--w);
+}
+.tbl th {
+  background: var(--ink);
+  color: var(--w);
+  padding: 14px 16px;
+  text-align: right;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.2px;
+  border-bottom: 2px solid var(--o);
+}
+.tbl td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 14px;
+  vertical-align: top;
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:nth-child(even) td { background: var(--gray-50); }
+.tbl .check { color: #16a34a; font-weight: 800; }
+.tbl .x { color: var(--o); font-weight: 800; }
+.tbl .badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--f-mono);
+}
+.tbl .badge-green { background: #dcfce7; color: #15803d; }
+.tbl .badge-yellow { background: #fef3c7; color: #b45309; }
+.tbl .badge-red { background: #fee2e2; color: #b91c1c; }
+.tbl .badge-blue { background: #dbeafe; color: #1e40af; }
+
+/* ============ GRIDS ============ */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+
+/* ============ FLOW DIAGRAMS ============ */
+.flow {
+  background: var(--ink);
+  color: var(--w);
+  padding: 32px;
+  border-radius: 16px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 24px 0;
+  overflow-x: auto;
+  white-space: pre;
+  border: 3px solid var(--o);
+  position: relative;
+}
+.flow::before {
+  content: "▸ FLOW";
+  position: absolute;
+  top: -12px;
+  right: 24px;
+  background: var(--o);
+  color: var(--w);
+  padding: 4px 12px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* ============ WIREFRAMES ============ */
+.wireframe {
+  background: var(--gray-50);
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  padding: 0;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 8px 8px 0 var(--o);
+}
+.wf-title {
+  background: var(--ink);
+  color: var(--w);
+  padding: 8px 18px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wf-title .dots { display: flex; gap: 5px; }
+.wf-title .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-400); }
+.wf-body { padding: 24px; }
+.wf-block {
+  background: var(--w);
+  border: 1.5px dashed var(--gray-400);
+  padding: 16px;
+  margin-bottom: 12px;
+  text-align: center;
+  color: var(--gray-600);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  border-radius: 6px;
+}
+.wf-block.solid { background: var(--ink); color: var(--w); border-style: solid; }
+.wf-block.accent { background: var(--o); color: var(--w); border-style: solid; border-color: var(--ink); }
+.wf-block.teal { background: var(--t); color: var(--p-deep); border-color: var(--ink); }
+.wf-block.purple { background: var(--p); color: var(--w); border-style: solid; }
+.wf-row { display: grid; gap: 10px; }
+.wf-row-2 { grid-template-columns: 1fr 1fr; }
+.wf-row-3 { grid-template-columns: repeat(3, 1fr); }
+.wf-row-4 { grid-template-columns: repeat(4, 1fr); }
+.wf-header {
+  background: var(--ink);
+  color: var(--w);
+  padding: 10px 14px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+.wf-header .logo {
+  font-family: var(--f-latin);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--o);
+}
+.wf-tag {
+  display: inline-block;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.wf-cta {
+  background: var(--o);
+  color: var(--w);
+  border: 2px solid var(--ink);
+  padding: 8px 18px;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 100px;
+  box-shadow: 3px 3px 0 var(--ink);
+  display: inline-block;
+}
+
+/* ============ PERSONA CARDS ============ */
+.persona {
+  background: var(--w);
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 6px 6px 0 var(--p);
+  margin-bottom: 20px;
+}
+.persona-head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px dashed var(--gray-200);
+}
+.persona-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--o);
+  color: var(--w);
+  font-family: var(--f-latin);
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--ink);
+  flex-shrink: 0;
+}
+.persona-meta strong { font-size: 18px; display: block; margin-bottom: 2px; }
+.persona-meta span { font-family: var(--f-mono); font-size: 11px; color: var(--gray-600); }
+.persona-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  align-items: start;
+}
+.persona-row span {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p);
+  padding-top: 2px;
+}
+
+/* ============ JOURNEY MAP ============ */
+.journey {
+  background: var(--w);
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 6px 6px 0 var(--t);
+}
+.journey-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr 1fr;
+  gap: 10px;
+  border-bottom: 1px dashed var(--gray-200);
+  padding: 12px 0;
+  font-size: 13px;
+}
+.journey-row:last-child { border-bottom: none; }
+.journey-row.head {
+  background: var(--ink);
+  color: var(--w);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+.journey-stage {
+  font-family: var(--f-display);
+  font-weight: 800;
+  color: var(--o);
+}
+.journey-emotion {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--f-mono);
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* ============ CODE BLOCKS ============ */
+.code-block {
+  background: var(--ink);
+  color: #E4E7EE;
+  padding: 20px 24px;
+  border-radius: 12px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: 16px 0;
+  border-right: 4px solid var(--o);
+  white-space: pre;
+}
+.code-block .k { color: #FF7E4D; }
+.code-block .s { color: #65C8D0; }
+.code-block .c { color: #6B7280; font-style: italic; }
+.code-block .n { color: #C084FC; }
+
+/* ============ ALERT BOXES ============ */
+.alert {
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 16px 0;
+  border-right: 5px solid;
+  display: flex;
+  gap: 12px;
+  align-items: start;
+}
+.alert-info { background: #EFF6FF; border-color: #2563EB; color: #1E3A8A; }
+.alert-warn { background: #FEF3C7; border-color: var(--o); color: #92400E; }
+.alert-success { background: #DCFCE7; border-color: #16A34A; color: #14532D; }
+.alert-danger { background: #FEE2E2; border-color: #DC2626; color: #7F1D1D; }
+.alert-icon { font-size: 22px; line-height: 1; }
+.alert strong { display: block; margin-bottom: 4px; }
+
+/* ============ COMPARISON TABLE ============ */
+.compare {
+  display: grid;
+  grid-template-columns: 200px repeat(3, 1fr);
+  background: var(--w);
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 24px 0;
+  box-shadow: 6px 6px 0 var(--p);
+}
+.compare > div {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  border-left: 1px solid var(--gray-200);
+  font-size: 13px;
+}
+.compare > div:nth-last-child(-n+4) { border-bottom: none; }
+.compare .ch {
+  background: var(--ink);
+  color: var(--w);
+  font-family: var(--f-display);
+  font-weight: 800;
+  text-align: center;
+}
+.compare .ch.us {
+  background: var(--o);
+}
+.compare .rh {
+  background: var(--cream);
+  font-weight: 700;
+}
+
+/* ============ PHASE TIMELINE ============ */
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+}
+.phase {
+  background: var(--w);
+  border: 2.5px solid var(--ink);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 5px 5px 0 var(--t);
+}
+.phase-num {
+  position: absolute;
+  top: -16px;
+  right: 16px;
+  background: var(--ink);
+  color: var(--o);
+  font-family: var(--f-latin);
+  font-style: italic;
+  font-size: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--o);
+}
+.phase h4 { margin-top: 12px; color: var(--p-deep); }
+.phase-time {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--o);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.phase ul { padding-right: 18px; font-size: 13px; }
+.phase ul li { margin-bottom: 4px; }
+
+/* ============ MISC ============ */
+ul.bullets, ol.bullets { padding-right: 22px; margin: 12px 0; }
+ul.bullets li, ol.bullets li { margin-bottom: 8px; }
+.kbd {
+  font-family: var(--f-mono);
+  background: var(--gray-100);
+  color: var(--ink);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid var(--gray-200);
+  font-weight: 700;
+}
+.divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ink), transparent);
+  margin: 32px 0;
+}
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.toc-item {
+  background: var(--w);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 3px 3px 0 var(--o);
+  transition: all 0.2s;
+}
+.toc-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--o);
+}
+.toc-num {
+  font-family: var(--f-latin);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--o);
+  display: block;
+  margin-bottom: 4px;
+}
+.toc-title { font-weight: 800; color: var(--ink); font-size: 14px; }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; }
+  .section { padding: 48px 24px; }
+  .cover { padding: 48px 24px; }
+  .cover h1 { font-size: 48px; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .phases { grid-template-columns: 1fr 1fr; }
+  .compare { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .cover { min-height: auto; page-break-after: always; padding: 60px 48px; }
+  .section { page-break-inside: auto; padding: 40px 48px; }
+  .section h2, .section h3 { page-break-after: avoid; }
+  .flow, .code-block { font-size: 10px; page-break-inside: avoid; }
+  .card, .persona, .wireframe { page-break-inside: avoid; }
+  .tbl { page-break-inside: auto; }
+  .tbl tr { page-break-inside: avoid; }
+  .alert { page-break-inside: avoid; }
+  /* Ensure colored sections print backgrounds */
+  .section-ink, .cover { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .section-teal, .section-cream, .section-light, .alert, .card { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  /* Reduce shadows for cleaner print */
+  .card, .tbl, .persona, .wireframe, .phase, .compare { box-shadow: 3px 3px 0 currentColor !important; }
+  body { font-size: 13px; }
+  h1 { font-size: 42px; }
+  h2 { font-size: 28px; }
+  h3 { font-size: 18px; }
+  .h-section { font-size: 32px; }
+  .cover h1 { font-size: 56px; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <a href="#cover" style="text-decoration:none">
+    <span class="sidebar-brand">BSN</span>
+    <span class="sidebar-tag">Platform · Master Spec</span>
+  </a>
+
+  <div class="sidebar-section">01 · الاستراتيجية</div>
+  <nav>
+    <a href="#cover">الغلاف</a>
+    <a href="#exec-summary">الملخّص التنفيذي</a>
+    <a href="#case-study">📖 Case Study</a>
+    <a href="#vision">الرؤية والتحوّل</a>
+    <a href="#competitive">تحليل المنافسين</a>
+  </nav>
+
+  <div class="sidebar-section">02 · المستخدمون</div>
+  <nav>
+    <a href="#personas">User Personas</a>
+    <a href="#journey">User Journey Map</a>
+    <a href="#flows">User Flows</a>
+  </nav>
+
+  <div class="sidebar-section">03 · المنتج</div>
+  <nav>
+    <a href="#sitemap">الـ Sitemap</a>
+    <a href="#pricing">استراتيجية التسعير</a>
+    <a href="#packages">الباقات والـ Add-ons</a>
+  </nav>
+
+  <div class="sidebar-section">04 · التقنية</div>
+  <nav>
+    <a href="#database">Database Schema</a>
+    <a href="#api">API Endpoints</a>
+    <a href="#wireframes">Low-Fi UI Wireframes</a>
+  </nav>
+
+  <div class="sidebar-section">05 · التنفيذ</div>
+  <nav>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#claude-prompt">Claude Code Prompt</a>
+    <a href="#appendix">المرجع</a>
+  </nav>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main">
+
+<!-- ============ COVER ============ -->
+<section class="cover" id="cover">
+  <div class="cover-content">
+    <span class="cover-tag">★ MASTER SPECIFICATION · v1.0 · مايو 2026</span>
+    <h1>
+      من <span class="accent">وكالة</span><br>
+      إلى <span class="accent">منصة</span>
+    </h1>
+    <p class="cover-lede">
+      مرجع استراتيجي شامل لتحويل bp-eg.com من موقع وكالة تقليدي إلى منصة self-service متكاملة لطلب الخدمات الرقمية. يحتوي على تحليل السوق، رحلة المستخدم، الـ wireframes، الـ DB schema، وبرومبت Claude Code جاهز للتنفيذ.
+    </p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>12</strong><span>قسم استراتيجي</span></div>
+      <div class="cover-meta-item"><strong>4</strong><span>User Personas</span></div>
+      <div class="cover-meta-item"><strong>8</strong><span>Wireframes</span></div>
+      <div class="cover-meta-item"><strong>20+</strong><span>API Endpoints</span></div>
+      <div class="cover-meta-item"><strong>1</strong><span>Claude Code Prompt</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXEC SUMMARY ============ -->
+<section class="section section-light" id="exec-summary">
+  <span class="eyebrow">القسم 01</span>
+  <h2 class="h-section">الملخّص <span class="accent">التنفيذي</span></h2>
+
+  <p class="lede">
+    BSN (شريك الأعمال) وكالة رقمية مصرية متخصصة في 4 خدمات (مواقع، متاجر، هوية، تسويق) مع +40 مشروع و12 سنة خبرة. الهدف هو تحويل الموقع الحالي من brochure-site لمنصّة تشغيلية كاملة.
+  </p>
+
+  <div class="grid-3">
+    <div class="card card-orange">
+      <span class="card-num">01</span>
+      <h3>الفرصة السوقية</h3>
+      <p>السوق العربي للـ freelance نما <strong>385% منذ 2020</strong> ووصل لـ $1.4 مليار في 2025. مفيش وكالة عربية حالياً تعمل productized self-service بشكل احترافي كامل — كلهم إما تقليديين أو marketplaces.</p>
+    </div>
+    <div class="card card-teal">
+      <span class="card-num">02</span>
+      <h3>الـ Positioning</h3>
+      <p>BSN في منطقة فريدة: <strong>وكالة متخصصة + سهولة طلب الـ marketplace</strong>. فريق واحد مسؤول، أسعار شفافة، portal كامل، وتجربة عربية أصيلة — vs Khamsat (جودة متفاوتة) و الوكالات التقليدية (بطيئة وغير شفافة).</p>
+    </div>
+    <div class="card card-purple">
+      <span class="card-num">03</span>
+      <h3>التحوّل المقترح</h3>
+      <p>إضافة <strong>Order Flow + Quote Workflow</strong> فوق البنية الموجودة (Auth، Projects، Payments، Chat، Packages CMS) — مع Multi-step wizard، add-ons، coupons، bundles، وOnboarding.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-success" style="margin-top: 32px;">
+    <span class="alert-icon">✓</span>
+    <div>
+      <strong>الوضع الحالي:</strong>
+      الـ MVP موجود وشغّال (Laravel 11 + React 18 + Reverb + 5 بوابات دفع + 3 dashboards + Audit Logs + PWA + Docker + CI). تقدير 95% production-ready من الناحية التقنية، بس ناقص الـ business workflow الأساسي للتحوّل لمنصّة.
+    </div>
+  </div>
+
+  <h3 style="margin-top: 32px;">الأهداف القابلة للقياس (12 شهر)</h3>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>المؤشّر</th>
+        <th>الوضع الحالي</th>
+        <th>الهدف بعد 6 شهور</th>
+        <th>الهدف بعد 12 شهر</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>المشاريع الجديدة شهرياً</td>
+        <td>3-4 (عبر تواصل مباشر)</td>
+        <td>12-15</td>
+        <td>25-30</td>
+      </tr>
+      <tr>
+        <td>متوسط الوقت من طلب للموافقة</td>
+        <td>3-7 أيام</td>
+        <td>&lt; 24 ساعة</td>
+        <td>&lt; 4 ساعات (للباقات)</td>
+      </tr>
+      <tr>
+        <td>نسبة العملاء الـ self-service</td>
+        <td>0%</td>
+        <td>50%</td>
+        <td>75%</td>
+      </tr>
+      <tr>
+        <td>Average Order Value (EGP)</td>
+        <td>~25,000</td>
+        <td>22,000 (المزيد من Starter)</td>
+        <td>28,000 (Add-ons + Bundles)</td>
+      </tr>
+      <tr>
+        <td>Monthly Recurring Revenue (التسويق)</td>
+        <td>~15,000</td>
+        <td>50,000</td>
+        <td>120,000</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ CASE STUDY ============ -->
+<section class="section section-ink" id="case-study" style="color: var(--w);">
+  <span class="eyebrow" style="color: var(--t);">CASE STUDY</span>
+  <h2 class="h-section" style="color: var(--w);">قصة <span class="accent">المشروع</span></h2>
+  <p class="lede" style="color: rgba(255,255,255,0.85);">دراسة حالة كاملة: من وكالة رقمية بـ 40 مشروع لمنصّة متكاملة بـ 5 دول. القصة الكاملة وراء التحوّل الاستراتيجي لـ شريك الأعمال.</p>
+
+  <div class="grid-4" style="margin-top: 32px;">
+    <div style="text-align: center; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border-right: 3px solid var(--o);">
+      <div style="font-family: var(--f-latin); font-style: italic; font-size: 36px; color: var(--o); line-height: 1;">12</div>
+      <div style="font-family: var(--f-mono); font-size: 10px; color: var(--t); letter-spacing: 0.1em; margin-top: 6px; text-transform: uppercase;">سنة خبرة</div>
+    </div>
+    <div style="text-align: center; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border-right: 3px solid var(--t);">
+      <div style="font-family: var(--f-latin); font-style: italic; font-size: 36px; color: var(--t); line-height: 1;">40+</div>
+      <div style="font-family: var(--f-mono); font-size: 10px; color: var(--t); letter-spacing: 0.1em; margin-top: 6px; text-transform: uppercase;">مشروع منجز</div>
+    </div>
+    <div style="text-align: center; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border-right: 3px solid var(--o);">
+      <div style="font-family: var(--f-latin); font-style: italic; font-size: 36px; color: var(--o); line-height: 1;">5</div>
+      <div style="font-family: var(--f-mono); font-size: 10px; color: var(--t); letter-spacing: 0.1em; margin-top: 6px; text-transform: uppercase;">دول</div>
+    </div>
+    <div style="text-align: center; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border-right: 3px solid var(--t);">
+      <div style="font-family: var(--f-latin); font-style: italic; font-size: 36px; color: var(--t); line-height: 1;">4</div>
+      <div style="font-family: var(--f-mono); font-size: 10px; color: var(--t); letter-spacing: 0.1em; margin-top: 6px; text-transform: uppercase;">خدمات أساسية</div>
+    </div>
+  </div>
+
+  <hr class="divider" style="background: linear-gradient(90deg, transparent, var(--o), transparent); margin: 40px 0;" />
+
+  <!-- 1. THE COMPANY -->
+  <h3 style="color: var(--w); margin-top: 32px;">🏢 الفصل الأول · الشركة</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    تأسست <strong style="color: var(--t);">شركة شريك الأعمال لتقنية المعلومات</strong> (BSN) في مصر على يد المهندس وليد شلبي (المدير التقني) والمهندس عمرو شلبي (مدير العمليات). على مدار 12 سنة، تخصّصت الشركة في تقديم 4 خدمات رقمية متكاملة: <strong style="color: var(--o);">تطوير المواقع</strong>، <strong style="color: var(--o);">المتاجر الإلكترونية</strong>، <strong style="color: var(--o);">الهوية البصرية</strong>، و<strong style="color: var(--o);">التسويق الرقمي</strong>.
+  </p>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    خلال هذه السنوات، نفّذت BSN أكثر من <strong style="color: var(--t);">40 مشروع</strong> لعملاء في 5 دول: مصر، السعودية، الإمارات، قطر، والكويت. تنوّعت المشاريع من مواقع شركات (Nasr Chemicals, GFC, Arab Engineers)، لمتاجر إلكترونية (Bakkah Store +3,400 منتج، MK Cafe، Grasse)، لهويات بصرية كاملة (+30 هوية على Behance)، لحملات تسويقية لشركات مقاولات وعقارات وأدوية.
+  </p>
+  <div class="grid-3" style="margin-top: 24px;">
+    <div style="background: rgba(255,255,255,0.05); padding: 18px; border-radius: 10px; border-right: 3px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 8px;">المؤسّسون</h4>
+      <p style="color: rgba(255,255,255,0.75); font-size: 13px; margin: 0;">م. وليد شلبي (CTO)<br>م. عمرو شلبي (COO)</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 18px; border-radius: 10px; border-right: 3px solid var(--t);">
+      <h4 style="color: var(--t); margin-bottom: 8px;">المقر</h4>
+      <p style="color: rgba(255,255,255,0.75); font-size: 13px; margin: 0;">مصر — المنوفية<br>بركة السبع · مول الجابري</p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 18px; border-radius: 10px; border-right: 3px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 8px;">العملاء</h4>
+      <p style="color: rgba(255,255,255,0.75); font-size: 13px; margin: 0;">مصر · السعودية · الإمارات<br>قطر · الكويت</p>
+    </div>
+  </div>
+
+  <!-- 2. THE CHALLENGE -->
+  <h3 style="color: var(--w); margin-top: 40px;">⚡ الفصل التاني · التحدّي</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    في 2025، بدأت BSN تواجه تحدّي استراتيجي حقيقي: <strong style="color: var(--o);">نموذج الوكالة التقليدية كان بيقيّد النمو</strong>. كل عميل جديد كان بيمرّ بنفس الـ funnel البطيء:
+  </p>
+  <div style="background: rgba(241, 90, 36, 0.1); border-right: 4px solid var(--o); padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <p style="margin: 0; color: rgba(255,255,255,0.9); font-family: var(--f-mono); font-size: 13px; line-height: 1.8;">
+      تواصل عبر WhatsApp/Email → اجتماع تعريفي → بحث وتحليل → <br>
+      عرض سعر (3-7 أيام) → مراجعات وتفاوض → عقد → عمل
+    </p>
+  </div>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    النتيجة: <strong style="color: var(--o);">المعدّل لا يتجاوز 3-4 مشاريع شهرياً</strong>، رغم وجود طلب أكبر من ذلك بكثير في السوق. كانت الـ bottleneck هي:
+  </p>
+
+  <table class="tbl" style="margin-top: 20px;">
+    <thead>
+      <tr><th>المشكلة</th><th>التأثير على الـ business</th><th>التأثير على العميل</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>عرض السعر بياخد 3-7 أيام</strong></td>
+        <td>30% من العملاء يضيعوا لمنافس أسرع</td>
+        <td>إحباط · فقدان الزخم</td>
+      </tr>
+      <tr>
+        <td><strong>تواصل scattered (WA + email)</strong></td>
+        <td>معلومات ضايعة · سوء فهم</td>
+        <td>قلق · غياب الشفافية</td>
+      </tr>
+      <tr>
+        <td><strong>مفيش portal للتتبّع</strong></td>
+        <td>الفريق يقضي 30% من وقته في "أين وصل المشروع؟"</td>
+        <td>"لازم أسأل عشان أعرف"</td>
+      </tr>
+      <tr>
+        <td><strong>الدفع تحويل بنكي يدوي</strong></td>
+        <td>تأخر بدء المشاريع 2-3 أيام</td>
+        <td>تجربة دفع متقادمة</td>
+      </tr>
+      <tr>
+        <td><strong>الـ scaling مرتبط بحجم الفريق</strong></td>
+        <td>المضاعفة تحتاج توظيف 2x</td>
+        <td>محدودية في السرعة</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3. THE OPPORTUNITY -->
+  <h3 style="color: var(--w); margin-top: 40px;">🎯 الفصل التالت · الفرصة السوقية</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    البحث المتعمّق في السوق العربي كشف فرصة استثنائية: <strong style="color: var(--t);">سوق الـ freelance والخدمات الرقمية العربي نما 385% منذ 2020 ليصل لـ $1.4 مليار في 2025</strong>، ومتوقع يوصل لـ $3 مليار بحلول 2030. لكن السوق منقسم لـ 3 موديلات، كل واحد بثغرة كبيرة:
+  </p>
+  <div class="grid-3" style="margin-top: 24px;">
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1);">
+      <h4 style="color: var(--o); margin-bottom: 12px;">1. Marketplaces</h4>
+      <p style="font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 8px;">Khamsat, Mostaql, Ureed</p>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.85); margin: 0; line-height: 1.5;">
+        ✓ سريع · رخيص<br>
+        ✗ جودة متفاوتة<br>
+        ✗ مفيش accountability<br>
+        ✗ race-to-bottom
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.1);">
+      <h4 style="color: var(--o); margin-bottom: 12px;">2. وكالات تقليدية</h4>
+      <p style="font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 8px;">eSpace, Robusta, Sokoon</p>
+      <p style="font-size: 13px; color: rgba(255,255,255,0.85); margin: 0; line-height: 1.5;">
+        ✓ جودة عالية<br>
+        ✓ accountability<br>
+        ✗ بطيء (3-7 أيام)<br>
+        ✗ مفيش self-service
+      </p>
+    </div>
+    <div style="background: var(--o); padding: 20px; border-radius: 10px; border: 2px solid var(--w);">
+      <h4 style="color: var(--w); margin-bottom: 12px;">3. BSN · الفجوة! ★</h4>
+      <p style="font-size: 12px; color: rgba(255,255,255,0.85); margin-bottom: 8px;">Productized + Hybrid</p>
+      <p style="font-size: 13px; color: var(--w); margin: 0; line-height: 1.5;">
+        ✓ سرعة الـ marketplace<br>
+        ✓ جودة الوكالة<br>
+        ✓ self-service<br>
+        ✓ portal كامل
+      </p>
+    </div>
+  </div>
+  <div class="alert alert-success" style="background: rgba(101, 200, 208, 0.15); border-color: var(--t); color: var(--w); margin-top: 24px;">
+    <span class="alert-icon" style="color: var(--t);">💡</span>
+    <div>
+      <strong style="color: var(--t);">الـ Insight الاستراتيجي:</strong> مفيش وكالة عربية واحدة عاملة موديل productized self-service بشكل احترافي كامل. الـ DesignJoy و ManyPixels عاملينها بالإنجليزي وللـ design فقط. BSN ممكن تكون الأولى عربياً.
+    </div>
+  </div>
+
+  <!-- 4. THE STRATEGY -->
+  <h3 style="color: var(--w); margin-top: 40px;">🧠 الفصل الرابع · الاستراتيجية</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    قرّرت BSN بناء <strong style="color: var(--t);">منصّة هجين</strong> تجمع بين أفضل ميزات الـ 3 موديلات: سرعة الـ marketplace، جودة الوكالة، ومرونة الـ enterprise. الاستراتيجية اتبنت على 4 ركائز:
+  </p>
+
+  <div class="grid-2" style="margin-top: 24px;">
+    <div style="background: rgba(255,255,255,0.05); padding: 24px; border-radius: 12px; border-right: 4px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 12px;">الركيزة 1 · Productization</h4>
+      <p style="color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.6;">
+        تحويل 13 خدمة إلى 13 باقة جاهزة بسعر ثابت ومدة معلنة. العميل يختار، يدفع، ويبدأ — كله في 5 دقائق. الباقات تغطي 70% من الطلبات (standard cases).
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 24px; border-radius: 12px; border-right: 4px solid var(--t);">
+      <h4 style="color: var(--t); margin-bottom: 12px;">الركيزة 2 · Custom Quote Path</h4>
+      <p style="color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.6;">
+        للمشاريع المعقدة (30% المتبقية)، wizard ذكي يجمع المتطلبات + admin يبني quote في &lt;24 ساعة. الـ workflow كاملة داخل المنصة: عرض → تفاوض → قبول → دفع.
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 24px; border-radius: 12px; border-right: 4px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 12px;">الركيزة 3 · Real-time Portal</h4>
+      <p style="color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.6;">
+        Client portal بـ chat real-time (Reverb WebSockets)، tracking للـ tasks والـ deliverables، فواتير PDF، ومدفوعات بـ 5 بوابات. كل التواصل والوثائق في مكان واحد.
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 24px; border-radius: 12px; border-right: 4px solid var(--t);">
+      <h4 style="color: var(--t); margin-bottom: 12px;">الركيزة 4 · Pricing Innovation</h4>
+      <p style="color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.6;">
+        Multi-currency (EGP/SAR)، add-ons قابلة للتركيب، bundles بخصومات، coupons للترويج، وخصومات سنوية للـ marketing subscriptions. كل ده يخلّق ARPU أعلى وLTV أطول.
+      </p>
+    </div>
+  </div>
+
+  <!-- 5. THE SOLUTION -->
+  <h3 style="color: var(--w); margin-top: 40px;">🛠 الفصل الخامس · الحلّ التقني</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    اتبنى الحلّ التقني بـ stack حديث وقابل للتوسعة، مع تركيز على <strong style="color: var(--t);">السرعة، الأمان، وقابلية الصيانة</strong>. كل قرار تقني اتاخد بناءً على متطلبات السوق المحلي:
+  </p>
+
+  <table class="tbl" style="margin-top: 20px;">
+    <thead>
+      <tr><th>الطبقة</th><th>التقنية المختارة</th><th>السبب الاستراتيجي</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Backend</td><td>Laravel 11 + Sanctum</td><td>الأكثر شهرة في السوق العربي · pool كبير من المطوّرين</td></tr>
+      <tr><td>Real-time</td><td>Laravel Reverb (self-hosted)</td><td>توفير $99-499/شهر من Pusher · تحكم كامل</td></tr>
+      <tr><td>Frontend</td><td>React 18 + Vite + Tailwind</td><td>Performance + DX سريع · React Query للـ cache</td></tr>
+      <tr><td>Database</td><td>MySQL 8 + Redis للـ cache</td><td>familiar للفريق · cost-effective</td></tr>
+      <tr><td>Payments</td><td>Paymob + Fawry + Kashier (Strategy Pattern)</td><td>تغطية 95%+ من سوق المدفوعات في مصر والسعودية</td></tr>
+      <tr><td>PDF</td><td>DomPDF + Blade templates</td><td>فواتير احترافية بدون subscription fee</td></tr>
+      <tr><td>Email</td><td>Database queue + Markdown templates</td><td>قابل للتغيير لـ SES/Mailgun بدون كود</td></tr>
+      <tr><td>Monitoring</td><td>Sentry + Audit Logs + Health endpoints</td><td>visibility كاملة + compliance ready</td></tr>
+      <tr><td>DevOps</td><td>Docker + Supervisor + Nginx + GitHub Actions</td><td>production-ready · auto-deployment</td></tr>
+      <tr><td>PWA</td><td>Manifest + Service Worker</td><td>تجربة موبايل بدون تطبيق منفصل</td></tr>
+    </tbody>
+  </table>
+
+  <h4 style="color: var(--o); margin-top: 32px;">قرارات التصميم الـ UX</h4>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    التصميم اتاخد قرار جريء فيه: <strong style="color: var(--o);">Brutalist aesthetic</strong> بدل الـ AI-generated minimalism المعتاد. السبب: في سوق مليان مواقع متشابهة، الـ identity القوية تخلّق تذكّر فوري. الـ design system شمل:
+  </p>
+  <div class="grid-4" style="margin-top: 20px;">
+    <div style="background: var(--p); padding: 16px; border-radius: 10px; border: 2.5px solid var(--w); text-align: center;">
+      <div style="font-family: var(--f-latin); font-style: italic; color: var(--t); font-size: 24px;">Purple</div>
+      <code style="color: rgba(255,255,255,0.8); font-size: 11px;">#5C15CC</code>
+    </div>
+    <div style="background: var(--o); padding: 16px; border-radius: 10px; border: 2.5px solid var(--w); text-align: center;">
+      <div style="font-family: var(--f-latin); font-style: italic; color: var(--w); font-size: 24px;">Orange</div>
+      <code style="color: rgba(255,255,255,0.8); font-size: 11px;">#F15A24</code>
+    </div>
+    <div style="background: var(--t); padding: 16px; border-radius: 10px; border: 2.5px solid var(--w); text-align: center;">
+      <div style="font-family: var(--f-latin); font-style: italic; color: var(--p); font-size: 24px;">Teal</div>
+      <code style="color: rgba(15,8,48,0.7); font-size: 11px;">#65C8D0</code>
+    </div>
+    <div style="background: var(--ink); padding: 16px; border-radius: 10px; border: 2.5px solid var(--w); text-align: center;">
+      <div style="font-family: var(--f-latin); font-style: italic; color: var(--o); font-size: 24px;">Ink</div>
+      <code style="color: rgba(255,255,255,0.6); font-size: 11px;">#0F0830</code>
+    </div>
+  </div>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7; margin-top: 20px;">
+    Typography: <strong style="color: var(--t);">Cairo</strong> (display) + <strong style="color: var(--t);">Tajawal</strong> (body) للعربي · <strong style="color: var(--t);">Archivo Black</strong> italic للـ Latin display · <strong style="color: var(--t);">Space Mono</strong> للـ accents. كل النصوص بـ <strong style="color: var(--o);">العامية المصرية</strong> — تواصل حقيقي مع الجمهور المصري والخليجي.
+  </p>
+
+  <!-- 6. THE PERSONAS & JOURNEYS -->
+  <h3 style="color: var(--w); margin-top: 40px;">👥 الفصل السادس · الشخصيات والرحلات</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    من تحليل العملاء الموجودين على مدار 12 سنة، اتحدّدت <strong style="color: var(--t);">4 شخصيات</strong> أساسية تمثّل 90% من الطلبات:
+  </p>
+
+  <div class="grid-2" style="margin-top: 24px;">
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--o); display: flex; align-items: center; justify-content: center; font-family: var(--f-latin); font-size: 24px; color: var(--w);">م</div>
+        <div>
+          <strong style="color: var(--w); font-size: 16px;">محمد · Startup Founder</strong><br>
+          <span style="font-family: var(--f-mono); font-size: 11px; color: var(--t);">28 · القاهرة · Path A</span>
+        </div>
+      </div>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        محتاج موقع + هوية بسرعة · ميزانية محدودة · اشتغل مع freelancers قبل وما رضيش. <strong style="color: var(--o);">Multi-page Pro + Full Identity = 31,500 EGP</strong>
+      </p>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--p); display: flex; align-items: center; justify-content: center; font-family: var(--f-latin); font-size: 24px; color: var(--w);">ن</div>
+        <div>
+          <strong style="color: var(--w); font-size: 16px;">نورة · Marketing Manager</strong><br>
+          <span style="font-family: var(--f-mono); font-size: 11px; color: var(--t);">34 · الرياض · Path B</span>
+        </div>
+      </div>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        شركة سعودية متوسطة محتاجة rebranding كامل · مش حسّاسة للسعر · بتحتاج فاتورة ضريبية بـ SAR. <strong style="color: var(--o);">Enterprise + Brand System = 63,000 EGP</strong>
+      </p>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--t); display: flex; align-items: center; justify-content: center; font-family: var(--f-latin); font-size: 24px; color: var(--p);">س</div>
+        <div>
+          <strong style="color: var(--w); font-size: 16px;">سارة · Fashion Brand</strong><br>
+          <span style="font-family: var(--f-mono); font-size: 11px; color: var(--t);">26 · إسكندرية · Path A + Marketing</span>
+        </div>
+      </div>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        تبيع على Instagram وعاوزة تتوسّع بمتجر · شخص واحد يخدمها · Instagram-first. <strong style="color: var(--o);">E-com Growth + Marketing Multi = 46,500 EGP</strong>
+      </p>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--ink); border: 2px solid var(--o); display: flex; align-items: center; justify-content: center; font-family: var(--f-latin); font-size: 24px; color: var(--w);">ع</div>
+        <div>
+          <strong style="color: var(--w); font-size: 16px;">عمر · Real Estate CEO</strong><br>
+          <span style="font-family: var(--f-mono); font-size: 11px; color: var(--t);">45 · القاهرة · Path B</span>
+        </div>
+      </div>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        شركة عقارية بـ 15 موظف · نظام مخصّص + CRM integration · بيحب التواصل المباشر. <strong style="color: var(--o);">Custom Quote = 80,000+ EGP</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- 7. IMPLEMENTATION TIMELINE -->
+  <h3 style="color: var(--w); margin-top: 40px;">📅 الفصل السابع · الخط الزمني للتنفيذ</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    التنفيذ اتقسّم على 5 مراحل متتالية، كل مرحلة بـ deliverable واضح وقابل للقياس. التقدير الإجمالي: <strong style="color: var(--o);">20-28 يوم عمل</strong> لمطوّر واحد متفرّغ.
+  </p>
+
+  <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 24px; margin-top: 24px;">
+    <div style="display: grid; grid-template-columns: 80px 1fr 120px; gap: 16px; padding: 14px 0; border-bottom: 1px dashed rgba(255,255,255,0.15);">
+      <strong style="color: var(--o);">Phase 1</strong>
+      <div>
+        <strong style="color: var(--t);">الأساس</strong> · 10 migrations · 9 models · seeders · email verification · onboarding logic
+        <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">Foundation layer · بدون UI</p>
+      </div>
+      <span style="color: var(--o); font-family: var(--f-mono); font-size: 13px; text-align: left;">4-5 أيام</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 80px 1fr 120px; gap: 16px; padding: 14px 0; border-bottom: 1px dashed rgba(255,255,255,0.15);">
+      <strong style="color: var(--o);">Phase 2</strong>
+      <div>
+        <strong style="color: var(--t);">Path A · Order Wizard</strong> · OrderController · 5-step wizard · checkout + payment integration
+        <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">المسار الأساسي للعميل العادي</p>
+      </div>
+      <span style="color: var(--o); font-family: var(--f-mono); font-size: 13px; text-align: left;">5-7 أيام</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 80px 1fr 120px; gap: 16px; padding: 14px 0; border-bottom: 1px dashed rgba(255,255,255,0.15);">
+      <strong style="color: var(--o);">Phase 3</strong>
+      <div>
+        <strong style="color: var(--t);">Path B · Quote Workflow</strong> · LeadController · Smart Q&A · Admin Quote Builder · Accept/Reject/Negotiate
+        <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">المسار للمشاريع المعقّدة</p>
+      </div>
+      <span style="color: var(--o); font-family: var(--f-mono); font-size: 13px; text-align: left;">5-7 أيام</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 80px 1fr 120px; gap: 16px; padding: 14px 0; border-bottom: 1px dashed rgba(255,255,255,0.15);">
+      <strong style="color: var(--o);">Phase 4</strong>
+      <div>
+        <strong style="color: var(--t);">Admin CMS</strong> · Addons + Bundles + Coupons CRUD · Orders management · enhanced KPIs dashboard
+        <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">أدوات إدارة المنتج</p>
+      </div>
+      <span style="color: var(--o); font-family: var(--f-mono); font-size: 13px; text-align: left;">3-5 أيام</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 80px 1fr 120px; gap: 16px; padding: 14px 0;">
+      <strong style="color: var(--o);">Phase 5</strong>
+      <div>
+        <strong style="color: var(--t);">Polish النهائي</strong> · email templates · legal pages · test coverage · documentation
+        <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px;">الاستعداد للـ launch</p>
+      </div>
+      <span style="color: var(--o); font-family: var(--f-mono); font-size: 13px; text-align: left;">3-4 أيام</span>
+    </div>
+  </div>
+
+  <!-- 8. EXPECTED OUTCOMES -->
+  <h3 style="color: var(--w); margin-top: 40px;">📊 الفصل التامن · النتائج المتوقّعة</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    بناءً على بحث السوق وتحليل البيانات الموجودة، النتائج المتوقّعة خلال 12 شهر من إطلاق المنصّة:
+  </p>
+
+  <table class="tbl" style="margin-top: 20px;">
+    <thead>
+      <tr><th>المؤشّر (KPI)</th><th>قبل المنصّة</th><th>بعد 6 شهور</th><th>بعد 12 شهر</th><th>التحسّن</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>المشاريع شهرياً</td>
+        <td>3-4</td>
+        <td>12-15</td>
+        <td>25-30</td>
+        <td><strong style="color: #16A34A;">+750%</strong></td>
+      </tr>
+      <tr>
+        <td>وقت من طلب لموافقة</td>
+        <td>3-7 أيام</td>
+        <td>&lt;24 ساعة</td>
+        <td>&lt;4 ساعات</td>
+        <td><strong style="color: #16A34A;">-95%</strong></td>
+      </tr>
+      <tr>
+        <td>نسبة Self-Service</td>
+        <td>0%</td>
+        <td>50%</td>
+        <td>75%</td>
+        <td><strong style="color: #16A34A;">جديد</strong></td>
+      </tr>
+      <tr>
+        <td>متوسط قيمة الطلب (EGP)</td>
+        <td>25,000</td>
+        <td>22,000</td>
+        <td>28,000</td>
+        <td><strong style="color: #16A34A;">+12%</strong></td>
+      </tr>
+      <tr>
+        <td>MRR من Marketing (EGP)</td>
+        <td>15,000</td>
+        <td>50,000</td>
+        <td>120,000</td>
+        <td><strong style="color: #16A34A;">+700%</strong></td>
+      </tr>
+      <tr>
+        <td>نسبة تحويل الزائر لـ lead</td>
+        <td>~2%</td>
+        <td>5-7%</td>
+        <td>8-10%</td>
+        <td><strong style="color: #16A34A;">+400%</strong></td>
+      </tr>
+      <tr>
+        <td>مدة المشروع (Lifecycle)</td>
+        <td>متفاوت · غير منظّم</td>
+        <td>محدّد بـ milestones</td>
+        <td>+30% أسرع</td>
+        <td><strong style="color: #16A34A;">+30%</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 9. RISKS & MITIGATIONS -->
+  <h3 style="color: var(--w); margin-top: 40px;">⚠️ الفصل التاسع · المخاطر والتخفيف منها</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    كل تحوّل استراتيجي بيواجه مخاطر. التخطيط الواقعي بيشمل تحديدها وخطط التخفيف:
+  </p>
+
+  <table class="tbl" style="margin-top: 20px;">
+    <thead>
+      <tr><th>المخاطرة</th><th>الاحتمال</th><th>التأثير</th><th>خطة التخفيف</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>تعليم السوق</strong><br><span style="font-size: 11px; color: var(--gray-400);">العملاء العرب مش متعوّدين على "اطلب موقع أونلاين"</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td><span class="tbl badge badge-red">عالي</span></td>
+        <td>محتوى تعريفي قوي · video walkthroughs · social proof · case studies</td>
+      </tr>
+      <tr>
+        <td><strong>الثقة في الدفع المسبق</strong><br><span style="font-size: 11px; color: var(--gray-400);">عميل يدفع 11K قبل ما يشوف أي شيء</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td><span class="tbl badge badge-red">عالي</span></td>
+        <td>سياسة استرداد واضحة · trust badges · ضمان جودة · testimonials</td>
+      </tr>
+      <tr>
+        <td><strong>محدودية الـ Customization</strong><br><span style="font-size: 11px; color: var(--gray-400);">مشاريع enterprise بحاجة لمرونة</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td>Path B (Custom Quote) موجود · scalable من البداية</td>
+      </tr>
+      <tr>
+        <td><strong>منافسة Hsoub</strong><br><span style="font-size: 11px; color: var(--gray-400);">Khamsat/Mostaql لديهم traffic ضخم</span></td>
+        <td><span class="tbl badge badge-red">عالي</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td>positioning مختلف (premium quality) · لا منافسة مباشرة · SEO طويل المدى</td>
+      </tr>
+      <tr>
+        <td><strong>التشغيل (Operations)</strong><br><span style="font-size: 11px; color: var(--gray-400);">إدارة 25 مشروع شهرياً بفريق صغير</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td><span class="tbl badge badge-red">عالي</span></td>
+        <td>أتمتة العمليات · تدريب 2 developers جدد · process documentation</td>
+      </tr>
+      <tr>
+        <td><strong>تقنية (Tech Debt)</strong><br><span style="font-size: 11px; color: var(--gray-400);">سرعة البناء قد تجلب bugs</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td><span class="tbl badge badge-yellow">متوسّط</span></td>
+        <td>Test coverage 60%+ · code reviews · soft launch لـ 20 عميل أولاً</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 10. KEY LEARNINGS -->
+  <h3 style="color: var(--w); margin-top: 40px;">🎓 الفصل العاشر · الدروس المستفادة</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    عبر مرحلة التخطيط والبحث، طلعت دروس مهمّة تستحق التوثيق:
+  </p>
+
+  <div class="grid-2" style="margin-top: 24px;">
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-right: 4px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 8px;">1. Productization بتخلّق business model مختلف</h4>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        مش مجرد بيع نفس الخدمة بطريقة جديدة. الـ pricing، الـ scope، الـ SLA، والـ operations كلها تتغيّر. لازم إعادة هيكلة كاملة للداخل.
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-right: 4px solid var(--t);">
+      <h4 style="color: var(--t); margin-bottom: 8px;">2. Trust > Marketing في السوق العربي</h4>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        السوق العربي بـ social proof أكتر من الإعلانات. case studies حقيقية + شهادات عملاء + transparent pricing يبني الثقة أسرع من أي ad campaign.
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-right: 4px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 8px;">3. Localization أعمق من اللغة</h4>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        مش بس ترجمة. RTL، الـ wallets المحلية (Vodafone Cash, STC Pay)، التايمنج (الجمعة-السبت weekend في السعودية)، والـ tone (عامية مصرية vs فصحى).
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-right: 4px solid var(--t);">
+      <h4 style="color: var(--t); margin-bottom: 8px;">4. User Flow أولاً، Backend بعدين</h4>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        الخطأ الشائع: بناء جميل tech ثم محاولة fit الـ business model فيه. الصح: تصميم الـ flow من perspective العميل، ثم بناء التقنية لخدمته.
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-right: 4px solid var(--o);">
+      <h4 style="color: var(--o); margin-bottom: 8px;">5. Brand Consistency = Trust</h4>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        تنوّع التصميم بين الصفحات بيخفّض الثقة. اختيار aesthetic واحد قوي (Brutalist) والتزام به في كل صفحة بيخلّق memorable brand.
+      </p>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-right: 4px solid var(--t);">
+      <h4 style="color: var(--t); margin-bottom: 8px;">6. Existing Code > Greenfield</h4>
+      <p style="color: rgba(255,255,255,0.8); font-size: 13px; margin: 0; line-height: 1.6;">
+        BSN كان عندها 95% من البنية التحتية جاهز. التركيز على إضافة الـ business workflow فقط بدل إعادة بناء كل شيء، وفّر شهور من العمل.
+      </p>
+    </div>
+  </div>
+
+  <!-- 11. FUTURE ROADMAP -->
+  <h3 style="color: var(--w); margin-top: 40px;">🚀 الفصل الحادي عشر · الخطوات القادمة</h3>
+  <p style="color: rgba(255,255,255,0.85); line-height: 1.7;">
+    بعد إطلاق المنصّة بنجاح وتحقيق الـ KPIs الأولى، الخطوات الاستراتيجية القادمة:
+  </p>
+
+  <div class="grid-3" style="margin-top: 24px;">
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <h4 style="color: var(--o); margin-bottom: 12px;">Q3-Q4 2026</h4>
+      <ul style="color: rgba(255,255,255,0.85); font-size: 13px; padding-right: 18px; line-height: 1.8;">
+        <li>English localization (i18n)</li>
+        <li>Blog/CMS section</li>
+        <li>Case studies detailed pages</li>
+        <li>Real merchant accounts</li>
+        <li>Refund flow UI</li>
+      </ul>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <h4 style="color: var(--t); margin-bottom: 12px;">Q1-Q2 2027</h4>
+      <ul style="color: rgba(255,255,255,0.85); font-size: 13px; padding-right: 18px; line-height: 1.8;">
+        <li>Mobile app (React Native)</li>
+        <li>AI Assistant integration</li>
+        <li>Affiliate / Referral program</li>
+        <li>Advanced analytics dashboard</li>
+        <li>Marketplace أصبحت (Phase 2)</li>
+      </ul>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;">
+      <h4 style="color: var(--o); margin-bottom: 12px;">2027-2028</h4>
+      <ul style="color: rgba(255,255,255,0.85); font-size: 13px; padding-right: 18px; line-height: 1.8;">
+        <li>Expansion to other MENA markets</li>
+        <li>White-label للوكالات الصغيرة</li>
+        <li>SaaS subscription model للأدوات</li>
+        <li>Community + education platform</li>
+        <li>Series A funding (لو الـ traction قوي)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. CONCLUSION -->
+  <h3 style="color: var(--w); margin-top: 40px;">🎯 الخلاصة</h3>
+  <div style="background: linear-gradient(135deg, rgba(241, 90, 36, 0.15) 0%, rgba(101, 200, 208, 0.15) 100%); border-radius: 16px; padding: 32px; border-right: 4px solid var(--o); margin-top: 20px;">
+    <p style="color: var(--w); line-height: 1.7; font-size: 15px;">
+      <strong style="color: var(--o); font-size: 18px;">BSN Platform</strong> هي محاولة جريئة لإعادة تعريف "الوكالة الرقمية" في السوق العربي. الفكرة الأساسية: <strong style="color: var(--t);">لا نختار بين سرعة الـ marketplace وجودة الوكالة — نقدّمهم معاً</strong>.
+    </p>
+    <p style="color: rgba(255,255,255,0.9); line-height: 1.7; font-size: 14px; margin-top: 16px;">
+      مع 12 سنة خبرة، 40+ مشروع منجز، فريق تقني محترف، وستراتيجية واضحة، الـ team متوفّر له كل المقوّمات لتحويل BSN من وكالة محلية صغيرة لـ <strong style="color: var(--t);">منصّة إقليمية رائدة</strong> في سوق متنامي بمعدّل 30%+ سنوياً.
+    </p>
+    <p style="color: rgba(255,255,255,0.9); line-height: 1.7; font-size: 14px; margin-top: 16px;">
+      الـ spec ده مش مجرد document — ده <strong style="color: var(--o);">خريطة طريق قابلة للتنفيذ</strong>. كل تفصيلة (DB schema، API endpoints، UI wireframes، Claude Code prompt) جاهزة للتطبيق المباشر. مع 4-6 أسابيع من العمل المركّز، BSN ممكن تكون live ومتاحة للعملاء قبل نهاية Q3 2026.
+    </p>
+    <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px dashed rgba(255,255,255,0.2);">
+      <p style="font-family: var(--f-latin); font-style: italic; font-size: 32px; color: var(--o); letter-spacing: -1px; margin: 0;">
+        "من وكالة لمنصّة"
+      </p>
+      <p style="font-family: var(--f-mono); font-size: 12px; color: var(--t); letter-spacing: 0.1em; margin-top: 8px; text-transform: uppercase;">
+        BSN · Business Partner · 2026
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISION ============ -->
+<section class="section section-cream" id="vision">
+  <span class="eyebrow">القسم 02</span>
+  <h2 class="h-section">الرؤية <span class="accent">والتحوّل</span></h2>
+
+  <div class="grid-2">
+    <div>
+      <h3>الوضع الحالي · "الوكالة"</h3>
+      <ul class="bullets">
+        <li>الموقع brochure: بيعرض الخدمات والأعمال</li>
+        <li>التواصل عبر WhatsApp/Email/Phone</li>
+        <li>عرض السعر بياخد 3-7 أيام بعد الاجتماعات</li>
+        <li>العميل ما يعرفش حالة المشروع إلا لما يسأل</li>
+        <li>الدفع بتحويل بنكي أو nقدي</li>
+        <li>الملفات والمستندات scattered على WhatsApp/Email</li>
+      </ul>
+      <div class="alert alert-warn">
+        <span class="alert-icon">⚠</span>
+        <div><strong>المشكلة:</strong> نموذج بطيء، غير قابل للتوسّع، ومتعب لكل من الفريق والعميل.</div>
+      </div>
+    </div>
+    <div>
+      <h3>الوضع المستهدف · "المنصّة"</h3>
+      <ul class="bullets">
+        <li>المنصة productized: العميل يختار باقة ويدفع مباشرة</li>
+        <li>portal كامل: chat real-time، tracking، deliverables</li>
+        <li>قرارات في 24 ساعة (custom)، 0 ثانية (packages)</li>
+        <li>كل التواصل والملفات داخل المنصة</li>
+        <li>دفع إلكتروني بـ 5 بوابات + الـ wallets المحلية</li>
+        <li>إشعارات تلقائية لكل marker مهم</li>
+      </ul>
+      <div class="alert alert-success">
+        <span class="alert-icon">✓</span>
+        <div><strong>الحل:</strong> منصّة قابلة للتوسّع، شفافة، وراحة للطرفين.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <h3>التحوّل في 3 محاور</h3>
+  <div class="grid-3">
+    <div class="card card-orange">
+      <h4>1. تحوّل الطلبات</h4>
+      <p style="font-size: 13px; color: var(--gray-600);">من email/WhatsApp → form دائري متعدد المراحل بـ Wizard ذكي + Path A (packages) و Path B (custom quote).</p>
+    </div>
+    <div class="card card-teal">
+      <h4>2. تحوّل التشغيل</h4>
+      <p style="font-size: 13px; color: var(--gray-600);">من spreadsheets → admin dashboard كامل لإدارة الـ leads، quotes، orders، packages، coupons، bundles.</p>
+    </div>
+    <div class="card card-purple">
+      <h4>3. تحوّل الإيرادات</h4>
+      <p style="font-size: 13px; color: var(--gray-600);">من one-time projects → mix من packages، subscriptions (للتسويق)، bundles بخصومات، وupsells.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPETITIVE ANALYSIS ============ -->
+<section class="section section-light" id="competitive">
+  <span class="eyebrow">القسم 03</span>
+  <h2 class="h-section">تحليل <span class="accent">المنافسين</span></h2>
+  <p class="lede">السوق العربي للخدمات الرقمية متجزّأ في 3 موديلات: Marketplaces، وكالات تقليدية، وShared/Productized أجنبية. BSN في فجوة فريدة بين الـ 3.</p>
+
+  <h3>الموديل 1 · الـ Marketplaces (المنافس غير المباشر)</h3>
+  <p>السوق العربي للـ freelance نما 385% منذ 2020 ووصل لـ $1.4 مليار في 2025. هذه المنصات بتركّز على عدد كبير من الـ freelancers مع تنافس على السعر.</p>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>المنصّة</th>
+        <th>الموديل</th>
+        <th>العمولة</th>
+        <th>نطاق الأسعار</th>
+        <th>الجمهور</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Khamsat (خمسات)</strong></td><td>Micro services</td><td>20%</td><td>$5 - $500</td><td>المبتدئين</td></tr>
+      <tr><td><strong>Mostaql (مستقل)</strong></td><td>مشاريع متوسطة-كبيرة</td><td>15%</td><td>$500 - $3,000</td><td>المؤسسات</td></tr>
+      <tr><td><strong>Ureed</strong></td><td>Regional · Escrow</td><td>متغيّر</td><td>$50 - $5,000</td><td>10 دول MENA</td></tr>
+      <tr><td><strong>Jobbers.io</strong></td><td>0% commission</td><td>0%</td><td>متنوّع</td><td>AR/FR/EN</td></tr>
+      <tr><td><strong>Nafezly · Bahr</strong></td><td>محلي مصري · سعودي</td><td>متغيّر</td><td>متوسّط</td><td>محلي</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-warn">
+    <span class="alert-icon">!</span>
+    <div><strong>نقاط الضعف:</strong> جودة غير ثابتة (race-to-bottom)، تواصل scattered، مفيش accountable team، brand inconsistency.</div>
+  </div>
+
+  <h3 style="margin-top: 36px;">الموديل 2 · الوكالات التقليدية (المنافس المباشر)</h3>
+  <p>الشركات المصرية والسعودية الموجودة في السوق دلوقتي:</p>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>الوكالة</th>
+        <th>البلد</th>
+        <th>التخصّص</th>
+        <th>الموديل</th>
+        <th>Self-Service</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>eSpace</td><td>مصر</td><td>تطوير برمجي</td><td>تقليدي</td><td><span class="x">✗</span></td></tr>
+      <tr><td>Robusta Studio</td><td>مصر</td><td>تصميم + تطوير</td><td>premium تقليدي</td><td><span class="x">✗</span></td></tr>
+      <tr><td>Sokoon Studio</td><td>مصر</td><td>تصميم + branding</td><td>تقليدي</td><td><span class="x">✗</span></td></tr>
+      <tr><td>Foursquare Creative</td><td>مصر</td><td>إعلانات + branding</td><td>تقليدي</td><td><span class="x">✗</span></td></tr>
+      <tr><td>Brimore</td><td>مصر</td><td>e-commerce</td><td>focused</td><td><span class="x">✗</span></td></tr>
+      <tr><td>Eqraa, Maharah</td><td>السعودية</td><td>متعدد</td><td>تقليدي</td><td><span class="x">✗</span></td></tr>
+      <tr><td><strong>BSN (هدفنا)</strong></td><td><strong>مصر + GCC</strong></td><td><strong>4 خدمات</strong></td><td><strong>Productized + Hybrid</strong></td><td><span class="check">✓</span></td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-warn">
+    <span class="alert-icon">!</span>
+    <div><strong>نقاط الضعف:</strong> الطلب عبر email/WhatsApp فقط، عرض السعر بياخد 3-7 أيام، لا يوجد portal تتبّع، شفافية محدودة.</div>
+  </div>
+
+  <h3 style="margin-top: 36px;">الموديل 3 · Productized العالمي (Inspiration)</h3>
+  <p>هؤلاء هم النموذج اللي بنسعى لتعريبه — لكن كلهم تصميم فقط، مفيش حد بـ4 خدمات مدمجة:</p>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>الشركة</th>
+        <th>الموديل</th>
+        <th>السعر</th>
+        <th>الخدمة</th>
+        <th>الفرق عن BSN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>DesignJoy</strong></td><td>1 designer · flat fee</td><td>$5,000/شهر</td><td>تصميم فقط</td><td>غالي + شخص واحد</td></tr>
+      <tr><td><strong>ManyPixels</strong></td><td>Subscription unlimited</td><td>$549/شهر</td><td>تصميم فقط</td><td>تصميم فقط</td></tr>
+      <tr><td><strong>Penji</strong></td><td>Subscription</td><td>$499/شهر</td><td>تصميم فقط</td><td>تصميم فقط</td></tr>
+      <tr><td><strong>Design Pickle</strong></td><td>Subscription</td><td>$499-1000/شهر</td><td>تصميم + فيديو</td><td>محدود</td></tr>
+      <tr><td><strong>Superside</strong></td><td>Team</td><td>$5,000+/شهر</td><td>تصميم enterprise</td><td>للكبار فقط</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider" />
+
+  <h3>الـ Positioning Map</h3>
+  <div style="background: var(--w); border: 2.5px solid var(--ink); border-radius: 16px; padding: 32px; box-shadow: 6px 6px 0 var(--ink); margin: 24px 0;">
+    <pre style="font-family: var(--f-mono); font-size: 12px; line-height: 1.5; color: var(--ink); white-space: pre; overflow-x: auto;">
+                                  سعر عالي + جودة عالية
+                                            │
+                          Robusta Studio  ◆ │ ◆ DesignJoy / Superside
+                                            │
+                        eSpace · Sokoon ◆   │   ◆ ManyPixels / Penji
+                                            │
+                            ────────────────┼──────────────── 
+                                            │
+                                            │   ★ BSN (الفجوة!)
+                                            │   productized + self-service
+                                            │   + 4 خدمات + عربي + portal
+                                            │
+                          Khamsat ◆         │
+                          Mostaql ◆         │
+                                            │
+                                  سعر منخفض + جودة متفاوتة
+                          ←  تقليدي                  رقمي  →
+    </pre>
+  </div>
+
+  <h3 style="margin-top: 32px;">المقارنة المباشرة — BSN vs المنافسين</h3>
+  <div class="compare">
+    <div class="ch"></div>
+    <div class="ch">Khamsat / Mostaql</div>
+    <div class="ch">وكالة تقليدية</div>
+    <div class="ch us">BSN Platform</div>
+
+    <div class="rh">جودة مضمونة</div>
+    <div>✗ متفاوتة جداً</div>
+    <div>✓ عالية</div>
+    <div>✓ عالية + قابلة للتتبّع</div>
+
+    <div class="rh">سرعة بدء العمل</div>
+    <div>✓ سريع لكن غير منظّم</div>
+    <div>✗ 3-7 أيام</div>
+    <div>✓ فوري (packages) / 24h (custom)</div>
+
+    <div class="rh">أسعار شفافة</div>
+    <div>✗ تنافس فوضوي</div>
+    <div>✗ بعد اجتماع</div>
+    <div>✓ معلنة + ثابتة</div>
+
+    <div class="rh">Portal تتبّع</div>
+    <div>محدود</div>
+    <div>✗</div>
+    <div>✓ كامل + real-time chat</div>
+
+    <div class="rh">فريق مسؤول</div>
+    <div>✗ freelancer قد يختفي</div>
+    <div>✓</div>
+    <div>✓ + 12 سنة خبرة موثّقة</div>
+
+    <div class="rh">دفع محلي</div>
+    <div>محدود (PayPal)</div>
+    <div>تحويل بنكي</div>
+    <div>✓ Paymob + Fawry + Kashier + Wallets</div>
+
+    <div class="rh">عربي native</div>
+    <div>✓</div>
+    <div>✓</div>
+    <div>✓ + دعم 5 دول</div>
+  </div>
+</section>
+
+<!-- ============ USER PERSONAS ============ -->
+<section class="section section-cream" id="personas">
+  <span class="eyebrow">القسم 04</span>
+  <h2 class="h-section">User <span class="accent">Personas</span></h2>
+  <p class="lede">4 شخصيات مستهدفة تمثّل غالبية الجمهور الفعلي لـ BSN، مع احتياجاتهم وسلوكهم وحساسيتهم للسعر.</p>
+
+  <div class="grid-2">
+
+    <div class="persona">
+      <div class="persona-head">
+        <div class="persona-avatar">م</div>
+        <div class="persona-meta">
+          <strong>محمد · صاحب startup</strong>
+          <span>28 سنة · القاهرة · رائد أعمال</span>
+        </div>
+      </div>
+      <div class="persona-row"><span>الموقع</span><div>أنشأ startup للـ delivery، محتاج موقع + هوية بسرعة وبميزانية محدودة (15K-25K)</div></div>
+      <div class="persona-row"><span>المشكلة</span><div>اشتغل مع 2 freelancers قبل، الأول اختفى والتاني سلّم شغل ضعيف. دلوقتي متوتر</div></div>
+      <div class="persona-row"><span>الأهداف</span><div>موقع جاهز خلال 3-4 أسابيع · هوية احترافية · فريق محترف يثق فيه</div></div>
+      <div class="persona-row"><span>السلوك</span><div>بيقارن أسعار · بيقرا الـ portfolio · بيسأل على WhatsApp قبل أي حاجة</div></div>
+      <div class="persona-row"><span>السعر</span><div>حسّاس لكن مستعد يدفع أكتر لو شاف ثقة</div></div>
+      <div class="persona-row"><span>الباقة</span><div><span class="tbl badge badge-green">Multi-page Pro 22,000</span> + <span class="tbl badge badge-green">Full Identity 9,500</span></div></div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-head">
+        <div class="persona-avatar" style="background: var(--p);">ن</div>
+        <div class="persona-meta">
+          <strong>نورة · مديرة marketing</strong>
+          <span>34 سنة · الرياض · شركة سعودية متوسطة</span>
+        </div>
+      </div>
+      <div class="persona-row"><span>الموقع</span><div>مديرة marketing في شركة مقاولات سعودية بحاجة لـ rebranding + موقع شركة احترافي</div></div>
+      <div class="persona-row"><span>المشكلة</span><div>الـ agencies السعودية غالية جداً، والـ freelancers مش قادرين على المشاريع المؤسسية</div></div>
+      <div class="persona-row"><span>الأهداف</span><div>شريك تقني محترف · فاتورة ضريبية · دفع بـ SAR · جودة enterprise</div></div>
+      <div class="persona-row"><span>السلوك</span><div>قراءة دقيقة · طلبات مفصّلة · بتحتاج اجتماع قبل أي قرار</div></div>
+      <div class="persona-row"><span>السعر</span><div>مش حسّاسة · الجودة أهم من السعر</div></div>
+      <div class="persona-row"><span>الباقة</span><div><span class="tbl badge badge-green">Enterprise 45,000+</span> + <span class="tbl badge badge-green">Brand System 18,000+</span></div></div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-head">
+        <div class="persona-avatar" style="background: var(--t); color: var(--p-deep);">س</div>
+        <div class="persona-meta">
+          <strong>سارة · صاحبة براند فاشن</strong>
+          <span>26 سنة · الإسكندرية · ecom-first</span>
+        </div>
+      </div>
+      <div class="persona-row"><span>الموقع</span><div>تبيع ملابس على Instagram، عاوزة تتوسّع بمتجر إلكتروني + تسويق متكامل</div></div>
+      <div class="persona-row"><span>المشكلة</span><div>مفيش وقت تشتغل مع 3 ناس (designer، dev، marketer) — عاوزة كله في مكان واحد</div></div>
+      <div class="persona-row"><span>الأهداف</span><div>متجر شغّال خلال شهر · إعلانات تجيب طلبات · شخص واحد responsible</div></div>
+      <div class="persona-row"><span>السلوك</span><div>Instagram-first · بتحب الـ visuals · بتتأثر بالـ social proof</div></div>
+      <div class="persona-row"><span>السعر</span><div>متوسّطة · بتفضّل الـ packages الواضحة</div></div>
+      <div class="persona-row"><span>الباقة</span><div><span class="tbl badge badge-green">E-com Growth 38,000</span> + <span class="tbl badge badge-green">Marketing Multi 8,500/شهر</span></div></div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-head">
+        <div class="persona-avatar" style="background: var(--ink);">ع</div>
+        <div class="persona-meta">
+          <strong>عمر · CEO شركة عقارية</strong>
+          <span>45 سنة · القاهرة · شركة كبيرة</span>
+        </div>
+      </div>
+      <div class="persona-row"><span>الموقع</span><div>شركة عقارية بـ 15 موظف، عنده موقع قديم محتاج redesign كامل + نظام إدارة عملاء</div></div>
+      <div class="persona-row"><span>المشكلة</span><div>اشتغل مع 4 شركات قبل، كلهم بطؤ في التواصل. عاوز شريك بيستجيب بسرعة</div></div>
+      <div class="persona-row"><span>الأهداف</span><div>موقع enterprise · نظام مخصص للوحدات · تكامل مع CRM · فريق يستجيب فوراً</div></div>
+      <div class="persona-row"><span>السلوك</span><div>اتصال مباشر · مش بيهمه الـ portal · بيحب الـ progress reports</div></div>
+      <div class="persona-row"><span>السعر</span><div>مش حسّاس · الـ ROI أهم</div></div>
+      <div class="persona-row"><span>الباقة</span><div><span class="tbl badge badge-green">Custom Quote 80,000+</span> (مسار Path B)</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ USER JOURNEY MAP ============ -->
+<section class="section section-light" id="journey">
+  <span class="eyebrow">القسم 05</span>
+  <h2 class="h-section">User Journey <span class="accent">Map</span></h2>
+  <p class="lede">رحلة المستخدم من اكتشاف BSN حتى أن يصبح عميل دائم. كل مرحلة محدّدة بمشاعر العميل، تفاعلاته، ونقاط الاحتكاك.</p>
+
+  <h3>🗺️ الرحلة الكاملة (Path A — Packages)</h3>
+  <div class="journey">
+    <div class="journey-row head">
+      <div>المرحلة</div>
+      <div>التفاعلات</div>
+      <div>التفكير والمشاعر</div>
+      <div>نقاط التحسين</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">1. اكتشاف</div>
+      <div>Google · Behance · توصية صديق · إعلان</div>
+      <div><span class="journey-emotion">🤔 فضول</span> "بس هل دول جادّين؟"</div>
+      <div>SEO قوي · Portfolio بـ social proof · شهادات</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">2. استكشاف</div>
+      <div>تصفّح Portfolio · قراءة Services · مراجعة Pricing</div>
+      <div><span class="journey-emotion">😊 إعجاب</span> "الشغل حلو، السعر معقول"</div>
+      <div>صور حقيقية · فيديوهات قصيرة · case studies</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">3. تسجيل</div>
+      <div>ضغط "ابدأ مشروعك" · register · onboarding</div>
+      <div><span class="journey-emotion">😐 حذر</span> "أتمنى ما يكونش معقّد"</div>
+      <div>تسجيل سريع · Google login · onboarding اختياري</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">4. اختيار</div>
+      <div>Path A · يختار الخدمة · يقرا الباقات · يضيف add-ons</div>
+      <div><span class="journey-emotion">🤩 حماس</span> "أيوة ده اللي محتاجه!"</div>
+      <div>مقارنة الباقات · حساب فوري للسعر · بدون مفاجآت</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">5. دفع</div>
+      <div>checkout · اختيار بوابة · 40% deposit</div>
+      <div><span class="journey-emotion">😬 قلق</span> "هل آمن؟ هل هرجع لو حصل مشكلة؟"</div>
+      <div>Trust badges · سياسة استرداد واضحة · Multi-gateway</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">6. انتظار</div>
+      <div>إيميل تأكيد · رسالة welcome · انتظار تعيين dev</div>
+      <div><span class="journey-emotion">⏳ ترقّب</span> "متى يبدأوا؟"</div>
+      <div>إشعار فوري · تعيين developer في ≤24h · status updates</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">7. تنفيذ</div>
+      <div>متابعة Tasks · chat مع dev · مراجعة deliverables</div>
+      <div><span class="journey-emotion">😊 ثقة</span> "بشوف التقدّم كل يوم"</div>
+      <div>milestones واضحة · approve/reject · upload references</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">8. تسليم</div>
+      <div>دفعة 60% النهائية · استلام الملفات · تدريب</div>
+      <div><span class="journey-emotion">🎉 رضا</span> "النتيجة فاقت توقّعاتي"</div>
+      <div>تسليم منظّم · documentation · فيديو شرح</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">9. علاقة دائمة</div>
+      <div>دعم شهر · توصية · مشروع جديد</div>
+      <div><span class="journey-emotion">❤️ ولاء</span> "هرشّحهم لكل اللي أعرفه"</div>
+      <div>NPS survey · referral program · upsell smart</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">🗺️ الرحلة الكاملة (Path B — Custom Quote)</h3>
+  <div class="journey">
+    <div class="journey-row head">
+      <div>المرحلة</div>
+      <div>التفاعلات</div>
+      <div>التفكير والمشاعر</div>
+      <div>الفرق عن Path A</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">1-3. مماثل</div>
+      <div>اكتشاف · استكشاف · تسجيل</div>
+      <div><span class="journey-emotion">🤔 فضول</span></div>
+      <div>نفس Path A</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">4. Wizard</div>
+      <div>Multi-step Wizard (4 خطوات) · رفع brief · تحديد ميزانية</div>
+      <div><span class="journey-emotion">🧐 تركيز</span> "لازم أوضح كل التفاصيل"</div>
+      <div>أسئلة ذكية حسب الخدمة · auto-save · review قبل التقديم</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">5. انتظار العرض</div>
+      <div>Status: "في انتظار العرض" · إيميل تأكيد</div>
+      <div><span class="journey-emotion">⏳ شك</span> "هل هيردّوا؟ كام هيكلّفني؟"</div>
+      <div>إشعار "وصل" + "بيراجع" + "تم البناء" · ≤24h</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">6. استلام العرض</div>
+      <div>Quote بتفاصيل · scope + price + timeline</div>
+      <div><span class="journey-emotion">🤓 تحليل</span> "خلّيني أفكّر شويّة"</div>
+      <div>line items واضحة · مقارنة · أسئلة عبر chat</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">7. تفاوض/قبول</div>
+      <div>Accept · Negotiate (chat) · Reject</div>
+      <div><span class="journey-emotion">😊 رضا</span> "اتفقنا"</div>
+      <div>Quote v2/v3 · chat مع admin · final approval</div>
+    </div>
+    <div class="journey-row">
+      <div class="journey-stage">8+. متابعة</div>
+      <div>نفس Path A من نقطة الدفع</div>
+      <div><span class="journey-emotion">😊 ثقة</span></div>
+      <div>نفس Path A</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USER FLOWS ============ -->
+<section class="section section-cream" id="flows">
+  <span class="eyebrow">القسم 06</span>
+  <h2 class="h-section">User <span class="accent">Flows</span></h2>
+  <p class="lede">الـ flows الأساسية للمنصّة. كل flow معروض بتفاصيل دقيقة عشان فريق التطوير ينفّذها بدون أسئلة.</p>
+
+  <h3>🔀 Flow 0 · تفرّع الطلب (Path A vs Path B)</h3>
+<div class="flow">المستخدم: /dashboard/projects/new
+    │
+    ↓
+┌────────────────────────────────────────────────────┐
+│              إزاي تحب تطلب مشروعك؟                  │
+│ ┌─────────────────┐    ┌─────────────────┐         │
+│ │ 📦 باقة جاهزة    │    │ ✏️ مشروع مخصص    │         │
+│ │ ─────────       │    │ ─────────       │         │
+│ │ أسرع · فورّي    │    │ بطلب عرض سعر    │         │
+│ │ سعر معروف       │    │ بعد مراجعة      │         │
+│ │ دفع مباشر        │    │ خلال 24 ساعة    │         │
+│ └─────────────────┘    └─────────────────┘         │
+└────────────────────────────────────────────────────┘
+         │                          │
+         ↓ Path A                   ↓ Path B
+   (Package Order)            (Custom Quote)</div>
+
+  <h3 style="margin-top: 36px;">📦 Flow A · شراء باقة جاهزة</h3>
+<div class="flow">Step 1: اختيار الخدمة
+    [موقع ويب] [متجر إلكتروني] [هوية بصرية] [تسويق رقمي]
+    │
+    ↓
+Step 2: مقارنة الباقات
+    عرض 3-4 packages (cards بـ features + سعر)
+    العميل يختار باقة → SELECTED
+    │
+    ↓
+Step 3: Add-ons (اختياري)
+    ☐ نسخة إنجليزية   (+30% من السعر)
+    ☐ مدونة كاملة    (+3,500 EGP)
+    ☐ صفحة إضافية    (+1,500 EGP)
+    ☐ Hosting سنوي   (+3,500 EGP)
+    │
+    ↓
+Step 4: تفاصيل المشروع
+    • اسم المشروع *
+    • وصف مختصر (5 أسطر) *
+    • موعد إطلاق متوقع
+    • ملفات (logo, brief) — اختياري
+    • كود خصم (لو موجود)
+    │
+    ↓
+Step 5: مراجعة وتأكيد
+    ┌─────────────────────────────────────┐
+    │ الباقة: Multi-page Pro    22,000    │
+    │ + نسخة إنجليزية           +6,600    │
+    │ + Hosting سنوي            +3,500    │
+    │ ──────────────────────────────────  │
+    │ المجموع:                  32,100    │
+    │ خصم SUMMER2026 (-10%):    -3,210    │
+    │ ──────────────────────────────────  │
+    │ النهائي:                  28,890    │
+    │ الدفعة الأولى (40%):      11,556    │
+    └─────────────────────────────────────┘
+    [ادفع وابدأ المشروع] ←
+    │
+    ↓
+Step 6: صفحة الدفع
+    GatewaySelector (Paymob/Fawry/Kashier/Wallet/Installments)
+    │
+    ↓ (بعد الدفع الناجح)
+    ├─ ORDER → status: paid
+    ├─ Project auto-created (status: active)
+    ├─ Admin notification: "Order جديد!"
+    ├─ User: welcome email + receipt PDF
+    ├─ Chat room: auto-created
+    └─ Status update → "في انتظار تعيين Developer (24h)"</div>
+
+  <h3 style="margin-top: 36px;">✏️ Flow B · طلب عرض سعر مخصّص</h3>
+<div class="flow">Step 1: اختيار نوع الخدمة
+    │
+    ↓
+Step 2: Smart Wizard (أسئلة حسب الخدمة)
+
+  لو "موقع ويب":              لو "متجر إلكتروني":
+  • صفحة واحدة / متعدد؟        • عدد المنتجات؟
+  • عربي / إنجليزي / الاثنين؟  • بوابات دفع؟
+  • محتاج لوحة تحكم؟          • شركات شحن؟
+  • عندك تصميم جاهز؟          • متعدد البائعين؟
+  • SEO / متجر / حجوزات؟      • برنامج ولاء؟
+
+  لو "هوية بصرية":             لو "تسويق رقمي":
+  • لوجو فقط / كامل؟          • منصات إعلانية؟
+  • هوية موجودة لتحديثها؟      • ميزانية شهرية متوقعة؟
+  • مطبوعات؟                  • أهداف (مبيعات/awareness)؟
+  • قوالب سوشيال؟             • محتاج محتوى؟
+    │
+    ↓
+Step 3: تفاصيل المشروع
+    • عنوان · وصف · تايملاين · ميزانية range
+    • رفع ملفات (briefs, references)
+    │
+    ↓
+Step 4: مراجعة وتقديم
+    LEAD CREATED → status: pending_review
+    │
+    ↓
+[ADMIN]: مراجعة الـ LEAD
+    │
+    ↓
+[ADMIN]: بناء QUOTE
+    ┌─────────────────────────────────────┐
+    │  بنود العرض:                        │
+    │  • Discovery + Strategy   8,000     │
+    │  • Design (3 صفحات)       12,000    │
+    │  • Development            18,000    │
+    │  • SEO Setup              4,000     │
+    │  ─────────────────────────          │
+    │  المجموع:                42,000     │
+    │                                     │
+    │  جدول الدفع:                       │
+    │  - 40% عربون (16,800)               │
+    │  - 30% بعد التصميم (12,600)         │
+    │  - 30% عند التسليم (12,600)         │
+    │                                     │
+    │  مدة التسليم: 45 يوم                │
+    └─────────────────────────────────────┘
+    │
+    ↓
+[USER]: استلام إشعار + إيميل
+    │
+    ↓
+[USER]: 3 خيارات
+    ┌─────────────────────────────────────┐
+    │  ✓ أوافق على العرض → Path A's Step 6 (الدفع)
+    │  💬 أريد التفاوض → chat مع admin → Quote v2
+    │  ✗ أرفض → archive
+    └─────────────────────────────────────┘</div>
+
+  <h3 style="margin-top: 36px;">👋 Flow C · تسجيل وOnboarding</h3>
+<div class="flow">/register
+    │
+    ↓
+أدخل: name · email · phone · password
+    │
+    ↓
+[Submit] → POST /api/v1/auth/register
+    │
+    ↓
+✓ User created (email_verified_at = null)
+✓ Welcome email + verification link
+✓ Bearer token returned
+    │
+    ↓
+Redirect → /verify-email-sent
+    "بعتنالك إيميل تأكيد. افتحه وادخل اللينك."
+    │
+    ↓
+[User opens email link]
+    │
+    ↓
+GET /api/v1/auth/verify/{token}
+    │
+    ↓
+✓ email_verified_at = now()
+    │
+    ↓
+Redirect → /onboarding
+    │
+    ↓
+ONBOARDING WIZARD (3 خطوات اختيارية):
+    ┌─────────────────────────────────────┐
+    │ 1. "أنت هنا عشان إيه؟"             │
+    │    ◯ موقع ويب                       │
+    │    ◯ متجر إلكتروني                   │
+    │    ◯ هوية بصرية                     │
+    │    ◯ تسويق رقمي                     │
+    │    ◯ أتصفّح فقط                     │
+    │                                     │
+    │ 2. "اسم شركتك / مشروعك"            │
+    │    [_______________] اختياري        │
+    │                                     │
+    │ 3. "حجم فريقك"                     │
+    │    ◯ أنا بس                         │
+    │    ◯ 2-5                            │
+    │    ◯ 6-20                           │
+    │    ◯ +20                            │
+    └─────────────────────────────────────┘
+    │
+    ↓
+Redirect → /dashboard
+    │
+    ↓
+لو "موقع ويب" مثلاً → preselect 'web' في Path A</div>
+
+  <h3 style="margin-top: 36px;">💳 Flow D · الدفع وما بعد الدفع</h3>
+<div class="flow">صفحة الـ Checkout
+    │
+    ↓
+عرض GatewaySelector:
+    [Card (Paymob)]   [Wallet (Paymob)]
+    [Installments]    [Fawry Cash]
+    [Kashier]
+    │
+    ↓
+العميل يختار → POST /api/v1/payments/initiate
+    │
+    ↓
+بناء على البوابة:
+    ├─ Paymob Card → iframe checkout
+    ├─ Paymob Wallet → request OTP → confirm
+    ├─ Paymob Installments → choose plan → iframe
+    ├─ Fawry → reference number + 5 خطوات
+    └─ Kashier → redirect to hosted page
+    │
+    ↓
+[GATEWAY WEBHOOK]: POST /api/payments/{gateway}/webhook
+    │
+    ↓
+✓ Verify signature
+✓ Update payment.status = 'completed'
+✓ Update order.status = 'paid'
+✓ Generate invoice
+✓ Send receipt email + PDF
+✓ Create project (إن لم يكن موجود)
+✓ Send admin notification
+✓ Chat room auto-created
+    │
+    ↓
+[USER]: Redirect → /payment/success/{id}
+    "تم الدفع! المشروع نشط. الـ developer هيتعيّن خلال 24 ساعة."</div>
+</section>
+
+<!-- ============ SITEMAP ============ -->
+<section class="section section-light" id="sitemap">
+  <span class="eyebrow">القسم 07</span>
+  <h2 class="h-section">Sitemap <span class="accent">الكامل</span></h2>
+  <p class="lede">كل الـ routes في المنصّة موزّعة على 4 طبقات: Public (anonymous)، Client Dashboard، Admin Panel، Developer Panel.</p>
+
+  <h3>🌐 Public Routes (لا تحتاج تسجيل)</h3>
+<div class="flow">/                              الرئيسية
+├─ /services                   نظرة عامة على الخدمات
+│   ├─ /service-web            تطوير المواقع
+│   ├─ /service-ecommerce      المتاجر الإلكترونية
+│   ├─ /service-branding       الهوية البصرية
+│   └─ /service-marketing      التسويق الرقمي
+├─ /pricing                    الأسعار (dynamic من DB)
+├─ /portfolio                  معرض الأعمال
+├─ /case-studies               ⭐ NEW · قصص نجاح تفصيلية
+│   └─ /case-studies/:slug     تفاصيل المشروع
+├─ /about                      من نحن
+├─ /contact                    تواصل
+├─ /blog                       ⭐ NEW · المدونة (SEO)
+│   ├─ /blog/category/:slug    قسم
+│   └─ /blog/:slug             مقالة
+├─ /faq                        ⭐ NEW · أسئلة شائعة
+│
+├─ AUTH:
+│   ├─ /login                  تسجيل دخول
+│   ├─ /register               إنشاء حساب
+│   ├─ /forgot-password        نسيت كلمة المرور
+│   ├─ /reset-password/:token  إعادة تعيين
+│   ├─ /verify-email-sent      ⭐ NEW · صفحة بعد التسجيل
+│   └─ /verify-email/:token    ⭐ NEW · تأكيد الإيميل
+│
+└─ LEGAL: ⭐ NEW
+    ├─ /terms                  الشروط والأحكام
+    ├─ /privacy                سياسة الخصوصية
+    └─ /refund                 سياسة الاسترداد</div>
+
+  <h3 style="margin-top: 36px;">👤 Client Dashboard (role: user)</h3>
+<div class="flow">/dashboard                     نظرة عامة (active projects + alerts)
+│
+├─ /onboarding                 ⭐ NEW · بعد التسجيل (3 خطوات)
+│
+├─ /dashboard/projects/new     ⭐ MAJOR REVAMP
+│   ├─ ?path=package          → Path A · Package Wizard
+│   │   ├─ Step 1: service type
+│   │   ├─ Step 2: select package
+│   │   ├─ Step 3: add-ons
+│   │   ├─ Step 4: project details
+│   │   └─ Step 5: review + payment
+│   └─ ?path=custom           → Path B · Custom Quote Wizard
+│       ├─ Step 1: service type
+│       ├─ Step 2: smart questions
+│       ├─ Step 3: project details + uploads
+│       └─ Step 4: review + submit
+│
+├─ /dashboard/orders           ⭐ NEW · الطلبات (Path A)
+│   └─ /dashboard/orders/:id   تفاصيل الـ order
+│
+├─ /dashboard/quotes           ⭐ NEW · العروض (Path B)
+│   ├─ /dashboard/quotes/:id   مراجعة عرض
+│   └─ /dashboard/quotes/:id/negotiate ⭐ NEW · تفاوض
+│
+├─ /dashboard/projects         مشاريعي
+│   └─ /dashboard/projects/:id تفاصيل (tabs)
+│       ├─ ?tab=overview
+│       ├─ ?tab=tasks
+│       ├─ ?tab=deliverables
+│       ├─ ?tab=payments
+│       └─ ?tab=chat
+│
+├─ /dashboard/invoices         الفواتير
+│   └─ /dashboard/invoices/:id  + PDF download
+├─ /dashboard/payments         سجل المدفوعات
+├─ /dashboard/messages         الرسائل (chat)
+├─ /dashboard/notifications    ⭐ NEW · الإشعارات
+└─ /dashboard/profile          الإعدادات</div>
+
+  <h3 style="margin-top: 36px;">🛠 Admin Panel (role: admin)</h3>
+<div class="flow">/admin                         KPIs (revenue + leads + active)
+│
+├─ /admin/leads                ⭐ NEW · طلبات Path B
+│   └─ /admin/leads/:id        مراجعة + بناء quote
+│
+├─ /admin/quotes               ⭐ NEW · إدارة العروض
+│   ├─ /admin/quotes/new        بناء quote من scratch
+│   └─ /admin/quotes/:id        تفاصيل + revisions
+│
+├─ /admin/orders               ⭐ NEW · إدارة الـ orders (Path A)
+│   └─ /admin/orders/:id        تفاصيل + تعيين dev
+│
+├─ /admin/users                المستخدمين
+│   ├─ /admin/users/new        إضافة
+│   └─ /admin/users/:id/edit
+├─ /admin/projects             كل المشاريع
+├─ /admin/payments             المدفوعات
+├─ /admin/invoices             الفواتير
+│
+├─ /admin/packages             الباقات (CRUD)
+│   ├─ /admin/packages/new
+│   └─ /admin/packages/:id/edit
+│
+├─ /admin/addons               ⭐ NEW · الإضافات (CRUD)
+├─ /admin/bundles              ⭐ NEW · الـ Bundles (CRUD)
+├─ /admin/coupons              ⭐ NEW · الكوبونات (CRUD)
+│
+├─ /admin/content              ⭐ NEW · CMS
+│   ├─ /admin/content/blog
+│   ├─ /admin/content/portfolio
+│   ├─ /admin/content/case-studies
+│   └─ /admin/content/pages    (Terms, Privacy, etc)
+│
+├─ /admin/contact-messages     رسائل الـ contact form
+├─ /admin/audit-logs           ⭐ NEW · سجل العمليات
+├─ /admin/reports              ⭐ NEW · تحليلات
+└─ /admin/settings             الإعدادات</div>
+
+  <h3 style="margin-top: 36px;">👨‍💻 Developer Panel (role: developer)</h3>
+<div class="flow">/dev                           المشاريع المعيّنة
+├─ /dev/projects               القائمة
+│   └─ /dev/projects/:id
+├─ /dev/tasks                  Kanban (todo/doing/review/done)
+└─ /dev/messages               chat مع العملاء</div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section section-cream" id="pricing">
+  <span class="eyebrow">القسم 08</span>
+  <h2 class="h-section">استراتيجية <span class="accent">التسعير</span></h2>
+  <p class="lede">أسعار مبنيّة على بحث السوق المصري 2026. التموضع: مع الشركات المؤسسية (premium) لكن أقل من DesignJoy/ManyPixels العالميين.</p>
+
+  <h3 id="packages">🌐 خدمات الويب · 4 باقات (Express جديد)</h3>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>الباقة</th>
+        <th>السعر EGP</th>
+        <th>السعر SAR</th>
+        <th>التسليم</th>
+        <th>الفئة المستهدفة</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Express ⚡</strong> ⭐ جديد</td><td>4,500</td><td>605</td><td>5 أيام</td><td>Startups · قالب جاهز</td></tr>
+      <tr><td><strong>Landing Pro</strong></td><td>8,500</td><td>1,150</td><td>10 أيام</td><td>حملات إعلانية + تحويلات</td></tr>
+      <tr style="background: #FFF8E5;"><td><strong>Multi-page Pro</strong> ⭐ الأكتر طلباً</td><td>22,000</td><td>2,950</td><td>21 يوم</td><td>شركات</td></tr>
+      <tr><td><strong>Enterprise</strong></td><td>45,000+</td><td>6,000+</td><td>45 يوم</td><td>منصات معقّدة</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 28px;">🛒 المتاجر الإلكترونية</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>الباقة</th><th>السعر EGP</th><th>السعر SAR</th><th>التسليم</th><th>الفئة</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Starter</strong> ⚠️ سعر معدّل</td><td>14,500</td><td>1,950</td><td>14 يوم</td><td>متاجر صغيرة</td></tr>
+      <tr style="background: #FFF8E5;"><td><strong>Growth</strong> ⭐ الأكتر طلباً</td><td>38,000</td><td>5,100</td><td>30 يوم</td><td>متاجر متوسطة</td></tr>
+      <tr><td><strong>Enterprise</strong></td><td>70,000+</td><td>9,400+</td><td>60+ يوم</td><td>B2B · Marketplace</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 28px;">🎨 الهوية البصرية</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>الباقة</th><th>السعر EGP</th><th>السعر SAR</th><th>التسليم</th><th>الفئة</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Logo Only</strong></td><td>3,500</td><td>470</td><td>5 أيام</td><td>أعمال بدء</td></tr>
+      <tr style="background: #FFF8E5;"><td><strong>Full Identity</strong> ⭐ الأكتر طلباً</td><td>9,500</td><td>1,280</td><td>12 يوم</td><td>شركات</td></tr>
+      <tr><td><strong>Brand System</strong></td><td>18,000+</td><td>2,420+</td><td>21 يوم</td><td>مؤسسات كبيرة</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 28px;">📈 التسويق الرقمي (شهري + خصومات سنوية)</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>الباقة</th><th>شهرياً EGP</th><th>3 شهور (-10%)</th><th>6 شهور (-15%)</th><th>12 شهر (-20%)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Single Platform</strong></td><td>4,500</td><td>12,150</td><td>22,950</td><td>43,200</td></tr>
+      <tr style="background: #FFF8E5;"><td><strong>Multi Platform</strong> ⭐</td><td>8,500</td><td>22,950</td><td>43,350</td><td>81,600</td></tr>
+      <tr><td><strong>Performance</strong></td><td>15,000+</td><td>40,500</td><td>76,500</td><td>144,000</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 36px;">➕ Add-ons موحدة</h3>
+  <div class="grid-3">
+    <div class="card">
+      <h4>تطوير الموقع</h4>
+      <ul class="bullets" style="font-size: 13px;">
+        <li>صفحة إضافية: <strong>1,500 EGP</strong></li>
+        <li>نسخة إنجليزية: <strong>+30% من السعر</strong></li>
+        <li>مدونة: <strong>3,500 EGP</strong></li>
+        <li>نظام مستخدمين: <strong>6,500 EGP</strong></li>
+        <li>Hosting سنوي: <strong>3,500 EGP</strong></li>
+        <li>صيانة شهرية: <strong>800 EGP/شهر</strong></li>
+      </ul>
+    </div>
+    <div class="card card-teal">
+      <h4>المتاجر</h4>
+      <ul class="bullets" style="font-size: 13px;">
+        <li>تطبيق موبايل: <strong>من 35,000 EGP</strong></li>
+        <li>تكامل ERP: <strong>من 15,000 EGP</strong></li>
+        <li>منتج إضافي (>100): <strong>50 EGP</strong></li>
+        <li>تصميم بانر: <strong>350 EGP</strong></li>
+        <li>متعدد لغات: <strong>+30%</strong></li>
+      </ul>
+    </div>
+    <div class="card card-purple">
+      <h4>الهوية + التسويق</h4>
+      <ul class="bullets" style="font-size: 13px;">
+        <li>شعار فرعي: <strong>1,200 EGP</strong></li>
+        <li>موكاب إضافي: <strong>500 EGP</strong></li>
+        <li>قوالب سوشيال إضافية: <strong>200 EGP</strong></li>
+        <li>منصة إعلانية إضافية: <strong>1,500 EGP/شهر</strong></li>
+        <li>مقال SEO: <strong>350 EGP</strong></li>
+        <li>فيديو موشن: <strong>من 1,500 EGP</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">📦 الـ Bundles (خصومات للحزم)</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>الـ Bundle</th><th>الباقات</th><th>السعر الأصلي</th><th>السعر بعد الخصم</th><th>التوفير</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Launch Bundle</strong></td><td>Multi-page Pro + Full Identity</td><td>31,500</td><td>26,775 (-15%)</td><td>4,725 EGP</td></tr>
+      <tr><td><strong>Brand Launch</strong></td><td>Landing Pro + Logo Only</td><td>12,000</td><td>10,800 (-10%)</td><td>1,200 EGP</td></tr>
+      <tr><td><strong>E-com Starter Bundle</strong></td><td>Starter + Full Identity</td><td>24,000</td><td>20,400 (-15%)</td><td>3,600 EGP</td></tr>
+      <tr><td><strong>Full Launch</strong></td><td>E-com Growth + Brand System + Marketing Multi (3M)</td><td>78,950</td><td>63,160 (-20%)</td><td>15,790 EGP</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 36px;">🎟️ الـ Coupons (تخفيضات ترويجية)</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>الكود</th><th>الخصم</th><th>الشروط</th><th>الصلاحية</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>FIRST100</code></td><td>10%</td><td>أول 100 عميل · أول طلب</td><td>سنة</td></tr>
+      <tr><td><code>SUMMER2026</code></td><td>15%</td><td>للمواقع · الحد الأقصى 5,000 EGP</td><td>شهرين</td></tr>
+      <tr><td><code>REFERRAL</code></td><td>20%</td><td>عميل جاي من توصية</td><td>دائمة</td></tr>
+      <tr><td><code>STUDENT</code></td><td>25%</td><td>طلاب الجامعات · يحتاج تحقق</td><td>دائمة</td></tr>
+    </tbody>
+  </table>
+
+  <div class="alert alert-info" style="margin-top: 24px;">
+    <span class="alert-icon">ℹ</span>
+    <div>
+      <strong>قاعدة الخصومات:</strong> الـ coupon والـ bundle لا يجمّعان (only one applies). الـ subscription discount (سنوي 20%) يطبّق على الـ subtotal قبل أي coupon.
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATABASE SCHEMA ============ -->
+<section class="section section-ink" id="database" style="color: var(--w);">
+  <span class="eyebrow" style="color: var(--t);">القسم 09</span>
+  <h2 class="h-section" style="color: var(--w);">Database <span class="accent">Schema</span></h2>
+  <p class="lede" style="color: rgba(255,255,255,0.85);">الـ migrations الجديدة المطلوبة فوق الـ schema الموجود. تنفّذ بالترتيب لتجنّب أخطاء الـ foreign keys.</p>
+
+  <h3 style="color: var(--w); margin-top: 32px;">1. جدول <code style="color: var(--o);">packages</code> — موجود ✓ (نضيف عليه)</h3>
+<div class="code-block"><span class="c">// migration: add_columns_to_packages</span>
+Schema::table(<span class="s">'packages'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">decimal</span>(<span class="s">'price_sar'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();   <span class="c">// السعر بالريال السعودي</span>
+    $table-><span class="n">integer</span>(<span class="s">'delivery_days'</span>)->nullable();         <span class="c">// مدة التسليم</span>
+    $table-><span class="n">string</span>(<span class="s">'slug'</span>)->unique()->nullable();        <span class="c">// web-express, etc</span>
+    $table-><span class="n">text</span>(<span class="s">'description_ar'</span>)->nullable();
+    $table-><span class="n">text</span>(<span class="s">'description_en'</span>)->nullable();
+});</div>
+
+  <h3 style="color: var(--w); margin-top: 28px;">2. جدول <code style="color: var(--o);">package_addons</code> — جديد ⭐</h3>
+<div class="code-block">Schema::create(<span class="s">'package_addons'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">enum</span>(<span class="s">'service_type'</span>, [<span class="s">'web'</span>, <span class="s">'ecommerce'</span>, <span class="s">'branding'</span>, <span class="s">'marketing'</span>, <span class="s">'all'</span>]);
+    $table-><span class="n">string</span>(<span class="s">'name_ar'</span>);
+    $table-><span class="n">string</span>(<span class="s">'name_en'</span>)->nullable();
+    $table-><span class="n">text</span>(<span class="s">'description_ar'</span>)->nullable();
+    $table-><span class="n">enum</span>(<span class="s">'price_type'</span>, [<span class="s">'fixed'</span>, <span class="s">'percentage'</span>])->default(<span class="s">'fixed'</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'price_egp'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();
+    $table-><span class="n">decimal</span>(<span class="s">'price_sar'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();
+    $table-><span class="n">decimal</span>(<span class="s">'percentage'</span>, <span class="n">5</span>, <span class="n">2</span>)->nullable();  <span class="c">// لو نوعه percentage</span>
+    $table-><span class="n">integer</span>(<span class="s">'sort_order'</span>)->default(<span class="n">0</span>);
+    $table-><span class="n">boolean</span>(<span class="s">'is_active'</span>)->default(<span class="k">true</span>);
+    $table-><span class="n">timestamps</span>();
+    $table-><span class="n">index</span>([<span class="s">'service_type'</span>, <span class="s">'is_active'</span>]);
+});</div>
+
+  <h3 style="color: var(--w); margin-top: 28px;">3. جدول <code style="color: var(--o);">bundles</code> — جديد ⭐</h3>
+<div class="code-block">Schema::create(<span class="s">'bundles'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">string</span>(<span class="s">'slug'</span>)->unique();
+    $table-><span class="n">string</span>(<span class="s">'name_ar'</span>);
+    $table-><span class="n">text</span>(<span class="s">'description_ar'</span>)->nullable();
+    $table-><span class="n">decimal</span>(<span class="s">'discount_percentage'</span>, <span class="n">5</span>, <span class="n">2</span>);    <span class="c">// 15.00 = 15%</span>
+    $table-><span class="n">boolean</span>(<span class="s">'is_featured'</span>)->default(<span class="k">false</span>);
+    $table-><span class="n">boolean</span>(<span class="s">'is_active'</span>)->default(<span class="k">true</span>);
+    $table-><span class="n">timestamps</span>();
+});
+
+Schema::create(<span class="s">'bundle_packages'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">foreignId</span>(<span class="s">'bundle_id'</span>)->constrained()->onDelete(<span class="s">'cascade'</span>);
+    $table-><span class="n">foreignId</span>(<span class="s">'package_id'</span>)->constrained()->onDelete(<span class="s">'cascade'</span>);
+    $table-><span class="n">unique</span>([<span class="s">'bundle_id'</span>, <span class="s">'package_id'</span>]);
+});</div>
+
+  <h3 style="color: var(--w); margin-top: 28px;">4. جدول <code style="color: var(--o);">coupons</code> — جديد ⭐</h3>
+<div class="code-block">Schema::create(<span class="s">'coupons'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">string</span>(<span class="s">'code'</span>)->unique();                              <span class="c">// SUMMER2026</span>
+    $table-><span class="n">enum</span>(<span class="s">'discount_type'</span>, [<span class="s">'percentage'</span>, <span class="s">'fixed'</span>]);
+    $table-><span class="n">decimal</span>(<span class="s">'discount_value'</span>, <span class="n">12</span>, <span class="n">2</span>);                  <span class="c">// 10 = 10% or 500 EGP</span>
+    $table-><span class="n">decimal</span>(<span class="s">'max_discount_egp'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();        <span class="c">// cap</span>
+    $table-><span class="n">decimal</span>(<span class="s">'min_order_egp'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();
+    $table-><span class="n">integer</span>(<span class="s">'usage_limit'</span>)->nullable();                   <span class="c">// المجموع</span>
+    $table-><span class="n">integer</span>(<span class="s">'usage_count'</span>)->default(<span class="n">0</span>);
+    $table-><span class="n">integer</span>(<span class="s">'per_user_limit'</span>)->default(<span class="n">1</span>);
+    $table-><span class="n">json</span>(<span class="s">'applies_to_services'</span>)->nullable();              <span class="c">// ["web","branding"] or null=all</span>
+    $table-><span class="n">timestamp</span>(<span class="s">'starts_at'</span>)->nullable();
+    $table-><span class="n">timestamp</span>(<span class="s">'expires_at'</span>)->nullable();
+    $table-><span class="n">boolean</span>(<span class="s">'is_active'</span>)->default(<span class="k">true</span>);
+    $table-><span class="n">timestamps</span>();
+});</div>
+
+  <h3 style="color: var(--w); margin-top: 28px;">5. جدول <code style="color: var(--o);">orders</code> — جديد ⭐ (الأهم!)</h3>
+<div class="code-block">Schema::create(<span class="s">'orders'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">string</span>(<span class="s">'order_number'</span>)->unique();                  <span class="c">// BSN-ORD-2026-0001</span>
+    $table-><span class="n">foreignId</span>(<span class="s">'user_id'</span>)->constrained();
+    $table-><span class="n">foreignId</span>(<span class="s">'package_id'</span>)->nullable()->constrained();
+    $table-><span class="n">foreignId</span>(<span class="s">'bundle_id'</span>)->nullable()->constrained();
+    $table-><span class="n">foreignId</span>(<span class="s">'coupon_id'</span>)->nullable()->constrained();
+    $table-><span class="n">enum</span>(<span class="s">'status'</span>, [<span class="s">'draft'</span>, <span class="s">'pending_payment'</span>, <span class="s">'paid'</span>, <span class="s">'in_progress'</span>, <span class="s">'completed'</span>, <span class="s">'cancelled'</span>, <span class="s">'refunded'</span>]);
+
+    <span class="c">// Pricing breakdown</span>
+    $table-><span class="n">enum</span>(<span class="s">'currency'</span>, [<span class="s">'EGP'</span>, <span class="s">'SAR'</span>])->default(<span class="s">'EGP'</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'package_price'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'addons_total'</span>, <span class="n">12</span>, <span class="n">2</span>)->default(<span class="n">0</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'subtotal'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'discount'</span>, <span class="n">12</span>, <span class="n">2</span>)->default(<span class="n">0</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'total'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'deposit_amount'</span>, <span class="n">12</span>, <span class="n">2</span>);                <span class="c">// 40% from total</span>
+    $table-><span class="n">decimal</span>(<span class="s">'remaining_amount'</span>, <span class="n">12</span>, <span class="n">2</span>);
+
+    <span class="c">// Project details</span>
+    $table-><span class="n">string</span>(<span class="s">'project_name'</span>);
+    $table-><span class="n">text</span>(<span class="s">'description'</span>);
+    $table-><span class="n">date</span>(<span class="s">'expected_launch_date'</span>)->nullable();
+
+    <span class="c">// Links</span>
+    $table-><span class="n">foreignId</span>(<span class="s">'invoice_id'</span>)->nullable()->constrained();
+    $table-><span class="n">foreignId</span>(<span class="s">'project_id'</span>)->nullable()->constrained(); <span class="c">// auto-created after payment</span>
+
+    <span class="c">// Tracking</span>
+    $table-><span class="n">timestamp</span>(<span class="s">'paid_at'</span>)->nullable();
+    $table-><span class="n">timestamp</span>(<span class="s">'developer_assigned_at'</span>)->nullable();
+    $table-><span class="n">timestamps</span>();
+    $table-><span class="n">softDeletes</span>();
+    $table-><span class="n">index</span>([<span class="s">'user_id'</span>, <span class="s">'status'</span>]);
+});</div>
+
+  <h3 style="color: var(--w); margin-top: 28px;">6-9. جداول مكمّلة للـ Orders</h3>
+<div class="code-block"><span class="c">// 6. order_addons (pivot للـ add-ons المختارة)</span>
+Schema::create(<span class="s">'order_addons'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">foreignId</span>(<span class="s">'order_id'</span>)->constrained()->onDelete(<span class="s">'cascade'</span>);
+    $table-><span class="n">foreignId</span>(<span class="s">'package_addon_id'</span>)->constrained();
+    $table-><span class="n">decimal</span>(<span class="s">'price'</span>, <span class="n">12</span>, <span class="n">2</span>);  <span class="c">// snapshot وقت الطلب</span>
+});
+
+<span class="c">// 7. order_attachments (الـ briefs, refs)</span>
+Schema::create(<span class="s">'order_attachments'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">foreignId</span>(<span class="s">'order_id'</span>)->constrained()->onDelete(<span class="s">'cascade'</span>);
+    $table-><span class="n">string</span>(<span class="s">'filename'</span>);
+    $table-><span class="n">string</span>(<span class="s">'original_name'</span>);
+    $table-><span class="n">string</span>(<span class="s">'mime_type'</span>);
+    $table-><span class="n">integer</span>(<span class="s">'size'</span>);
+    $table-><span class="n">string</span>(<span class="s">'path'</span>);
+    $table-><span class="n">timestamps</span>();
+});
+
+<span class="c">// 8. leads (طلبات Path B قبل بناء الـ quote)</span>
+Schema::create(<span class="s">'leads'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">string</span>(<span class="s">'lead_number'</span>)->unique();         <span class="c">// BSN-LEAD-2026-0001</span>
+    $table-><span class="n">foreignId</span>(<span class="s">'user_id'</span>)->constrained();
+    $table-><span class="n">enum</span>(<span class="s">'service_type'</span>, [<span class="s">'web'</span>, <span class="s">'ecommerce'</span>, <span class="s">'branding'</span>, <span class="s">'marketing'</span>, <span class="s">'other'</span>]);
+    $table-><span class="n">enum</span>(<span class="s">'status'</span>, [<span class="s">'new'</span>, <span class="s">'reviewing'</span>, <span class="s">'quoted'</span>, <span class="s">'won'</span>, <span class="s">'lost'</span>, <span class="s">'archived'</span>]);
+    $table-><span class="n">string</span>(<span class="s">'title'</span>);
+    $table-><span class="n">text</span>(<span class="s">'description'</span>);
+    $table-><span class="n">json</span>(<span class="s">'smart_answers'</span>)->nullable();    <span class="c">// answers from wizard</span>
+    $table-><span class="n">decimal</span>(<span class="s">'budget_min_egp'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();
+    $table-><span class="n">decimal</span>(<span class="s">'budget_max_egp'</span>, <span class="n">12</span>, <span class="n">2</span>)->nullable();
+    $table-><span class="n">date</span>(<span class="s">'deadline'</span>)->nullable();
+    $table-><span class="n">foreignId</span>(<span class="s">'assigned_admin_id'</span>)->nullable()->constrained(<span class="s">'users'</span>);
+    $table-><span class="n">timestamps</span>();
+});
+
+<span class="c">// 9. quotes + quote_items + quote_versions</span>
+Schema::create(<span class="s">'quotes'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">string</span>(<span class="s">'quote_number'</span>)->unique();        <span class="c">// BSN-QT-2026-0001</span>
+    $table-><span class="n">foreignId</span>(<span class="s">'lead_id'</span>)->constrained();
+    $table-><span class="n">integer</span>(<span class="s">'version'</span>)->default(<span class="n">1</span>);
+    $table-><span class="n">enum</span>(<span class="s">'status'</span>, [<span class="s">'draft'</span>, <span class="s">'sent'</span>, <span class="s">'viewed'</span>, <span class="s">'accepted'</span>, <span class="s">'rejected'</span>, <span class="s">'expired'</span>]);
+    $table-><span class="n">enum</span>(<span class="s">'currency'</span>, [<span class="s">'EGP'</span>, <span class="s">'SAR'</span>])->default(<span class="s">'EGP'</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'subtotal'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'discount'</span>, <span class="n">12</span>, <span class="n">2</span>)->default(<span class="n">0</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'total'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">integer</span>(<span class="s">'estimated_days'</span>);
+    $table-><span class="n">json</span>(<span class="s">'payment_schedule'</span>);         <span class="c">// [{percentage:40, label:"عربون"},...]</span>
+    $table-><span class="n">text</span>(<span class="s">'terms'</span>)->nullable();
+    $table-><span class="n">timestamp</span>(<span class="s">'sent_at'</span>)->nullable();
+    $table-><span class="n">timestamp</span>(<span class="s">'expires_at'</span>)->nullable();
+    $table-><span class="n">timestamps</span>();
+});
+
+Schema::create(<span class="s">'quote_items'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">foreignId</span>(<span class="s">'quote_id'</span>)->constrained()->onDelete(<span class="s">'cascade'</span>);
+    $table-><span class="n">string</span>(<span class="s">'label'</span>);          <span class="c">// "Design (3 صفحات)"</span>
+    $table-><span class="n">text</span>(<span class="s">'description'</span>)->nullable();
+    $table-><span class="n">decimal</span>(<span class="s">'unit_price'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">integer</span>(<span class="s">'quantity'</span>)->default(<span class="n">1</span>);
+    $table-><span class="n">decimal</span>(<span class="s">'total'</span>, <span class="n">12</span>, <span class="n">2</span>);
+    $table-><span class="n">integer</span>(<span class="s">'sort_order'</span>)->default(<span class="n">0</span>);
+});</div>
+
+  <h3 style="color: var(--w); margin-top: 28px;">10. جدول <code style="color: var(--o);">onboarding_data</code> + email verification</h3>
+<div class="code-block"><span class="c">// add email_verified_at column already exists in users</span>
+
+Schema::create(<span class="s">'user_onboarding'</span>, <span class="k">function</span> ($table) {
+    $table-><span class="n">id</span>();
+    $table-><span class="n">foreignId</span>(<span class="s">'user_id'</span>)->unique()->constrained();
+    $table-><span class="n">enum</span>(<span class="s">'looking_for'</span>, [<span class="s">'web'</span>, <span class="s">'ecommerce'</span>, <span class="s">'branding'</span>, <span class="s">'marketing'</span>, <span class="s">'browsing'</span>])->nullable();
+    $table-><span class="n">string</span>(<span class="s">'company_name'</span>)->nullable();
+    $table-><span class="n">enum</span>(<span class="s">'team_size'</span>, [<span class="s">'just_me'</span>, <span class="s">'2-5'</span>, <span class="s">'6-20'</span>, <span class="s">'20+'</span>])->nullable();
+    $table-><span class="n">boolean</span>(<span class="s">'completed'</span>)->default(<span class="k">false</span>);
+    $table-><span class="n">timestamps</span>();
+});</div>
+</section>
+
+<!-- ============ API ENDPOINTS ============ -->
+<section class="section section-light" id="api">
+  <span class="eyebrow">القسم 10</span>
+  <h2 class="h-section">API <span class="accent">Endpoints</span></h2>
+  <p class="lede">الـ endpoints الجديدة المطلوبة فوق الـ /api/v1/* الموجود. كلها سانكتم محمية باستثناء العامة.</p>
+
+  <h3>🔓 Public Endpoints (لا تحتاج auth)</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>Method</th><th>Path</th><th>الوصف</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/api/v1/packages</code></td><td>قائمة الباقات (موجود ✓)</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/packages/{slug}</code></td><td>تفاصيل باقة + add-ons المتاحة ⭐</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/bundles</code></td><td>قائمة الـ bundles ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/auth/verify-email/{token}</code></td><td>تأكيد الإيميل ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/auth/resend-verification</code></td><td>إعادة إرسال إيميل تأكيد ⭐</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 28px;">👤 User Endpoints (auth required)</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>Method</th><th>Path</th><th>الوصف</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>POST</code></td><td><code>/api/v1/onboarding</code></td><td>حفظ بيانات الـ onboarding ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/coupons/validate</code></td><td>التحقق من coupon قبل الـ checkout ⭐</td></tr>
+
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Orders (Path A) ---</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/orders/draft</code></td><td>إنشاء draft (Step 2-4 in wizard) ⭐</td></tr>
+      <tr><td><code>PUT</code></td><td><code>/api/v1/orders/{id}/draft</code></td><td>تحديث draft ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/orders/{id}/calculate</code></td><td>إعادة حساب الـ totals ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/orders/{id}/checkout</code></td><td>تحويل draft إلى pending_payment ⭐</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/orders</code></td><td>قائمة طلبات المستخدم ⭐</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/orders/{id}</code></td><td>تفاصيل order ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/orders/{id}/attachments</code></td><td>رفع ملفات للـ order ⭐</td></tr>
+
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Leads (Path B) ---</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/leads</code></td><td>إنشاء lead جديد ⭐</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/leads</code></td><td>طلبات الـ custom للمستخدم ⭐</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/leads/{id}</code></td><td>تفاصيل lead ⭐</td></tr>
+
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Quotes ---</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/quotes</code></td><td>عروض المستخدم ⭐</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/quotes/{id}</code></td><td>تفاصيل عرض ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/quotes/{id}/accept</code></td><td>قبول العرض → ينشئ order ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/quotes/{id}/reject</code></td><td>رفض العرض ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/quotes/{id}/negotiate</code></td><td>طلب تفاوض (يفتح chat) ⭐</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 28px;">🛠 Admin Endpoints</h3>
+  <table class="tbl">
+    <thead>
+      <tr><th>Method</th><th>Path</th><th>الوصف</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Package Add-ons ---</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/admin/addons</code></td><td>قائمة الـ add-ons ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/admin/addons</code></td><td>إضافة add-on ⭐</td></tr>
+      <tr><td><code>PUT</code></td><td><code>/api/v1/admin/addons/{id}</code></td><td>تعديل ⭐</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/api/v1/admin/addons/{id}</code></td><td>حذف ⭐</td></tr>
+
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Bundles + Coupons ---</td></tr>
+      <tr><td><code>...</code></td><td><code>/api/v1/admin/bundles</code></td><td>CRUD كامل ⭐</td></tr>
+      <tr><td><code>...</code></td><td><code>/api/v1/admin/coupons</code></td><td>CRUD كامل ⭐</td></tr>
+
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Leads + Quotes Admin ---</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/admin/leads</code></td><td>كل الـ leads (queue) ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/admin/leads/{id}/assign</code></td><td>تعيين admin للـ lead ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/admin/leads/{id}/quote</code></td><td>بناء quote من lead ⭐</td></tr>
+      <tr><td><code>...</code></td><td><code>/api/v1/admin/quotes/{id}</code></td><td>CRUD على الـ quote ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/admin/quotes/{id}/send</code></td><td>إرسال للعميل ⭐</td></tr>
+
+      <tr><td colspan="3" style="background:#FFF8E5; font-weight:700;">--- Orders Admin ---</td></tr>
+      <tr><td><code>GET</code></td><td><code>/api/v1/admin/orders</code></td><td>كل الـ orders ⭐</td></tr>
+      <tr><td><code>POST</code></td><td><code>/api/v1/admin/orders/{id}/assign-developer</code></td><td>تعيين developer ⭐</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ WIREFRAMES ============ -->
+<section class="section section-cream" id="wireframes">
+  <span class="eyebrow">القسم 11</span>
+  <h2 class="h-section">Low-Fidelity <span class="accent">Wireframes</span></h2>
+  <p class="lede">رسومات تخطيطية للشاشات الأساسية الجديدة. تُستخدم كمرجع للـ designer قبل تصميم الـ high-fi mockups.</p>
+
+  <h3>📦 Wireframe 1 · Order Wizard — Step 1: اختر النوع</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>/dashboard/projects/new?path=package</span>
+      <span>BSN</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-header">
+        <span class="logo">BSN</span>
+        <span>← الرجوع</span>
+      </div>
+      <div class="wf-block solid">[ Stepper: 1 ─ 2 ─ 3 ─ 4 ─ 5 ]</div>
+      <div class="wf-block">📦 إزاي تحب تطلب مشروعك؟</div>
+      <div class="wf-row wf-row-2">
+        <div class="wf-block accent">📦 باقة جاهزة<br><small>(أسرع · فوري)</small></div>
+        <div class="wf-block">✏️ مشروع مخصّص<br><small>(بعرض سعر · 24h)</small></div>
+      </div>
+      <div style="margin-top: 20px;">
+        <div class="wf-block">⬇️ اختار نوع الخدمة:</div>
+        <div class="wf-row wf-row-4">
+          <div class="wf-block teal">🌐<br>موقع</div>
+          <div class="wf-block teal">🛒<br>متجر</div>
+          <div class="wf-block teal">🎨<br>هوية</div>
+          <div class="wf-block teal">📈<br>تسويق</div>
+        </div>
+      </div>
+      <div style="margin-top: 16px; text-align: left;">
+        <span class="wf-cta">التالي ←</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">📦 Wireframe 2 · Order Wizard — Step 2: اختر الباقة</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>/dashboard/projects/new?path=package&service=web</span>
+      <span>BSN</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-block solid">[ Stepper: ✓ ─ 2 ─ 3 ─ 4 ─ 5 ]</div>
+      <div class="wf-block">📋 اختار باقتك (4 خيارات للويب):</div>
+      <div class="wf-row wf-row-4">
+        <div class="wf-block">
+          <strong>Express</strong><br>
+          ⚡ 4,500 EGP<br>
+          5 أيام<br>
+          <small>✓ قالب مخصّص<br>✓ 5 صفحات<br>✓ SEO أساسي</small>
+        </div>
+        <div class="wf-block">
+          <strong>Landing Pro</strong><br>
+          8,500 EGP<br>
+          10 أيام<br>
+          <small>✓ تصميم مخصص<br>✓ تحويلات<br>✓ WhatsApp</small>
+        </div>
+        <div class="wf-block accent">
+          <strong>Multi-page Pro</strong><br>
+          ⭐ الأكتر طلباً<br>
+          22,000 EGP<br>
+          21 يوم<br>
+          <small>✓ كل المميزات</small>
+        </div>
+        <div class="wf-block">
+          <strong>Enterprise</strong><br>
+          45,000+ EGP<br>
+          45 يوم<br>
+          <small>✓ مخصّص بالكامل</small>
+        </div>
+      </div>
+      <div style="margin-top: 16px; display: flex; justify-content: space-between;">
+        <span>← السابق</span>
+        <span class="wf-cta">التالي ← (مع Multi-page Pro)</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">➕ Wireframe 3 · Order Wizard — Step 3: Add-ons</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>Step 3 · Add-ons</span>
+      <span>BSN</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-block solid">[ Stepper: ✓ ─ ✓ ─ 3 ─ 4 ─ 5 ]</div>
+      <div class="wf-row wf-row-2">
+        <div>
+          <div class="wf-block" style="text-align: right;">
+            ☑ نسخة إنجليزية كاملة (+30%)<br>
+            <small>+6,600 EGP</small>
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            ☐ مدونة كاملة<br>
+            <small>+3,500 EGP</small>
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            ☐ صفحة إضافية (×1)<br>
+            <small>+1,500 EGP</small>
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            ☑ Hosting سنوي<br>
+            <small>+3,500 EGP</small>
+          </div>
+        </div>
+        <div>
+          <div class="wf-block teal">
+            <strong>الملخّص</strong><br><br>
+            Multi-page Pro: 22,000<br>
+            + نسخة إنجليزية: 6,600<br>
+            + Hosting: 3,500<br>
+            ───────────<br>
+            <strong>المجموع: 32,100 EGP</strong>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 16px; display: flex; justify-content: space-between;">
+        <span>← السابق</span>
+        <span class="wf-cta">التالي ←</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">📝 Wireframe 4 · Order Wizard — Step 5: المراجعة والدفع</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>Step 5 · مراجعة وتأكيد</span>
+      <span>BSN</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-block solid">[ Stepper: ✓ ─ ✓ ─ ✓ ─ ✓ ─ 5 ]</div>
+      <div class="wf-row wf-row-2">
+        <div>
+          <div class="wf-block">📋 تفاصيل المشروع</div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>اسم المشروع:</strong><br>"موقع شركة Nasr للكيماويات"
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>الوصف:</strong><br>موقع شركة كيماويات بصفحات services + about + contact...
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>الموعد المتوقّع:</strong> 2026-08-15<br>
+            <strong>الملفات:</strong> 2 ملفات مرفوعة
+          </div>
+        </div>
+        <div>
+          <div class="wf-block teal">
+            <strong>💰 الفاتورة</strong><br><br>
+            Multi-page Pro: 22,000<br>
+            + نسخة إنجليزية: 6,600<br>
+            + Hosting سنوي: 3,500<br>
+            ───────────<br>
+            المجموع: 32,100<br>
+            <small>كوبون SUMMER2026 (-10%): -3,210</small><br>
+            ───────────<br>
+            <strong>الإجمالي: 28,890 EGP</strong><br><br>
+            الدفعة الأولى (40%): <strong>11,556</strong><br>
+            <small>المتبقي يُدفع على دفعتين</small>
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            🎟️ <code>SUMMER2026</code> ✓ مفعّل
+          </div>
+        </div>
+      </div>
+      <div class="wf-block" style="margin-top: 12px;">
+        ☑ أوافق على الشروط والأحكام
+      </div>
+      <div style="margin-top: 16px; text-align: left;">
+        <span class="wf-cta">💳 ادفع 11,556 وابدأ المشروع ←</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">💰 Wireframe 5 · Quote من العميل (Path B)</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>/dashboard/quotes/123</span>
+      <span>BSN</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-row wf-row-2">
+        <div>
+          <div class="wf-block accent">📋 العرض BSN-QT-2026-001</div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>المشروع:</strong> نظام عقاري متكامل<br>
+            <strong>الحالة:</strong> ⏳ في انتظار قرارك<br>
+            <strong>الصلاحية:</strong> 7 أيام
+          </div>
+        </div>
+        <div>
+          <div class="wf-block teal">
+            <strong>💵 المجموع</strong><br>
+            <span style="font-size: 22px;"><strong>78,500 EGP</strong></span><br>
+            45 يوم تسليم
+          </div>
+        </div>
+      </div>
+      <div class="wf-block" style="text-align: right;">
+        <strong>📌 بنود العرض:</strong><br>
+        1. Discovery + Strategy ... 8,000<br>
+        2. UX/UI Design (8 شاشات) ... 18,000<br>
+        3. Backend (Laravel) ... 28,000<br>
+        4. Frontend (React) ... 18,500<br>
+        5. Testing + Deployment ... 6,000
+      </div>
+      <div class="wf-block" style="text-align: right;">
+        <strong>📅 جدول الدفع:</strong><br>
+        40% عربون (31,400 EGP) — لبدء العمل<br>
+        30% بعد التصميم (23,550 EGP)<br>
+        30% عند التسليم (23,550 EGP)
+      </div>
+      <div class="wf-row wf-row-3">
+        <div class="wf-block accent">✓ أوافق وادفع 31,400</div>
+        <div class="wf-block">💬 تفاوض في chat</div>
+        <div class="wf-block" style="background: #fee2e2; color: #b91c1c;">✗ ارفض</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">🛠 Wireframe 6 · Admin Lead Detail (Build Quote)</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>/admin/leads/45/quote</span>
+      <span>Admin</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-row wf-row-2">
+        <div>
+          <div class="wf-block accent">طلب جديد · #45</div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>من:</strong> Mohamed Ahmed<br>
+            <strong>الخدمة:</strong> Web · Custom<br>
+            <strong>الميزانية:</strong> 50K-100K EGP<br>
+            <strong>الـ Deadline:</strong> 60 يوم
+          </div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>الإجابات الذكية:</strong><br>
+            • متعدد الصفحات: نعم<br>
+            • لغتين: نعم<br>
+            • لوحة تحكم: نعم<br>
+            • CMS مخصّص: نعم<br>
+            • SEO: نعم
+          </div>
+        </div>
+        <div>
+          <div class="wf-block teal">📝 بناء العرض</div>
+          <div class="wf-block" style="text-align: right;">
+            <strong>+ Discovery</strong>: 8,000 [×]<br>
+            <strong>+ Design (8 شاشات)</strong>: 18,000 [×]<br>
+            <strong>+ Backend</strong>: 28,000 [×]<br>
+            <strong>+ Frontend</strong>: 18,500 [×]<br>
+            <strong>+ Testing</strong>: 6,000 [×]<br>
+            <br>
+            [➕ إضافة بند]
+          </div>
+          <div class="wf-block teal">
+            <strong>المجموع: 78,500 EGP</strong><br>
+            45 يوم
+          </div>
+          <div class="wf-block">
+            📅 جدول الدفع: 40/30/30
+          </div>
+          <div class="wf-row wf-row-2">
+            <div class="wf-block">💾 احفظ Draft</div>
+            <div class="wf-block accent">📤 ارسل للعميل</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">🎉 Wireframe 7 · Onboarding (بعد التسجيل)</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>/onboarding</span>
+      <span>BSN</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-block accent">👋 أهلاً يا محمد!</div>
+      <div class="wf-block">3 أسئلة بسيطة عشان نخدمك صح:</div>
+      <div class="wf-block solid">[ Step 1 of 3 ]</div>
+      <div class="wf-block" style="text-align: right;">
+        <strong>أنت هنا عشان إيه؟</strong>
+      </div>
+      <div class="wf-row wf-row-3">
+        <div class="wf-block teal">🌐 موقع ويب</div>
+        <div class="wf-block">🛒 متجر إلكتروني</div>
+        <div class="wf-block">🎨 هوية بصرية</div>
+      </div>
+      <div class="wf-row wf-row-2">
+        <div class="wf-block">📈 تسويق رقمي</div>
+        <div class="wf-block">👀 أتصفّح فقط</div>
+      </div>
+      <div style="margin-top: 16px; text-align: left;">
+        <span class="wf-cta">التالي ←</span> &nbsp; <span style="color: var(--gray-400); font-family: var(--f-mono); font-size: 12px;">تخطّي</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 36px;">📊 Wireframe 8 · Admin Dashboard (KPIs)</h3>
+  <div class="wireframe">
+    <div class="wf-title">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <span>/admin</span>
+      <span>Admin Panel</span>
+    </div>
+    <div class="wf-body">
+      <div class="wf-row wf-row-4">
+        <div class="wf-block teal"><strong>📦 Orders</strong><br>34<br><small>هذا الشهر</small></div>
+        <div class="wf-block accent"><strong>💵 Revenue</strong><br>485K<br><small>EGP</small></div>
+        <div class="wf-block"><strong>📋 Leads</strong><br>12<br><small>في الانتظار</small></div>
+        <div class="wf-block purple"><strong>⚡ Active Projects</strong><br>23</div>
+      </div>
+      <div class="wf-row wf-row-2">
+        <div>
+          <div class="wf-block">📈 Revenue Chart (آخر 30 يوم)</div>
+          <div class="wf-block" style="height: 120px;">[ chart placeholder ]</div>
+        </div>
+        <div>
+          <div class="wf-block">🔥 الأكتر مبيعاً</div>
+          <div class="wf-block" style="text-align: right;">
+            1. Multi-page Pro (12)<br>
+            2. E-com Growth (8)<br>
+            3. Full Identity (6)<br>
+            4. Marketing Multi (5)
+          </div>
+        </div>
+      </div>
+      <div class="wf-block">
+        <strong>📥 Leads جديدة:</strong> Mohamed (web · 50K) · Sara (ecom · 30K) · Khaled (custom)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section class="section section-light" id="roadmap">
+  <span class="eyebrow">القسم 12</span>
+  <h2 class="h-section">خريطة <span class="accent">التنفيذ</span></h2>
+  <p class="lede">5 مراحل متسلسلة. كل مرحلة تبني على اللي قبلها. تقدير زمني واقعي للمطوّر الواحد المتفرّغ.</p>
+
+  <div class="phases">
+    <div class="phase">
+      <span class="phase-num">1</span>
+      <span class="phase-time">⏱ 4-5 أيام</span>
+      <h4>الأساس</h4>
+      <ul>
+        <li>10 migrations جديدة</li>
+        <li>9 models + relationships</li>
+        <li>Factories + Seeders</li>
+        <li>Email verification</li>
+        <li>Onboarding logic</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <span class="phase-num">2</span>
+      <span class="phase-time">⏱ 5-7 أيام</span>
+      <h4>Path A · Orders</h4>
+      <ul>
+        <li>OrderController + APIs</li>
+        <li>5-step wizard (React)</li>
+        <li>Add-ons UI</li>
+        <li>Coupon validation</li>
+        <li>Checkout + Payment</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <span class="phase-num">3</span>
+      <span class="phase-time">⏱ 5-7 أيام</span>
+      <h4>Path B · Quotes</h4>
+      <ul>
+        <li>LeadController + Wizard</li>
+        <li>Smart Q&A engine</li>
+        <li>Admin Quote Builder</li>
+        <li>Accept/Reject/Negotiate</li>
+        <li>Quote → Order conversion</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <span class="phase-num">4</span>
+      <span class="phase-time">⏱ 3-5 أيام</span>
+      <h4>Admin CMS</h4>
+      <ul>
+        <li>Addons CRUD UI</li>
+        <li>Bundles CRUD UI</li>
+        <li>Coupons CRUD UI</li>
+        <li>Orders Management</li>
+        <li>Reports</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phases" style="margin-top: 24px;">
+    <div class="phase" style="grid-column: span 2;">
+      <span class="phase-num">5</span>
+      <span class="phase-time">⏱ 3-4 أيام</span>
+      <h4>الـ Polish النهائي</h4>
+      <ul>
+        <li>Email templates للـ orders + quotes (3 جديدة)</li>
+        <li>Notifications (in-app + email) للـ workflow كاملة</li>
+        <li>Legal pages (Terms, Privacy, Refund)</li>
+        <li>Test coverage للـ flows الجديدة</li>
+        <li>Documentation update</li>
+      </ul>
+    </div>
+    <div class="phase" style="grid-column: span 2; background: var(--ink); color: var(--w);">
+      <span class="phase-num" style="background: var(--o); color: var(--w);">∑</span>
+      <span class="phase-time">⏱ المجموع</span>
+      <h4 style="color: var(--w);">20-28 يوم عمل</h4>
+      <p style="font-size: 13px; opacity: 0.85;">~4-6 أسابيع للمطوّر الواحد متفرّغ، أو 3-4 أسابيع لـ 2 devs بالتوازي.</p>
+      <p style="font-size: 12px; color: var(--t); font-family: var(--f-mono); margin-top: 8px;">يستثني الـ blog/CMS، i18n، mobile app — تلك مراحل لاحقة.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLAUDE CODE PROMPT ============ -->
+<section class="section section-ink" id="claude-prompt" style="color: var(--w);">
+  <span class="eyebrow" style="color: var(--t);">القسم 13</span>
+  <h2 class="h-section" style="color: var(--w);">Claude Code <span class="accent">Prompt</span></h2>
+  <p class="lede" style="color: rgba(255,255,255,0.85);">برومبت شامل وجاهز للنسخ تستخدمه مع Claude Code لتنفيذ الـ business model. مبني على فهم عميق للـ codebase الموجود.</p>
+
+  <div class="alert alert-info" style="margin: 20px 0;">
+    <span class="alert-icon">📋</span>
+    <div>
+      <strong>كيفية الاستخدام:</strong> افتح Claude Code في مجلّد المشروع، انسخ البرومبت كاملاً، الصقه. Claude Code هيقرا الـ codebase ويبني المراحل واحدة واحدة. تأكّد إن عندك Claude Sonnet 4 أو Opus 4.7 مفعّل.
+    </div>
+  </div>
+
+<div class="code-block" style="border-right-color: var(--t); white-space: pre-wrap;">
+<span class="c"># BSN Platform · Business Model Implementation</span>
+
+You are tasked with implementing the **Order Flow + Quote Workflow** on the
+existing BSN platform (Laravel 11 API + React 18 SPA). Read this entire prompt
+before starting, then begin Phase 1.
+
+<span class="k">## Context</span>
+
+The repo is at `/path/to/BSN-Project` with two folders:
+- `api/` — Laravel 11 (PHP 8.2+), Sanctum auth, Reverb WebSockets, MySQL 8
+- `app/` — React 18 + Vite + Tailwind + React Query + Zod + Sentry
+
+The platform currently has: Auth (with forgot password), Projects, Tasks,
+Deliverables, Invoices, Payments (5 gateways), Chat (Reverb), Packages CMS,
+Contact form, Notifications, Audit Logs, PWA, Docker, CI tests.
+
+**What's missing** (the business workflow):
+1. Orders (Path A — direct package purchase)
+2. Leads + Quotes (Path B — custom project request)
+3. Multi-step wizards (instead of the current single-page form)
+4. Package Add-ons, Bundles, Coupons
+5. Email verification + Onboarding wizard
+
+<span class="k">## Brand Identity (preserve!)</span>
+
+Colors (CSS vars already exist in `app/src/styles/index.css`):
+- `--p: #5C15CC` (purple) · `--o: #F15A24` (orange) · `--t: #65C8D0` (teal)
+- `--ink: #0F0830` (almost-black)
+
+Typography: Cairo (display), Tajawal (body), Archivo Black (Latin italic), Space Mono (mono).
+
+UI style: Brutalist — thick borders (2.5px solid var(--ink)), chunky shadows
+(6px 6px 0 var(--ink)), high contrast, RTL Arabic-first. All copy in Egyptian Arabic.
+
+<span class="k">## Phase 1 · Database Foundation (4-5 days)</span>
+
+Create migrations in `api/database/migrations/` in this exact order:
+
+1. `add_columns_to_packages` — add `price_sar`, `delivery_days`, `slug`, `description_ar`, `description_en`
+2. `create_package_addons_table` — service_type, name_ar, name_en, price_type (fixed/percentage), price_egp, price_sar, percentage, sort_order, is_active
+3. `create_bundles_table` + `create_bundle_packages_table`
+4. `create_coupons_table` — code, discount_type, discount_value, max_discount_egp, usage_limit, usage_count, per_user_limit, applies_to_services (json), starts_at, expires_at
+5. `create_orders_table` — order_number (BSN-ORD-YYYY-XXXX), user_id, package_id, bundle_id, coupon_id, status (draft/pending_payment/paid/in_progress/completed/cancelled/refunded), currency (EGP/SAR), package_price, addons_total, subtotal, discount, total, deposit_amount, remaining_amount, project_name, description, expected_launch_date, invoice_id, project_id, paid_at, developer_assigned_at
+6. `create_order_addons_table` (pivot with price snapshot)
+7. `create_order_attachments_table`
+8. `create_leads_table` — lead_number, user_id, service_type, status (new/reviewing/quoted/won/lost/archived), title, description, smart_answers (json), budget_min_egp, budget_max_egp, deadline, assigned_admin_id
+9. `create_quotes_table` + `create_quote_items_table` — quote_number, lead_id, version, status (draft/sent/viewed/accepted/rejected/expired), currency, subtotal, discount, total, estimated_days, payment_schedule (json), terms, sent_at, expires_at
+10. `create_user_onboarding_table` — user_id (unique), looking_for, company_name, team_size, completed
+
+Then create:
+- Models (`Order`, `OrderAddon`, `OrderAttachment`, `PackageAddon`, `Bundle`, `Coupon`, `Lead`, `Quote`, `QuoteItem`, `UserOnboarding`) with proper relationships
+- Factories for testing
+- Seeders:
+  * `PackageAddonSeeder` — 20+ add-ons (مذكورة في PRD)
+  * `BundleSeeder` — 4 bundles (Launch Bundle, Brand Launch, E-com Starter Bundle, Full Launch)
+  * `CouponSeeder` — 4 promo codes (FIRST100, SUMMER2026, REFERRAL, STUDENT)
+
+Also: add `email_verified_at` check to AuthController, add `EmailVerificationNotification` mailable + verify/resend endpoints.
+
+<span class="k">## Phase 2 · Path A · Order Wizard (5-7 days)</span>
+
+Backend (api):
+- `OrderController` with: store (draft), update (draft), calculate, checkout, index (user's orders), show, attachments upload
+- `CouponController::validate` — POST endpoint that takes code + cart, returns valid/invalid + discount preview
+- `OrderObserver` — when status changes to `paid`, auto-create Project (transfer fields), create chat room, send admin notification, send user receipt
+- Order number generator (BSN-ORD-{year}-{4-digit})
+- Add routes under `/api/v1/orders/*` (auth:sanctum)
+
+Frontend (app):
+- Replace `UserNewProject.jsx` with `pages/projects/NewProjectChoice.jsx` that asks Path A vs Path B
+- Create `pages/projects/order-wizard/` with:
+  * `Step1ServiceType.jsx` — choose service
+  * `Step2SelectPackage.jsx` — package cards (fetch from `/api/v1/packages?service_type=X`)
+  * `Step3Addons.jsx` — checkbox grid with live total calculation
+  * `Step4ProjectDetails.jsx` — name, description, date, file upload, coupon input
+  * `Step5Review.jsx` — summary + payment button
+- Add `WizardLayout.jsx` with progress stepper + back/next buttons
+- State management via Zustand (persist draft to localStorage + sync to backend every change)
+- On checkout: use existing `PayButton.jsx` flow, but pointed at the new order endpoint
+
+UI requirements:
+- Match brutalist aesthetic — thick borders, chunky shadows
+- Mobile-first (375px → desktop)
+- Progress stepper across the top with current step highlighted
+- Real-time calculation as user changes selections (debounced 300ms)
+- "Save as draft" auto-saves every change
+- Show running total + deposit (40%) prominently in sticky footer
+
+<span class="k">## Phase 3 · Path B · Lead/Quote Workflow (5-7 days)</span>
+
+Backend:
+- `LeadController` with store (creates lead from wizard), index (user's leads), show
+- `QuoteController` (user-side): index, show, accept (creates an Order from the Quote), reject, negotiate (opens chat room)
+- `Admin\QuoteController`: index, store, update, send (transitions draft→sent + emails user), addItem, removeItem, createVersion (creates v2 from v1)
+- `Admin\LeadController`: index (queue), show, assign (assigns admin to lead), buildQuote (creates Quote draft from lead)
+- Notifications: `LeadCreatedNotification` (to admins), `QuoteSentNotification` (to user), `QuoteAcceptedNotification` (to admins)
+
+Frontend (user-side):
+- Create `pages/projects/quote-wizard/` with smart Q&A based on service type
+- For each service, define 5-8 questions in `lib/wizardQuestions.js`
+- `pages/quotes/QuotesList.jsx` + `QuoteDetail.jsx`
+- Quote detail page: 3 actions (Accept → goes to checkout, Negotiate → opens chat, Reject → confirm dialog)
+
+Frontend (admin-side):
+- `dashboards/admin/LeadsList.jsx` + `LeadDetail.jsx`
+- `dashboards/admin/QuoteBuilder.jsx` — interactive form where admin adds line items (label, description, unit_price, quantity → auto-total), defines payment schedule (default 40/30/30), sets validity (default 7 days), then "Save Draft" or "Send to Client"
+
+<span class="k">## Phase 4 · Admin CMS (3-5 days)</span>
+
+Build CRUD UIs in `dashboards/admin/`:
+- `AddonsList.jsx` + `AddonForm.jsx`
+- `BundlesList.jsx` + `BundleForm.jsx` (with multi-select for packages)
+- `CouponsList.jsx` + `CouponForm.jsx`
+- `OrdersList.jsx` + `OrderDetail.jsx` (with assign developer action)
+
+Update the existing `AdminDashboard.jsx` with new KPIs:
+- Orders this month + revenue
+- Leads in queue
+- Active projects
+- Top-selling packages
+- Coupon usage stats
+
+<span class="k">## Phase 5 · Polish + Email Templates (3-4 days)</span>
+
+Email templates (Blade, in `api/resources/views/emails/`):
+- `email-verification.blade.php`
+- `order-confirmation.blade.php`
+- `quote-received.blade.php`
+- `quote-accepted-admin.blade.php`
+
+Legal pages (in `app/src/pages/public/`):
+- `Terms.jsx` (Arabic content provided)
+- `Privacy.jsx`
+- `Refund.jsx`
+
+Tests (PHPUnit):
+- `OrderFlowTest.php` — create order, add addons, apply coupon, checkout, verify project created
+- `QuoteFlowTest.php` — create lead, build quote, accept, verify order created
+- `CouponTest.php` — validate codes, usage limits, expiry
+
+<span class="k">## Coding Standards</span>
+
+- Follow existing patterns in the codebase exactly (PSR-12, ESLint rules)
+- All API responses use the existing `ApiResponses` trait (or create one if missing)
+- Validate all input with Form Requests or inline `$request->validate()`
+- Wrap multi-table writes in DB transactions
+- Use Zod schemas for client-side validation (extend `app/src/lib/schemas.js`)
+- All UI strings in Arabic; admin labels can be English
+- Lazy-load admin pages with `React.lazy()`
+- Use existing `Modal.jsx`, `PageHeader.jsx`, `DataTable.jsx` from `components/dashboard/`
+- For real-time updates (new lead notification), use existing Reverb infrastructure
+
+<span class="k">## Acceptance Criteria (must pass before considering done)</span>
+
+1. A new user can: register → verify email → onboarding → choose Path A → select Multi-page Pro → add 2 addons → apply coupon SUMMER2026 → pay 40% via Paymob → see project auto-created → receive welcome email
+2. A new user can: register → choose Path B → answer 6 smart questions for "web" → submit lead → admin builds quote → user receives email → user accepts quote → pays deposit → project becomes active
+3. Admin can: create/edit/delete packages, addons, bundles, coupons via UI
+4. Admin can: see leads queue, assign self to lead, build a quote with 4+ line items, send to client
+5. All flows trigger proper email notifications + in-app notifications
+6. PHPUnit tests pass (no regressions in existing tests)
+7. Coupon usage is correctly tracked (FIRST100 limited to 100 total)
+8. Quote v2 can be created when client negotiates v1
+
+<span class="k">## Start Here</span>
+
+Begin with Phase 1 (database foundation). After Phase 1 is complete and migrations run successfully, ask me to confirm before proceeding to Phase 2.
+
+For each phase, output:
+1. Files created/modified
+2. Commands run (composer, npm, artisan)
+3. Test results
+4. Any decisions made (with rationale)
+5. What needs to be verified manually before next phase
+
+Do not skip phases. Do not combine phases. Each phase must be production-ready before moving on.
+</div>
+
+  <div class="alert alert-success" style="margin-top: 24px;">
+    <span class="alert-icon">✓</span>
+    <div>
+      <strong>هذا البرومبت مصمّم خصّيصاً لـ Claude Code:</strong> بيفهم البنية الموجودة، بيحدّد المراحل، بيمنع الـ scope creep، وبيطلب confirmation بين كل مرحلة. خد نسخة منه وحطّها في الـ root كـ `IMPLEMENTATION_BRIEF.md`.
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPENDIX ============ -->
+<section class="section section-cream" id="appendix">
+  <span class="eyebrow">القسم 14</span>
+  <h2 class="h-section">المرجع <span class="accent">والـ Resources</span></h2>
+
+  <h3>📚 مراجع البحث</h3>
+  <ul class="bullets">
+    <li><strong>السوق العربي:</strong> Khamsat, Mostaql, Ureed, Jobbers — الـ MENA freelance market نما 385% منذ 2020 لـ $1.4B في 2025</li>
+    <li><strong>Productized models (دولي):</strong> DesignJoy, ManyPixels, Penji, Design Pickle, Superside</li>
+    <li><strong>التسعير المصري:</strong> Intrazero, Ensign Agency, Stork EG, T2 Group — 6,000-50,000 EGP للمواقع</li>
+    <li><strong>التسعير السعودي:</strong> سعر صرف ~7.45 EGP/SAR في 2026</li>
+  </ul>
+
+  <h3 style="margin-top: 28px;">🔧 الـ Stack الموجود (لا تغيّره)</h3>
+  <table class="tbl">
+    <thead><tr><th>الطبقة</th><th>التقنية</th><th>السبب</th></tr></thead>
+    <tbody>
+      <tr><td>Backend</td><td>Laravel 11 + Sanctum + Reverb</td><td>الإطار الأكثر شهرة في المنطقة العربية + WebSockets محلي</td></tr>
+      <tr><td>Frontend</td><td>React 18 + Vite + Tailwind</td><td>الـ ecosystem الأكبر + DX سريع</td></tr>
+      <tr><td>State</td><td>TanStack Query + Zustand</td><td>cache server state + local UI state</td></tr>
+      <tr><td>Validation</td><td>Zod (client) + Laravel rules (server)</td><td>type-safe + duplicate-free</td></tr>
+      <tr><td>Payments</td><td>Strategy Pattern + 5 gateways</td><td>قابل للتوسعة لأي بوابة جديدة</td></tr>
+      <tr><td>Real-time</td><td>Laravel Reverb (self-hosted)</td><td>بدون Pusher fees</td></tr>
+      <tr><td>Email</td><td>Database queue + Markdown templates</td><td>سريع + قابل للتغيير لـ Mailgun/SES</td></tr>
+      <tr><td>Storage</td><td>Public disk + symlink</td><td>سهل + قابل للتغيير لـ S3</td></tr>
+      <tr><td>Monitoring</td><td>Sentry + Health endpoints + Audit logs</td><td>visibility كاملة</td></tr>
+      <tr><td>DevOps</td><td>Docker + Supervisor + Nginx</td><td>production-ready مباشرة</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top: 28px;">📞 معلومات التواصل (مرجع للـ contact data في الكود)</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h4>المبيعات</h4>
+      <p style="font-family: var(--f-mono); direction: ltr; text-align: left;">+20 150 015 6690</p>
+    </div>
+    <div class="card card-orange">
+      <h4>الدعم الفني</h4>
+      <p style="font-family: var(--f-mono); direction: ltr; text-align: left;">+20 106 875 8847</p>
+    </div>
+    <div class="card card-teal">
+      <h4>الإيميل</h4>
+      <p style="font-family: var(--f-mono); direction: ltr; text-align: left;">hello@bp-eg.com</p>
+    </div>
+    <div class="card card-purple">
+      <h4>الموقع</h4>
+      <p style="font-family: var(--f-mono); direction: ltr; text-align: left;">bp-eg.com · behance.net/businespartner</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 28px;">📌 ملاحظات نهائية</h3>
+  <div class="alert alert-info">
+    <span class="alert-icon">💡</span>
+    <div>
+      <strong>قبل التنفيذ:</strong> راجع البرومبت مع فريقك التقني، احفظ نسخة منه في الـ repo باسم `IMPLEMENTATION_BRIEF.md`، وحدّد المطوّر المسؤول. الـ Phase 1 خفيف نسبياً ومناسب للـ kick-off.
+    </div>
+  </div>
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠</span>
+    <div>
+      <strong>بعد التنفيذ:</strong> اختبر كل flow على staging قبل production. اعمل sandbox testing مع Paymob/Fawry لأن الـ real money flows ممكن تكون فيها edge cases. لا تشغّل الـ live payment credentials قبل ما الـ webhook signatures تنجح 100% في الـ sandbox.
+    </div>
+  </div>
+  <div class="alert alert-success">
+    <span class="alert-icon">🚀</span>
+    <div>
+      <strong>الـ launch strategy المقترحة:</strong> ابدأ بـ soft launch لـ 10-20 عميل ودود (existing clients) لمدة أسبوعين. اجمع الـ feedback، اعمل تحسينات. بعد كده official launch بـ marketing campaign + كوبون FIRST100 لأول 100 عميل (الـ FOMO يخلق momentum).
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div style="text-align: center; padding: 32px 0;">
+    <div style="font-family: var(--f-latin); font-style: italic; font-size: 48px; color: var(--o); letter-spacing: -2px; text-shadow: 4px 4px 0 var(--t);">BSN</div>
+    <p style="font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.15em; color: var(--gray-600); margin-top: 8px; text-transform: uppercase;">
+      Master Specification · v1.0 · مايو 2026
+    </p>
+    <p style="font-family: var(--f-mono); font-size: 11px; color: var(--gray-400); margin-top: 4px;">
+      شريك الأعمال · Business Partner for Information Technology
+    </p>
+  </div>
+</section>
+
+</main>
+</div>
+</body>
+</html>

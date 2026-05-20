@@ -2141,6 +2141,21 @@ input, select, textarea { font: inherit; }
   font-weight: 700;
 }
 
+.footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding-top: 18px;
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  position: relative;
+  z-index: 1;
+}
+.footer-legal-links a { color: rgba(255,255,255,0.7); font-weight: 700; }
+.footer-legal-links a:hover { color: var(--o); }
+.footer-legal-links span { opacity: 0.35; }
+
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-block: 22px;

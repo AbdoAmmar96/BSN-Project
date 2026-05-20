@@ -19,7 +19,7 @@ import toast from 'react-hot-toast';
  *   label:        string  (default "ادفع دلوقتي")
  *   className:    optional css for the button
  */
-export default function PayButton({ amount, currency = 'EGP', invoiceId, projectId, label = 'ادفع دلوقتي', className }) {
+export default function PayButton({ amount, currency = 'EGP', invoiceId, projectId, orderId, label = 'ادفع دلوقتي', className }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [gateway, setGateway] = useState('');
@@ -33,6 +33,7 @@ export default function PayButton({ amount, currency = 'EGP', invoiceId, project
       currency,
       invoice_id: invoiceId,
       project_id: projectId,
+      order_id: orderId,
       phone: gateway === 'paymob_wallet' ? phone : undefined,
       months: gateway === 'paymob_installments' ? months : undefined,
     }),

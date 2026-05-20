@@ -3,7 +3,11 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\LeadController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\PaymentController;
@@ -83,6 +87,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
     Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
     Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
+    Route::post('/auth/verify-email', [AuthController::class, 'verifyEmail'])->middleware('throttle:10,1');
 
     Route::get('/packages', [PackageController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1');
@@ -94,10 +99,36 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/logout-all', [AuthController::class, 'logoutAll']);
         Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
         Route::put('/auth/password', [AuthController::class, 'changePassword'])->middleware('throttle:5,1');
+        Route::post('/auth/resend-verification', [AuthController::class, 'resendVerification'])->middleware('throttle:3,1');
 
         Route::post('/broadcasting/auth', function () {
             return Broadcast::auth(request());
         });
+
+        // Orders (Path A — package purchase)
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::post('/orders', [OrderController::class, 'store']);
+        Route::post('/orders/calculate', [OrderController::class, 'calculate']);
+        Route::get('/orders/{order}', [OrderController::class, 'show']);
+        Route::put('/orders/{order}', [OrderController::class, 'update']);
+        Route::post('/orders/{order}/checkout', [OrderController::class, 'checkout']);
+        Route::post('/orders/{order}/attachments', [OrderController::class, 'uploadAttachment']);
+
+        // Addons catalog for the order wizard
+        Route::get('/packages/addons', [PackageController::class, 'addons']);
+
+        // Coupons
+        Route::post('/coupons/validate', [CouponController::class, 'validateCode'])->middleware('throttle:30,1');
+
+        // Leads + Quotes (Path B — custom quote, user side)
+        Route::get('/leads', [LeadController::class, 'index']);
+        Route::post('/leads', [LeadController::class, 'store']);
+        Route::get('/leads/{lead}', [LeadController::class, 'show']);
+        Route::get('/quotes', [QuoteController::class, 'index']);
+        Route::get('/quotes/{quote}', [QuoteController::class, 'show']);
+        Route::post('/quotes/{quote}/accept', [QuoteController::class, 'accept']);
+        Route::post('/quotes/{quote}/reject', [QuoteController::class, 'reject']);
+        Route::post('/quotes/{quote}/negotiate', [QuoteController::class, 'negotiate']);
 
         // Projects
         Route::get('/projects', [ProjectController::class, 'index']);
@@ -144,6 +175,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/notifications', [NotificationController::class, 'index']);
         Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead']);
         Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead']);
+
+        // Onboarding (optional 3-step intro after signup)
+        Route::get('/onboarding', [\App\Http\Controllers\Api\OnboardingController::class, 'show']);
+        Route::post('/onboarding', [\App\Http\Controllers\Api\OnboardingController::class, 'store']);
+        Route::post('/onboarding/skip', [\App\Http\Controllers\Api\OnboardingController::class, 'skip']);
     });
 
     // ----- ADMIN ONLY -----
@@ -175,6 +211,49 @@ Route::prefix('v1')->group(function () {
         Route::get('/contact-messages', [ContactController::class, 'index']);
         Route::put('/contact-messages/{contactMessage}', [ContactController::class, 'update']);
         Route::delete('/contact-messages/{contactMessage}', [ContactController::class, 'destroy']);
+
+        // Leads (Path B admin)
+        Route::get('/leads', [\App\Http\Controllers\Api\Admin\LeadController::class, 'index']);
+        Route::get('/leads/{lead}', [\App\Http\Controllers\Api\Admin\LeadController::class, 'show']);
+        Route::post('/leads/{lead}/assign', [\App\Http\Controllers\Api\Admin\LeadController::class, 'assign']);
+        Route::post('/leads/{lead}/quote', [\App\Http\Controllers\Api\Admin\LeadController::class, 'buildQuote']);
+
+        // Orders + developer assignment (Flow E)
+        Route::get('/orders', [\App\Http\Controllers\Api\Admin\OrderAssignmentController::class, 'index']);
+        Route::get('/orders/{order}', [\App\Http\Controllers\Api\Admin\OrderAssignmentController::class, 'show']);
+        Route::post('/orders/{order}/assign', [\App\Http\Controllers\Api\Admin\OrderAssignmentController::class, 'assign']);
+        Route::post('/orders/{order}/hold', [\App\Http\Controllers\Api\Admin\OrderAssignmentController::class, 'hold']);
+        Route::post('/orders/{order}/cancel', [\App\Http\Controllers\Api\Admin\OrderAssignmentController::class, 'cancel']);
+
+        // Quotes (Path B admin)
+        Route::get('/quotes', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'index']);
+        Route::get('/quotes/{quote}', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'show']);
+        Route::put('/quotes/{quote}', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'update']);
+        Route::post('/quotes/{quote}/items', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'addItem']);
+        Route::delete('/quotes/{quote}/items/{item}', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'removeItem']);
+        Route::post('/quotes/{quote}/send', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'send']);
+        Route::post('/quotes/{quote}/version', [\App\Http\Controllers\Api\Admin\QuoteController::class, 'createVersion']);
+
+        // Addons CRUD (CMS)
+        Route::get('/addons', [\App\Http\Controllers\Api\Admin\AddonController::class, 'index']);
+        Route::post('/addons', [\App\Http\Controllers\Api\Admin\AddonController::class, 'store'])->middleware('throttle:30,1');
+        Route::get('/addons/{addon}', [\App\Http\Controllers\Api\Admin\AddonController::class, 'show']);
+        Route::put('/addons/{addon}', [\App\Http\Controllers\Api\Admin\AddonController::class, 'update'])->middleware('throttle:60,1');
+        Route::delete('/addons/{addon}', [\App\Http\Controllers\Api\Admin\AddonController::class, 'destroy'])->middleware('throttle:30,1');
+
+        // Bundles CRUD (CMS)
+        Route::get('/bundles', [\App\Http\Controllers\Api\Admin\BundleController::class, 'index']);
+        Route::post('/bundles', [\App\Http\Controllers\Api\Admin\BundleController::class, 'store'])->middleware('throttle:30,1');
+        Route::get('/bundles/{bundle}', [\App\Http\Controllers\Api\Admin\BundleController::class, 'show']);
+        Route::put('/bundles/{bundle}', [\App\Http\Controllers\Api\Admin\BundleController::class, 'update'])->middleware('throttle:60,1');
+        Route::delete('/bundles/{bundle}', [\App\Http\Controllers\Api\Admin\BundleController::class, 'destroy'])->middleware('throttle:30,1');
+
+        // Coupons CRUD (CMS)
+        Route::get('/coupons', [\App\Http\Controllers\Api\Admin\CouponController::class, 'index']);
+        Route::post('/coupons', [\App\Http\Controllers\Api\Admin\CouponController::class, 'store'])->middleware('throttle:30,1');
+        Route::get('/coupons/{coupon}', [\App\Http\Controllers\Api\Admin\CouponController::class, 'show']);
+        Route::put('/coupons/{coupon}', [\App\Http\Controllers\Api\Admin\CouponController::class, 'update'])->middleware('throttle:60,1');
+        Route::delete('/coupons/{coupon}', [\App\Http\Controllers\Api\Admin\CouponController::class, 'destroy'])->middleware('throttle:30,1');
 
         // Audit logs viewer
         Route::get('/audit-logs', [\App\Http\Controllers\Api\AuditLogController::class, 'index']);

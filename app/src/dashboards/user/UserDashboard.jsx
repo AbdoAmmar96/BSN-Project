@@ -3,12 +3,20 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { projectsApi, PROJECT_STATUS, SERVICE_TYPE } from '@/api/projects';
 import { invoicesApi, INVOICE_STATUS } from '@/api/invoices';
+import { onboardingApi } from '@/api/onboarding';
+import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import Badge from '@/components/dashboard/Badge';
 import { Briefcase, FileText, CreditCard, MessageSquare, Sparkles, ArrowLeft, Plus } from 'lucide-react';
 import clsx from 'clsx';
 
 export default function UserDashboard() {
   const { user } = useAuth();
+
+  const { data: onboardingData, isSuccess: onboardingLoaded } = useQuery({
+    queryKey: ['onboarding'],
+    queryFn: () => onboardingApi.show(),
+  });
+  const showOnboarding = onboardingLoaded && !onboardingData?.onboarding?.completed;
 
   const { data: projects } = useQuery({
     queryKey: ['projects', 'user'],
@@ -31,6 +39,8 @@ export default function UserDashboard() {
 
   return (
     <div className="space-y-6">
+      {showOnboarding && <OnboardingModal />}
+
       <div className="card relative overflow-hidden">
         <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-brand-orange/10" />
         <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-brand-teal/10" />

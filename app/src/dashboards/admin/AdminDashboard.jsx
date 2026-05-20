@@ -5,7 +5,7 @@ import { overviewApi } from '@/api/invoices';
 import { projectsApi, PROJECT_STATUS, SERVICE_TYPE } from '@/api/projects';
 import Badge from '@/components/dashboard/Badge';
 import { Skeleton } from '@/components/Skeleton';
-import { Users, Briefcase, CreditCard, TrendingUp, ArrowLeft, Sparkles } from 'lucide-react';
+import { Users, Briefcase, CreditCard, TrendingUp, ArrowLeft, Sparkles, ShoppingCart, UserPlus, Clock } from 'lucide-react';
 import clsx from 'clsx';
 
 export default function AdminDashboard() {
@@ -88,6 +88,42 @@ export default function AdminDashboard() {
             <div className="text-xs font-mono mt-2 opacity-50">{trend}</div>
           </Link>
         ))}
+      </div>
+
+      {/* Business model row — orders & leads pipeline */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Link to="/admin/orders" className="card flex items-center gap-4 hover:-translate-y-0.5 transition">
+          <div className="w-11 h-11 rounded-xl border-2 border-brand-ink bg-brand-orange text-white flex items-center justify-center shrink-0">
+            <ShoppingCart size={20} />
+          </div>
+          <div className="min-w-0">
+            <div className="font-display font-black text-2xl text-brand-ink leading-tight">{stats?.orders?.total ?? 0}</div>
+            <div className="text-sm font-bold text-brand-ink/70">إجمالي الطلبات</div>
+            <div className="text-xs font-mono mt-0.5 opacity-50">+{stats?.orders?.this_month ?? 0} هذا الشهر</div>
+          </div>
+        </Link>
+
+        <Link to="/admin/orders?filter=needs_assign" className="card flex items-center gap-4 hover:-translate-y-0.5 transition">
+          <div className="w-11 h-11 rounded-xl border-2 border-brand-ink bg-brand-ink text-white flex items-center justify-center shrink-0">
+            <Clock size={20} />
+          </div>
+          <div className="min-w-0">
+            <div className="font-display font-black text-2xl text-brand-orange leading-tight">{stats?.orders?.needs_assignment ?? 0}</div>
+            <div className="text-sm font-bold text-brand-ink/70">محتاجين تعيين developer</div>
+            <div className="text-xs font-mono mt-0.5 opacity-50">طلبات مدفوعة في الانتظار</div>
+          </div>
+        </Link>
+
+        <Link to="/admin/leads" className="card flex items-center gap-4 hover:-translate-y-0.5 transition">
+          <div className="w-11 h-11 rounded-xl border-2 border-brand-ink bg-brand-teal text-brand-purple-deep flex items-center justify-center shrink-0">
+            <UserPlus size={20} />
+          </div>
+          <div className="min-w-0">
+            <div className="font-display font-black text-2xl text-brand-ink leading-tight">{stats?.leads?.open ?? 0}</div>
+            <div className="text-sm font-bold text-brand-ink/70">طلبات تسعير مفتوحة</div>
+            <div className="text-xs font-mono mt-0.5 opacity-50">من إجمالي {stats?.leads?.total ?? 0}</div>
+          </div>
+        </Link>
       </div>
 
       {/* Recent Projects + Role breakdown */}

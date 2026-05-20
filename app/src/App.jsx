@@ -17,6 +17,9 @@ import Portfolio from '@/pages/public/Portfolio';
 import About from '@/pages/public/About';
 import Contact from '@/pages/public/Contact';
 import ServiceDetail from '@/pages/public/ServiceDetail';
+import Terms from '@/pages/public/legal/Terms';
+import Privacy from '@/pages/public/legal/Privacy';
+import Refund from '@/pages/public/legal/Refund';
 
 // Auth
 import Login from '@/pages/auth/Login';
@@ -46,7 +49,14 @@ const AdminPaymentsList = lazy(() => import('@/dashboards/admin/AdminPaymentsLis
 const AdminInvoicesList = lazy(() => import('@/dashboards/admin/AdminInvoicesList'));
 const InvoiceForm = lazy(() => import('@/dashboards/admin/InvoiceForm'));
 const PackagesList = lazy(() => import('@/dashboards/admin/PackagesList'));
+const LeadsList = lazy(() => import('@/dashboards/admin/LeadsList'));
+const LeadDetail = lazy(() => import('@/dashboards/admin/LeadDetail'));
+const AdminOrdersList = lazy(() => import('@/dashboards/admin/AdminOrdersList'));
+const AdminOrderDetail = lazy(() => import('@/dashboards/admin/AdminOrderDetail'));
 const AdminSettings = lazy(() => import('@/dashboards/admin/AdminSettings'));
+const AddonsList = lazy(() => import('@/dashboards/admin/AddonsList'));
+const BundlesList = lazy(() => import('@/dashboards/admin/BundlesList'));
+const CouponsList = lazy(() => import('@/dashboards/admin/CouponsList'));
 
 // Developer
 const DeveloperDashboard = lazy(() => import('@/dashboards/developer/DeveloperDashboard'));
@@ -57,6 +67,13 @@ const TasksKanban = lazy(() => import('@/dashboards/developer/TasksKanban'));
 const UserDashboard = lazy(() => import('@/dashboards/user/UserDashboard'));
 const UserProjectsList = lazy(() => import('@/dashboards/user/UserProjectsList'));
 const UserNewProject = lazy(() => import('@/dashboards/user/UserNewProject'));
+const NewProjectChoice = lazy(() => import('@/pages/projects/NewProjectChoice'));
+const OrderWizard = lazy(() => import('@/pages/projects/order-wizard/OrderWizard'));
+const UserOrdersList = lazy(() => import('@/pages/projects/UserOrdersList'));
+const OrderDetail = lazy(() => import('@/pages/projects/OrderDetail'));
+const QuoteWizard = lazy(() => import('@/pages/projects/quote-wizard/QuoteWizard'));
+const QuotesList = lazy(() => import('@/pages/projects/QuotesList'));
+const QuoteDetail = lazy(() => import('@/pages/projects/QuoteDetail'));
 const UserInvoicesList = lazy(() => import('@/dashboards/user/UserInvoicesList'));
 const UserPaymentsList = lazy(() => import('@/dashboards/user/UserPaymentsList'));
 
@@ -108,6 +125,9 @@ export default function App() {
         <Route path="/service-ecommerce" element={<ServiceDetail serviceId="ecommerce" />} />
         <Route path="/service-branding"  element={<ServiceDetail serviceId="branding" />} />
         <Route path="/service-marketing" element={<ServiceDetail serviceId="marketing" />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/refund" element={<Refund />} />
         {/* Public 404 — uses public layout (header + footer) */}
         <Route path="*" element={<NotFound />} />
       </Route>
@@ -146,6 +166,13 @@ export default function App() {
         <Route path="invoices/new" element={<InvoiceForm />} />
         <Route path="invoices/:id" element={<InvoiceForm />} />
         <Route path="packages" element={<PackagesList />} />
+        <Route path="addons" element={<AddonsList />} />
+        <Route path="bundles" element={<BundlesList />} />
+        <Route path="coupons" element={<CouponsList />} />
+        <Route path="leads" element={<LeadsList />} />
+        <Route path="leads/:id" element={<LeadDetail />} />
+        <Route path="orders" element={<AdminOrdersList />} />
+        <Route path="orders/:id" element={<AdminOrderDetail />} />
         <Route path="settings" element={<AdminSettings />} />
         <Route path="chat" element={<ChatPage />} />
         <Route path="profile" element={<Profile />} />
@@ -179,8 +206,14 @@ export default function App() {
       >
         <Route index element={<UserDashboard />} />
         <Route path="projects" element={<UserProjectsList />} />
-        <Route path="projects/new" element={<UserNewProject />} />
+        <Route path="projects/new" element={<NewProjectChoice />} />
+        <Route path="projects/new/package" element={<OrderWizard />} />
+        <Route path="projects/new/custom" element={<QuoteWizard />} />
         <Route path="projects/:id" element={<ProjectDetail />} />
+        <Route path="orders" element={<UserOrdersList />} />
+        <Route path="orders/:id" element={<OrderDetail />} />
+        <Route path="quotes" element={<QuotesList />} />
+        <Route path="quotes/:id" element={<QuoteDetail />} />
         <Route path="invoices" element={<UserInvoicesList />} />
         <Route path="payments" element={<UserPaymentsList />} />
         <Route path="chat" element={<ChatPage />} />

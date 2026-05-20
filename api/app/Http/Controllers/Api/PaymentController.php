@@ -51,11 +51,12 @@ class PaymentController extends Controller
             'currency' => 'sometimes|string|size:3',
             'project_id' => 'nullable|exists:projects,id',
             'invoice_id' => 'nullable|exists:invoices,id',
+            'order_id' => 'nullable|exists:orders,id',
             'phone' => 'nullable|string|max:20',
             'months' => 'nullable|integer|min:3|max:24',
         ]);
 
-        // Ensure the user can pay for this invoice/project
+        // Ensure the user can pay for this invoice/project/order
         if (!empty($data['project_id'])) {
             $project = Project::findOrFail($data['project_id']);
             if (!$request->user()->isAdmin() && $project->client_id !== $request->user()->id) {
@@ -68,11 +69,18 @@ class PaymentController extends Controller
                 return response()->json(['message' => 'لا يمكنك الدفع لفاتورة غير فاتورتك'], 403);
             }
         }
+        if (!empty($data['order_id'])) {
+            $order = \App\Models\Order::findOrFail($data['order_id']);
+            if (!$request->user()->isAdmin() && $order->user_id !== $request->user()->id) {
+                return response()->json(['message' => 'لا يمكنك الدفع لطلب غير طلبك'], 403);
+            }
+        }
 
         $payment = Payment::create([
             'user_id' => $request->user()->id,
             'invoice_id' => $data['invoice_id'] ?? null,
             'project_id' => $data['project_id'] ?? null,
+            'order_id' => $data['order_id'] ?? null,
             'amount' => $data['amount'],
             'currency' => $data['currency'] ?? 'EGP',
             'gateway' => $data['gateway'],

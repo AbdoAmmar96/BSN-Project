@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('package_tier')->nullable(); // 'landing', 'multipage_pro', 'enterprise', etc.
 
             $table->enum('status', [
-                'draft', 'pending', 'quoted', 'approved',
+                'draft', 'pending', 'pending_assignment', 'quoted', 'approved',
                 'in_progress', 'review', 'revision',
                 'completed', 'cancelled', 'on_hold'
             ])->default('draft')->index();

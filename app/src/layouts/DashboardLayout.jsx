@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   LayoutDashboard, Users, FolderKanban, CreditCard, MessageSquare,
   Settings, LogOut, Menu, X, FileText, Briefcase, CheckSquare, Package,
+  ShoppingCart, UserPlus, Layers, PlusSquare, Ticket,
 } from 'lucide-react';
 import clsx from 'clsx';
 import NotificationsBell from '@/components/dashboard/NotificationsBell';
@@ -13,10 +14,15 @@ const NAV_BY_ROLE = {
   admin: [
     { to: '/admin', label: 'نظرة عامة', icon: LayoutDashboard, end: true },
     { to: '/admin/users', label: 'المستخدمون', icon: Users },
+    { to: '/admin/orders', label: 'الطلبات', icon: ShoppingCart },
+    { to: '/admin/leads', label: 'طلبات التسعير', icon: UserPlus },
     { to: '/admin/projects', label: 'المشاريع', icon: FolderKanban },
     { to: '/admin/payments', label: 'المدفوعات', icon: CreditCard },
     { to: '/admin/invoices', label: 'الفواتير', icon: FileText },
     { to: '/admin/packages', label: 'الباقات', icon: Package },
+    { to: '/admin/addons', label: 'الإضافات', icon: PlusSquare },
+    { to: '/admin/bundles', label: 'الباقات المجمّعة', icon: Layers },
+    { to: '/admin/coupons', label: 'الكوبونات', icon: Ticket },
     { to: '/admin/chat', label: 'المحادثات', icon: MessageSquare },
     { to: '/admin/settings', label: 'الإعدادات', icon: Settings },
   ],

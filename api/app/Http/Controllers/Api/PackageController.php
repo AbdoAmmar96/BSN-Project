@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Package;
+use App\Models\PackageAddon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -27,6 +28,19 @@ class PackageController extends Controller
         });
 
         return response()->json(['data' => $packages]);
+    }
+
+    // GET /api/v1/packages/addons?service_type=web — active addons for a service (+ "any")
+    public function addons(Request $request)
+    {
+        $type = $request->query('service_type');
+
+        $query = PackageAddon::query()->where('is_active', true);
+        if ($type) {
+            $query->whereIn('service_type', [$type, 'any']);
+        }
+
+        return response()->json(['data' => $query->orderBy('sort_order')->get()]);
     }
 
     // Admin endpoints

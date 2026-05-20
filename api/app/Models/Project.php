@@ -101,6 +101,11 @@ class Project extends Model
         return $this->hasOne(ChatRoom::class)->where('type', 'project');
     }
 
+    public function order(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Order::class);
+    }
+
     // ============================================
     // SCOPES
     // ============================================

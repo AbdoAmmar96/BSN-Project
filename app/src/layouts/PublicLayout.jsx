@@ -175,6 +175,14 @@ export default function PublicLayout() {
             </details>
           </div>
 
+          <div className="footer-legal-links">
+            <Link to="/terms">الشروط والأحكام</Link>
+            <span aria-hidden="true">·</span>
+            <Link to="/privacy">سياسة الخصوصية</Link>
+            <span aria-hidden="true">·</span>
+            <Link to="/refund">سياسة الاسترداد</Link>
+          </div>
+
           <div className="footer-bottom">
             <p>© <span>{new Date().getFullYear()}</span> <a href="#">شركة شريك الأعمال لتقنية المعلومات</a>. جميع الحقوق محفوظة.</p>
             <p>© <span>{new Date().getFullYear()}</span> <a href="#">Business Partner for Information Technology</a>. All rights reserved.</p>

@@ -73,5 +73,14 @@ class DatabaseSeeder extends Seeder
         $this->command->info('  Admin:     walid@bp-eg.com / password');
         $this->command->info('  Developer: dev@bp-eg.com / password');
         $this->command->info('  User:      client@example.com / password');
+
+        // Catalog: packages first (bundles reference them by name), then the
+        // business-model reference data.
+        $this->call([
+            PackageSeeder::class,
+            PackageAddonSeeder::class,
+            BundleSeeder::class,
+            CouponSeeder::class,
+        ]);
     }
 }

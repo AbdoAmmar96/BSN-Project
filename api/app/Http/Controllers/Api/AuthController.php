@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
 use App\Models\User;
+use App\Services\EmailVerificationService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,12 +43,47 @@ class AuthController extends Controller
         $token = $user->createToken('web', expiresAt: now()->addDays(30))->plainTextToken;
 
         Mail::to($user->email)->send(new WelcomeMail($user));
+        app(EmailVerificationService::class)->sendLink($user);
 
         return response()->json([
-            'message' => 'تم التسجيل بنجاح',
+            'message' => 'تم التسجيل بنجاح. بعتنالك إيميل لتأكيد بريدك.',
             'user' => $user,
             'token' => $token,
         ], 201);
+    }
+
+    /**
+     * Verify a user's email from the link sent to them. Public — identified by
+     * the one-time token, not the session.
+     */
+    public function verifyEmail(Request $request, EmailVerificationService $service): JsonResponse
+    {
+        $data = $request->validate([
+            'id' => 'required|integer',
+            'token' => 'required|string',
+        ]);
+
+        if (! $service->verify((int) $data['id'], $data['token'])) {
+            return response()->json(['message' => 'رابط التأكيد غير صالح أو منتهي.'], 422);
+        }
+
+        return response()->json(['message' => 'تم تأكيد بريدك بنجاح.']);
+    }
+
+    /**
+     * Resend a verification link to the authenticated user.
+     */
+    public function resendVerification(Request $request, EmailVerificationService $service): JsonResponse
+    {
+        $user = $request->user();
+
+        if ($user->email_verified_at !== null) {
+            return response()->json(['message' => 'بريدك مؤكّد بالفعل.'], 422);
+        }
+
+        $service->sendLink($user);
+
+        return response()->json(['message' => 'بعتنالك رابط تأكيد جديد.']);
     }
 
     /**
