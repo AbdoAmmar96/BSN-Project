@@ -23,6 +23,7 @@ const NAV_BY_ROLE = {
     { to: '/admin/addons', label: 'الإضافات', icon: PlusSquare },
     { to: '/admin/bundles', label: 'الباقات المجمّعة', icon: Layers },
     { to: '/admin/coupons', label: 'الكوبونات', icon: Ticket },
+    { to: '/admin/portfolio', label: 'أعمالنا', icon: Briefcase },
     { to: '/admin/chat', label: 'المحادثات', icon: MessageSquare },
     { to: '/admin/settings', label: 'الإعدادات', icon: Settings },
   ],

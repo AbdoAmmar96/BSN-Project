@@ -81,6 +81,7 @@ class DatabaseSeeder extends Seeder
             PackageAddonSeeder::class,
             BundleSeeder::class,
             CouponSeeder::class,
+            PortfolioWorkSeeder::class,
             // Demo orders/leads/quotes — needs the users + catalog above.
             BusinessModelDemoSeeder::class,
         ]);

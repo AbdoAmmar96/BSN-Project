@@ -58,6 +58,7 @@ const AdminSettings = lazy(() => import('@/dashboards/admin/AdminSettings'));
 const AddonsList = lazy(() => import('@/dashboards/admin/AddonsList'));
 const BundlesList = lazy(() => import('@/dashboards/admin/BundlesList'));
 const CouponsList = lazy(() => import('@/dashboards/admin/CouponsList'));
+const PortfolioList = lazy(() => import('@/dashboards/admin/PortfolioList'));
 
 // Developer
 const DeveloperDashboard = lazy(() => import('@/dashboards/developer/DeveloperDashboard'));
@@ -171,6 +172,7 @@ export default function App() {
         <Route path="addons" element={<AddonsList />} />
         <Route path="bundles" element={<BundlesList />} />
         <Route path="coupons" element={<CouponsList />} />
+        <Route path="portfolio" element={<PortfolioList />} />
         <Route path="leads" element={<LeadsList />} />
         <Route path="leads/:id" element={<LeadDetail />} />
         <Route path="orders" element={<AdminOrdersList />} />

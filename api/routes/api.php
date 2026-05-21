@@ -91,6 +91,7 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/packages', [PackageController::class, 'index']);
     Route::get('/packages/{package}', [PackageController::class, 'show'])->whereNumber('package');
+    Route::get('/portfolio', [\App\Http\Controllers\Api\PortfolioController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1');
 
     // ----- AUTH (any role) -----
@@ -255,6 +256,14 @@ Route::prefix('v1')->group(function () {
         Route::get('/coupons/{coupon}', [\App\Http\Controllers\Api\Admin\CouponController::class, 'show']);
         Route::put('/coupons/{coupon}', [\App\Http\Controllers\Api\Admin\CouponController::class, 'update'])->middleware('throttle:60,1');
         Route::delete('/coupons/{coupon}', [\App\Http\Controllers\Api\Admin\CouponController::class, 'destroy'])->middleware('throttle:30,1');
+
+        // Portfolio works CRUD (CMS — "أعمالنا")
+        Route::get('/portfolio', [\App\Http\Controllers\Api\Admin\PortfolioController::class, 'index']);
+        Route::post('/portfolio', [\App\Http\Controllers\Api\Admin\PortfolioController::class, 'store'])->middleware('throttle:30,1');
+        Route::get('/portfolio/{work}', [\App\Http\Controllers\Api\Admin\PortfolioController::class, 'show']);
+        // POST + _method=PUT so the multipart image upload survives (PHP can't parse multipart on PUT).
+        Route::post('/portfolio/{work}', [\App\Http\Controllers\Api\Admin\PortfolioController::class, 'update'])->middleware('throttle:60,1');
+        Route::delete('/portfolio/{work}', [\App\Http\Controllers\Api\Admin\PortfolioController::class, 'destroy'])->middleware('throttle:30,1');
 
         // Audit logs viewer
         Route::get('/audit-logs', [\App\Http\Controllers\Api\AuditLogController::class, 'index']);
