@@ -7,7 +7,6 @@ use App\Models\Invoice;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\PaymentUpdateNotification;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -138,12 +137,32 @@ class InvoiceController extends Controller
 
         $invoice->load(['project', 'user']);
 
-        $pdf = Pdf::loadView('invoices.pdf', ['invoice' => $invoice])
-            ->setPaper('a4');
+        $html = view('invoices.pdf', ['invoice' => $invoice])->render();
+
+        // mpdf handles Arabic shaping (letter joining) + RTL natively, which
+        // DomPDF does not. tempDir must be writable.
+        $tempDir = storage_path('app/mpdf');
+        if (! is_dir($tempDir)) {
+            mkdir($tempDir, 0775, true);
+        }
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'tempDir' => $tempDir,
+            'autoScriptToLang' => true,
+            'autoLangToFont' => true,
+            'default_font' => 'dejavusans',
+        ]);
+        $mpdf->SetDirectionality('rtl');
+        $mpdf->WriteHTML($html);
 
         $filename = ($invoice->invoice_number ?? ('invoice-' . $invoice->id)) . '.pdf';
 
-        return $pdf->download($filename);
+        return response($mpdf->Output($filename, \Mpdf\Output\Destination::STRING_RETURN), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 
     public function destroy(Request $request, Invoice $invoice): JsonResponse
