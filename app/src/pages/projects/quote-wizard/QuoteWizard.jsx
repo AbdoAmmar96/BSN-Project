@@ -4,7 +4,14 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { leadsApi } from '@/api/leads';
 import { WIZARD_QUESTIONS, SERVICE_OPTIONS } from '@/lib/wizardQuestions';
+import { validateProjectTitle, validateProjectDescription } from '@/lib/validators';
 import PageHeader from '@/components/dashboard/PageHeader';
+
+// Local YYYY-MM-DD for <input type="date"> min (no UTC off-by-one).
+const todayISO = () => {
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+};
 
 /**
  * Custom-quote wizard (Path B). Collects service + smart answers + project
@@ -22,14 +29,16 @@ export default function QuoteWizard() {
   const field = 'w-full rounded-xl border-2 border-brand-ink/25 focus:border-brand-purple px-4 py-2.5 text-brand-ink outline-none transition';
 
   const submit = async () => {
-    if (!details.title.trim() || !details.description.trim()) {
-      toast.error('اكتب عنوان ووصف المشروع');
+    const titleErr = validateProjectTitle(details.title);
+    const descErr = validateProjectDescription(details.description);
+    if (titleErr || descErr) {
+      toast.error(titleErr || descErr);
       setStep(3);
       return;
     }
     setBusy(true);
     try {
-      const { lead } = await leadsApi.create({
+      await leadsApi.create({
         service_type: service,
         title: details.title,
         description: details.description,
@@ -39,7 +48,8 @@ export default function QuoteWizard() {
         deadline: details.deadline || undefined,
       });
       toast.success('وصلنا طلبك! هنبعتلك عرض سعر خلال 24 ساعة.');
-      navigate(`/dashboard/quotes?lead=${lead.id}`);
+      // Back to the main dashboard — the quote will arrive within 24h.
+      navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'حصل خطأ');
     } finally {
@@ -52,6 +62,8 @@ export default function QuoteWizard() {
       <PageHeader title="طلب عرض سعر مخصّص" subtitle={`خطوة ${step} من 4`} />
 
       <div className="max-w-2xl mx-auto">
+        {/* Light card so dark text reads against the dashboard's dark background */}
+        <div className="rounded-3xl border-[2.5px] border-brand-ink bg-white text-brand-ink p-5 sm:p-7 shadow-[6px_6px_0_#5C15CC]">
         {/* Step 1 — service */}
         {step === 1 && (
           <div>
@@ -63,11 +75,13 @@ export default function QuoteWizard() {
                   type="button"
                   onClick={() => { setService(s.value); setAnswers({}); }}
                   className={`text-right rounded-2xl border-[2.5px] p-4 transition ${
-                    service === s.value ? 'border-brand-purple bg-brand-purple/5 shadow-[4px_4px_0_#5C15CC]' : 'border-brand-ink/20 bg-white hover:border-brand-ink'
+                    service === s.value
+                      ? 'border-brand-purple bg-brand-purple text-white shadow-[4px_4px_0_#0F0830]'
+                      : 'border-brand-ink/20 bg-white text-brand-ink hover:border-brand-ink'
                   }`}
                 >
                   <div className="text-2xl mb-1">{s.icon}</div>
-                  <div className="font-display font-black text-sm text-brand-ink">{s.label}</div>
+                  <div className="font-display font-black text-sm">{s.label}</div>
                 </button>
               ))}
             </div>
@@ -119,23 +133,25 @@ export default function QuoteWizard() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-bold text-brand-ink mb-1.5">الميزانية من (EGP)</label>
-                <input type="number" className={field} value={details.budget_min_egp} onChange={(e) => setDetails({ ...details, budget_min_egp: e.target.value })} />
+                <input type="text" inputMode="numeric" className={field} value={details.budget_min_egp}
+                  onChange={(e) => setDetails({ ...details, budget_min_egp: e.target.value.replace(/\D/g, '') })} />
               </div>
               <div>
                 <label className="block text-sm font-bold text-brand-ink mb-1.5">إلى (EGP)</label>
-                <input type="number" className={field} value={details.budget_max_egp} onChange={(e) => setDetails({ ...details, budget_max_egp: e.target.value })} />
+                <input type="text" inputMode="numeric" className={field} value={details.budget_max_egp}
+                  onChange={(e) => setDetails({ ...details, budget_max_egp: e.target.value.replace(/\D/g, '') })} />
               </div>
             </div>
             <div>
               <label className="block text-sm font-bold text-brand-ink mb-1.5">موعد متوقع</label>
-              <input type="date" className={field} value={details.deadline} onChange={(e) => setDetails({ ...details, deadline: e.target.value })} />
+              <input type="date" className={field} min={todayISO()} value={details.deadline} onChange={(e) => setDetails({ ...details, deadline: e.target.value })} />
             </div>
           </div>
         )}
 
         {/* Step 4 — review */}
         {step === 4 && (
-          <div className="rounded-2xl border-[2.5px] border-brand-ink bg-white p-5 shadow-[5px_5px_0_#F15A24]">
+          <div className="rounded-2xl border-2 border-brand-ink/15 bg-brand-cream/40 p-5">
             <h2 className="font-display font-black text-xl text-brand-ink mb-3">مراجعة وتقديم</h2>
             <p className="text-sm text-brand-ink/75 mb-2"><strong>الخدمة:</strong> {SERVICE_OPTIONS.find((s) => s.value === service)?.label}</p>
             <p className="text-sm text-brand-ink/75 mb-2"><strong>العنوان:</strong> {details.title || '—'}</p>
@@ -148,6 +164,7 @@ export default function QuoteWizard() {
             <p className="text-xs text-brand-ink/55 mt-4">هنراجع طلبك ونبعتلك عرض سعر مفصّل خلال 24 ساعة.</p>
           </div>
         )}
+        </div>
 
         {/* Nav */}
         <div className="flex items-center justify-between mt-7">

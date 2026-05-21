@@ -70,6 +70,7 @@ export default function Step4ProjectDetails() {
           <input
             type="date"
             className={field}
+            min={todayISO()}
             value={w.expectedLaunchDate}
             onChange={(e) => w.setDetails({ expectedLaunchDate: e.target.value })}
           />

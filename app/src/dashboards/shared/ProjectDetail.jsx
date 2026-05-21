@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { todayISO } from '@/lib/dates';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import { projectsApi, tasksApi, deliverablesApi, PROJECT_STATUS, SERVICE_TYPE, TASK_STATUS, TASK_PRIORITY } from '@/api/projects';
@@ -439,7 +440,7 @@ function NewTaskModal({ open, onClose, projectId }) {
           </div>
           <div>
             <label className="label">موعد التسليم</label>
-            <input type="date" className="field text-left" dir="ltr" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+            <input type="date" className="field text-left" dir="ltr" min={todayISO()} value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
           </div>
         </div>
       </div>

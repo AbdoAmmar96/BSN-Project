@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
 use App\Models\User;
+use App\Rules\MeaningfulText;
 use App\Notifications\PaymentUpdateNotification;
 use App\Support\ReferenceNumber;
 use Illuminate\Http\JsonResponse;
@@ -42,8 +43,8 @@ class LeadController extends Controller
     {
         $data = $request->validate([
             'service_type' => 'required|in:web,ecommerce,branding,marketing,other',
-            'title' => 'required|string|max:200',
-            'description' => 'required|string|max:5000',
+            'title' => ['required', 'string', 'max:200', new MeaningfulText(3, requireMultipleWords: true)],
+            'description' => ['required', 'string', 'max:5000', new MeaningfulText(15)],
             'smart_answers' => 'sometimes|array',
             'budget_min_egp' => 'sometimes|nullable|numeric|min:0',
             'budget_max_egp' => 'sometimes|nullable|numeric|min:0',

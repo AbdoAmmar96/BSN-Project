@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { todayISO } from '@/lib/dates';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -204,7 +205,7 @@ export default function InvoiceForm() {
           </div>
           <div>
             <label className="label">تاريخ الاستحقاق</label>
-            <input type="date" className="field text-left" dir="ltr" {...register('due_at')} />
+            <input type="date" className="field text-left" dir="ltr" min={todayISO()} {...register('due_at')} />
           </div>
           <div>
             <label className="label">العملة</label>

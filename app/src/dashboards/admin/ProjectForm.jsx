@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { todayISO } from '@/lib/dates';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -151,8 +152,10 @@ export default function ProjectForm() {
             </div>
             <div>
               <label className="label">الميزانية</label>
-              <input type="number" step="0.01" className="field text-left" dir="ltr"
-                {...register('budget')} />
+              <input type="text" inputMode="decimal" className="field text-left" dir="ltr"
+                {...register('budget', {
+                  onChange: (e) => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); },
+                })} />
             </div>
             <div>
               <label className="label">العملة</label>
@@ -171,7 +174,7 @@ export default function ProjectForm() {
 
           <div>
             <label className="label">موعد التسليم</label>
-            <input type="date" className="field text-left" dir="ltr" {...register('deadline')} />
+            <input type="date" className="field text-left" dir="ltr" min={todayISO()} {...register('deadline')} />
           </div>
         </div>
 

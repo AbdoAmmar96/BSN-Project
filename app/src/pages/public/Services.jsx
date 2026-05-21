@@ -73,7 +73,7 @@ export default function Services() {
                 <li>دعم كامل للغتين العربية والإنجليزية (RTL/LTR)</li>
                 <li>تحسين السرعة وSEO تقني من اليوم الأول</li>
               </ul>
-              <Link to="/contact" className="btn btn-primary">اطلب عرض سعر <span className="arrow">←</span></Link>
+              <Link to="/pricing#pricing-web" className="btn btn-primary">شوف الأسعار <span className="arrow">←</span></Link>
             </div>
             <div className="service-visual tone-purple">
               <span className="label-tag">01 · WEB</span>
@@ -127,7 +127,7 @@ export default function Services() {
                 <li>تقارير مبيعات وتحليلات مفصلة</li>
                 <li>كوبونات، نقاط ولاء، عضويات، وعروض</li>
               </ul>
-              <Link to="/contact" className="btn btn-primary">اطلب عرض سعر <span className="arrow">←</span></Link>
+              <Link to="/pricing#pricing-ecommerce" className="btn btn-primary">شوف الأسعار <span className="arrow">←</span></Link>
             </div>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function Services() {
                 <li>مطبوعات: كروت أعمال، أوراق رسمية، أظرف</li>
                 <li>موكاب احترافي للعرض والتقديم</li>
               </ul>
-              <Link to="/contact" className="btn btn-primary">اطلب عرض سعر <span className="arrow">←</span></Link>
+              <Link to="/pricing#pricing-branding" className="btn btn-primary">شوف الأسعار <span className="arrow">←</span></Link>
             </div>
             <div className="service-visual tone-orange">
               <span className="label-tag">03 · BRAND</span>
@@ -198,7 +198,7 @@ export default function Services() {
                 <li>تحسين محركات البحث (SEO) محلي ودولي</li>
                 <li>كتابة محتوى تسويقي وكوبي رايتنج بالعربي والإنجليزي</li>
               </ul>
-              <Link to="/contact" className="btn btn-primary">اطلب عرض سعر <span className="arrow">←</span></Link>
+              <Link to="/pricing#pricing-marketing" className="btn btn-primary">شوف الأسعار <span className="arrow">←</span></Link>
             </div>
           </div>
         </div>

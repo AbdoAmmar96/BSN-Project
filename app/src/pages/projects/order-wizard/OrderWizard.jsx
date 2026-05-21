@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { packagesApi, SERVICE_TYPE_LABELS } from '@/api/packages';
 import { ordersApi, addonsApi } from '@/api/orders';
+import { validateProjectTitle, validateProjectDescription } from '@/lib/validators';
 import { useOrderWizard } from '@/store/orderWizard';
 import WizardLayout from './WizardLayout';
 import Step1ServiceType from './Step1ServiceType';
@@ -98,8 +99,10 @@ export default function OrderWizard() {
   };
 
   const goCheckout = async () => {
-    if (!w.projectName.trim()) {
-      toast.error('اكتب اسم المشروع الأول');
+    const nameErr = validateProjectTitle(w.projectName);
+    const descErr = w.description?.trim() ? validateProjectDescription(w.description) : null;
+    if (nameErr || descErr) {
+      toast.error(nameErr || descErr);
       w.setStep(4);
       return;
     }

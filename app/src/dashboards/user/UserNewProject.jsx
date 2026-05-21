@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { todayISO } from '@/lib/dates';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectsApi, SERVICE_TYPE } from '@/api/projects';
 import PageHeader from '@/components/dashboard/PageHeader';
@@ -77,8 +78,10 @@ export default function UserNewProject() {
             <div>
               <label className="label" style={{ fontSize: '26px' }}>الميزانية التقديرية</label>
               <div className="flex gap-1">
-                <input type="number" step="0.01" className="field flex-1 text-left" dir="ltr"
-                  placeholder="15000" {...register('budget')} />
+                <input type="text" inputMode="decimal" className="field flex-1 text-left" dir="ltr"
+                  placeholder="15000" {...register('budget', {
+                    onChange: (e) => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); },
+                  })} />
                 <select className="field w-20" {...register('currency')}>
                   <option value="EGP">EGP</option>
                   <option value="USD">USD</option>
@@ -89,7 +92,7 @@ export default function UserNewProject() {
             </div>
             <div>
               <label className="label">الموعد المطلوب للتسليم</label>
-              <input type="date" className="field text-left" dir="ltr" {...register('deadline')} />
+              <input type="date" className="field text-left" dir="ltr" min={todayISO()} {...register('deadline')} />
             </div>
           </div>
         </div>

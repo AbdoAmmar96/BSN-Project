@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\NewProjectAdminMail;
 use App\Mail\ProjectStatusMail;
+use App\Rules\MeaningfulText;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\ProjectStatusChangedNotification;
@@ -64,8 +65,8 @@ class ProjectController extends Controller
     {
         $user = $request->user();
         $rules = [
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:5000',
+            'title' => ['required', 'string', 'max:255', new MeaningfulText(3, requireMultipleWords: true)],
+            'description' => ['nullable', 'string', 'max:5000', new MeaningfulText(15)],
             'service_type' => 'required|in:web,ecommerce,branding,marketing,seo,email,other',
             'package_tier' => 'nullable|string|max:50',
             'status' => 'nullable|in:draft,pending,quoted,approved,in_progress,review,revision,completed,cancelled,on_hold',
@@ -135,8 +136,8 @@ class ProjectController extends Controller
 
         // Different fields are editable by different roles
         $rules = [
-            'title' => 'sometimes|string|max:255',
-            'description' => 'sometimes|nullable|string|max:5000',
+            'title' => ['sometimes', 'string', 'max:255', new MeaningfulText(3, requireMultipleWords: true)],
+            'description' => ['sometimes', 'nullable', 'string', 'max:5000', new MeaningfulText(15)],
             'service_type' => 'sometimes|in:web,ecommerce,branding,marketing,seo,email,other',
             'meta' => 'sometimes|nullable|array',
         ];

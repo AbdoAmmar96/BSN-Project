@@ -75,9 +75,9 @@ const FAQS = [
   ['إيه اللي مش متضمن في الأسعار؟', 'الاستضافة (Hosting)، النطاق (Domain)، وميزانية الإعلانات للحملات. بنقولّك متوسط تكلفتها قبل ما نبدأ.'],
 ];
 
-function PriceBlock({ tier, plans }) {
+function PriceBlock({ tier, plans, id }) {
   return (
-    <section className={tier.sectionClass}>
+    <section id={id} className={tier.sectionClass} style={{ scrollMarginTop: 100 }}>
       <div className="container">
         <div className="section-head reveal is-visible">
           <span className="eyebrow">{tier.eyebrow}</span>
@@ -173,7 +173,7 @@ export default function Pricing() {
       {['web', 'ecommerce', 'branding', 'marketing'].map((k) => {
         const fromApi = grouped[k]?.map(toPlan);
         const plans = (fromApi && fromApi.length > 0) ? fromApi : TIERS[k].plans;
-        return <PriceBlock key={k} tier={TIERS[k]} plans={plans} />;
+        return <PriceBlock key={k} id={`pricing-${k}`} tier={TIERS[k]} plans={plans} />;
       })}
 
       {/* COMPARE STRIP */}

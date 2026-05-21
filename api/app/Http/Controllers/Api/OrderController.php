@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Package;
+use App\Rules\MeaningfulText;
 use App\Services\OrderPricing;
 use App\Support\ReferenceNumber;
 use Illuminate\Http\JsonResponse;
@@ -232,8 +233,11 @@ class OrderController extends Controller
             'addon_ids.*' => 'integer|exists:package_addons,id',
             'currency' => 'sometimes|in:EGP,SAR',
             'coupon_code' => 'sometimes|nullable|string|max:60',
-            'project_name' => ($requireProject ? 'required|' : 'sometimes|nullable|') . 'string|max:200',
-            'description' => 'sometimes|nullable|string|max:5000',
+            'project_name' => array_filter([
+                $requireProject ? 'required' : 'nullable',
+                'string', 'max:200', new MeaningfulText(3, requireMultipleWords: true),
+            ]),
+            'description' => ['nullable', 'string', 'max:5000', new MeaningfulText(15)],
             'expected_launch_date' => 'sometimes|nullable|date',
         ]);
     }
