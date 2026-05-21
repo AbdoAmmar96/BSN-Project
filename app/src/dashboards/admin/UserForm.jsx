@@ -137,7 +137,11 @@ export default function UserForm() {
           <button type="submit" disabled={isSubmitting} className="btn-primary disabled:opacity-60">
             <Save size={16} /> {isSubmitting ? 'جاري الحفظ...' : 'حفظ'}
           </button>
-          <button type="button" onClick={() => navigate('/admin/users')} className="btn-ghost">
+          <button
+            type="button"
+            onClick={() => navigate('/admin/users')}
+            className="inline-flex items-center gap-2 bg-white !text-brand-ink font-display font-black text-sm px-6 py-3 rounded-full border-2 border-brand-ink shadow-brutal-sm hover:-translate-y-0.5 transition-transform"
+          >
             إلغاء
           </button>
         </div>

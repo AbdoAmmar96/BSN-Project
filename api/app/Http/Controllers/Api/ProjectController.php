@@ -154,13 +154,24 @@ class ProjectController extends Controller
                 'progress' => 'sometimes|integer|min:0|max:100',
             ];
         } elseif ($user->isDeveloper()) {
+            // The assigned developer drives the project through its lifecycle:
+            // pending_assignment → in_progress → review → revision → completed.
             $rules += [
-                'status' => 'sometimes|in:in_progress,review,revision',
+                'status' => 'sometimes|in:in_progress,review,revision,completed',
                 'progress' => 'sometimes|integer|min:0|max:100',
             ];
         }
 
         $data = $request->validate($rules);
+
+        // Keep status ↔ progress in sync, whichever side changed:
+        //  - marking the project completed snaps progress to 100%
+        //  - dragging progress to 100% completes the project
+        if (isset($data['status']) && $data['status'] === 'completed') {
+            $data['progress'] = 100;
+        } elseif (isset($data['progress']) && (int) $data['progress'] === 100 && ! isset($data['status'])) {
+            $data['status'] = 'completed';
+        }
 
         if (isset($data['status']) && $data['status'] === 'completed' && !$project->completed_at) {
             $data['completed_at'] = now();

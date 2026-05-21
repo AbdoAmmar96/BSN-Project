@@ -308,8 +308,12 @@ class ChatController extends Controller
         // Mark sender's own message as read
         $room->users()->updateExistingPivot($request->user()->id, ['last_read_at' => now()]);
 
-        // Broadcast
-        broadcast(new MessageSent($message))->toOthers();
+        // Broadcast (best-effort — a down WebSocket server must not fail the send)
+        try {
+            broadcast(new MessageSent($message))->toOthers();
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
         // Notify other room members (excluding sender)
         $recipients = $room->users()
@@ -341,7 +345,11 @@ class ChatController extends Controller
     {
         $this->authorize($request->user(), $room);
         $isTyping = (bool) $request->input('is_typing', true);
-        broadcast(new UserTyping($room->id, $request->user(), $isTyping))->toOthers();
+        try {
+            broadcast(new UserTyping($room->id, $request->user(), $isTyping))->toOthers();
+        } catch (\Throwable $e) {
+            report($e);
+        }
         return response()->json(['ok' => true]);
     }
 

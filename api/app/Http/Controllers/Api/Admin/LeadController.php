@@ -16,7 +16,9 @@ class LeadController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = Lead::query()
-            ->with(['user:id,name,email', 'assignedAdmin:id,name', 'latestQuote:id,lead_id,status,total,version'])
+            // Qualify columns: latestOfMany() self-joins the quotes table, so an
+            // unqualified `lead_id` in the select is ambiguous on MySQL.
+            ->with(['user:id,name,email', 'assignedAdmin:id,name', 'latestQuote:quotes.id,quotes.lead_id,quotes.status,quotes.total,quotes.version'])
             ->latest();
 
         if ($status = $request->query('status')) {

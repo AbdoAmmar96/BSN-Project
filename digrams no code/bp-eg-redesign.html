@@ -1,0 +1,2952 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>شريك الأعمال لتقنية المعلومات — حلول رقمية متكاملة</title>
+  <meta name="description" content="شريك الأعمال — شريكك الاستراتيجي للتحول الرقمي. تصميم مواقع، متاجر إلكترونية، هويات تجارية، وتسويق رقمي. خبرة 12+ سنة في مصر والخليج." />
+  <meta name="theme-color" content="#5C15CC" />
+
+  <!-- Fonts: distinctive Arabic display + body pairing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =====================================================
+       SHARIK AL-A'AMAL — Brand Identity v3 (BSN aesthetic)
+       Palette: #5C15CC purple · #F15A24 orange · #65C8D0 teal
+       Refined spacing system · 8pt grid · fluid type
+       ===================================================== */
+
+    :root {
+      /* Brand palette — from BSN identity guide */
+      --bsn-purple: #5C15CC;
+      --bsn-purple-deep: #3a0995;
+      --bsn-purple-soft: #7b3ef0;
+      --bsn-orange: #F15A24;
+      --bsn-orange-deep: #d44510;
+      --bsn-teal: #65C8D0;
+      --bsn-teal-deep: #3ba4ad;
+      --bsn-ink: #0b0420;
+      --bsn-ink-soft: #2a2147;
+      --bsn-paper: #fefcff;
+      --bsn-cream: #f4eefe;
+      --bsn-border: rgba(11, 4, 32, 0.08);
+      --bsn-muted: #4a4264;
+      --bsn-muted-2: #6b6489;
+
+      /* Typography */
+      --font-display: "Rubik Mono One", "Cairo", system-ui, sans-serif;
+      --font-heading: "Cairo", "Tajawal", sans-serif;
+      --font-body: "Tajawal", "Cairo", sans-serif;
+
+      /* Spacing scale — 8pt grid */
+      --s-1: 4px;
+      --s-2: 8px;
+      --s-3: 12px;
+      --s-4: 16px;
+      --s-5: 20px;
+      --s-6: 24px;
+      --s-8: 32px;
+      --s-10: 40px;
+      --s-12: 48px;
+      --s-14: 56px;
+      --s-16: 64px;
+      --s-20: 80px;
+      --s-24: 96px;
+      --s-32: 128px;
+
+      /* Fluid section rhythm */
+      --section-y: clamp(72px, 9vw, 120px);
+      --section-head-mb: clamp(40px, 5vw, 72px);
+      --container-max: 1240px;
+      --container-pad: clamp(16px, 4vw, 32px);
+
+      /* Radii */
+      --radius-sm: 10px;
+      --radius: 18px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+
+      /* Shadows */
+      --shadow-card: 0 14px 40px -18px rgba(11, 4, 32, 0.35);
+      --shadow-lift: 0 24px 50px -22px rgba(11, 4, 32, 0.28);
+      --shadow-pop: 8px 8px 0 var(--bsn-orange);
+      --shadow-purple: 0 12px 30px -12px rgba(92, 21, 204, 0.45);
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --t-fast: 0.18s;
+      --t-base: 0.28s;
+      --t-slow: 0.5s;
+    }
+
+    /* =====================================================
+       RESET
+       ===================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bsn-paper);
+      color: var(--bsn-ink);
+      line-height: 1.65;
+      overflow-x: hidden;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    img, svg { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    ul { list-style: none; }
+    :focus-visible {
+      outline: 3px solid var(--bsn-orange);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* =====================================================
+       UTILITIES
+       ===================================================== */
+    .container {
+      width: min(var(--container-max), 100% - var(--container-pad) * 2);
+      margin-inline: auto;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: var(--s-3);
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: 0.78rem; letter-spacing: 0.16em;
+      color: var(--bsn-purple); text-transform: uppercase;
+      padding: var(--s-2) var(--s-4);
+      background: rgba(92, 21, 204, 0.08);
+      border-radius: 999px;
+    }
+    .eyebrow::before {
+      content: ""; width: 8px; height: 8px;
+      background: var(--bsn-orange);
+      border-radius: 2px;
+      box-shadow: 3px 3px 0 var(--bsn-teal);
+    }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0;
+      margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* =====================================================
+       LAYERED BSN LOGO TYPE — signature brand effect
+       Stack order: white halo → teal plate → white gap → purple plate → white gap → orange front
+       ===================================================== */
+    .layer-text {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: var(--bsn-orange);
+      position: relative;
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        6px 6px 0 var(--bsn-teal),
+        7px 7px 0 #fff,
+        12px 12px 0 var(--bsn-purple),
+        13px 13px 0 #fff;
+    }
+    .layer-text.on-dark {
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        6px 6px 0 var(--bsn-teal),
+        7px 7px 0 #fff,
+        12px 12px 0 var(--bsn-purple-deep),
+        13px 13px 0 #fff;
+    }
+    .layer-text--sm {
+      text-shadow:
+        1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff,
+        3px 3px 0 var(--bsn-teal),
+        4px 4px 0 #fff,
+        6px 6px 0 var(--bsn-purple);
+    }
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+    .site-header {
+      position: fixed; top: 0; inset-inline: 0; z-index: 100;
+      padding: var(--s-4) 0;
+      transition: padding var(--t-base) var(--ease-out),
+                  background var(--t-base) ease,
+                  box-shadow var(--t-base) ease;
+    }
+    .site-header.scrolled {
+      padding: var(--s-3) 0;
+      background: rgba(254, 252, 255, 0.85);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border-bottom: 1px solid rgba(92, 21, 204, 0.08);
+      box-shadow: 0 6px 24px -12px rgba(11, 4, 32, 0.12);
+    }
+    .nav-wrap {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--s-6);
+    }
+    .brand-mark {
+      display: flex; align-items: center; gap: var(--s-4);
+      font-family: var(--font-heading); font-weight: 900;
+      color: var(--bsn-ink);
+    }
+    .brand-mark .mini-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--bsn-orange);
+      letter-spacing: 0.02em;
+      padding-inline-end: var(--s-2);
+      text-shadow:
+        1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff,
+        3px 3px 0 var(--bsn-teal),
+        4px 4px 0 #fff,
+        6px 6px 0 var(--bsn-purple);
+    }
+    .brand-mark .brand-text {
+      display: flex; flex-direction: column; line-height: 1.15;
+    }
+    .brand-mark .brand-ar { font-size: 1rem; font-weight: 900; color: var(--bsn-purple); }
+    .brand-mark .brand-tag { font-size: 0.7rem; font-weight: 600; color: var(--bsn-muted-2); margin-top: 2px; }
+
+    .nav-links {
+      display: flex; gap: var(--s-1); align-items: center;
+    }
+    .nav-links a {
+      display: inline-block;
+      padding: var(--s-2) var(--s-4);
+      font-weight: 700; font-size: 0.92rem;
+      color: var(--bsn-ink);
+      border-radius: var(--radius-sm);
+      transition: all var(--t-fast) ease;
+    }
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] {
+      color: var(--bsn-purple);
+      background: rgba(92, 21, 204, 0.06);
+    }
+    .nav-cta {
+      background: var(--bsn-ink) !important;
+      color: var(--bsn-paper) !important;
+      padding: var(--s-3) var(--s-6) !important;
+      border-radius: 999px !important;
+      font-weight: 800;
+      transition: all var(--t-base) var(--ease-bounce) !important;
+      margin-inline-start: var(--s-2);
+    }
+    .nav-cta:hover {
+      background: var(--bsn-orange) !important;
+      color: #fff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -10px var(--bsn-orange);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: var(--bsn-ink);
+      color: #fff;
+      padding: var(--s-2);
+      border-radius: var(--radius-sm);
+      width: 44px; height: 44px;
+      align-items: center; justify-content: center;
+    }
+    .menu-toggle svg { transition: transform var(--t-base) ease; }
+    .menu-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
+
+    /* Mobile drawer */
+    .mobile-nav {
+      position: fixed;
+      top: 0; bottom: 0; right: 0;
+      width: min(360px, 86vw);
+      background: var(--bsn-ink);
+      color: #fff;
+      z-index: 200;
+      padding: var(--s-8) var(--s-6);
+      transform: translateX(100%);
+      transition: transform var(--t-slow) var(--ease-out);
+      display: flex; flex-direction: column; gap: var(--s-4);
+      overflow-y: auto;
+    }
+    [dir="rtl"] .mobile-nav { right: 0; left: auto; }
+    .mobile-nav.open { transform: translateX(0); }
+    .mobile-nav-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: var(--s-8);
+    }
+    .mobile-nav-close {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      display: grid; place-items: center;
+    }
+    .mobile-nav .mini-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--bsn-orange);
+      text-shadow:
+        1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff,
+        3px 3px 0 var(--bsn-teal),
+        6px 6px 0 var(--bsn-purple-deep);
+    }
+    .mobile-nav a {
+      padding: var(--s-4) var(--s-5);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: background var(--t-fast) ease;
+    }
+    .mobile-nav a:hover { background: rgba(255,255,255,0.08); }
+    .mobile-nav .nav-cta-mobile {
+      margin-top: var(--s-6);
+      background: var(--bsn-orange);
+      text-align: center;
+      padding: var(--s-4) var(--s-6);
+      border-radius: 999px;
+      font-weight: 800;
+    }
+    .nav-overlay {
+      position: fixed; inset: 0; background: rgba(11, 4, 32, 0.6);
+      z-index: 150; opacity: 0; pointer-events: none;
+      transition: opacity var(--t-base) ease;
+      backdrop-filter: blur(4px);
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: auto; }
+
+    /* =====================================================
+       BUTTONS
+       ===================================================== */
+    .btn {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      padding: var(--s-4) var(--s-8);
+      border-radius: 999px;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.98rem;
+      transition: all var(--t-base) var(--ease-bounce);
+      border: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--bsn-purple);
+      color: #fff;
+      box-shadow: var(--shadow-purple);
+    }
+    .btn-primary:hover {
+      background: var(--bsn-ink);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 36px -14px var(--bsn-purple);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--bsn-ink);
+      border-color: var(--bsn-ink);
+    }
+    .btn-ghost:hover {
+      background: var(--bsn-ink);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .btn-orange {
+      background: var(--bsn-orange);
+      color: #fff;
+      box-shadow: 0 12px 30px -12px var(--bsn-orange);
+    }
+    .btn-orange:hover {
+      background: var(--bsn-orange-deep);
+      transform: translateY(-3px);
+    }
+    .btn .arrow {
+      display: inline-block;
+      transition: transform var(--t-base) ease;
+      transform: scaleX(-1); /* point right in RTL */
+    }
+    .btn:hover .arrow { transform: scaleX(-1) translateX(-4px); }
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+    .hero {
+      position: relative;
+      padding: calc(var(--s-24) + var(--s-6)) 0 var(--section-y);
+      background:
+        radial-gradient(ellipse at 90% 10%, rgba(101, 200, 208, 0.18), transparent 50%),
+        radial-gradient(ellipse at 10% 90%, rgba(241, 90, 36, 0.12), transparent 45%),
+        var(--bsn-paper);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(92, 21, 204, 0.13) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, #000 30%, transparent 80%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: var(--s-16);
+      align-items: center;
+    }
+    .hero-copy { position: relative; z-index: 2; }
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 6.5vw, 5.6rem);
+      line-height: 0.98;
+      margin-top: var(--s-6);
+      margin-bottom: var(--s-8);
+      color: var(--bsn-ink);
+    }
+    .hero-h1 .stack {
+      display: inline-block;
+      color: var(--bsn-orange);
+      letter-spacing: 0.01em;
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        7px 7px 0 var(--bsn-teal),
+        8px 8px 0 #fff,
+        14px 14px 0 var(--bsn-purple),
+        15px 15px 0 #fff;
+    }
+    .hero-h1 .plain-line {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+      font-weight: 800;
+      color: var(--bsn-ink);
+      margin-top: var(--s-6);
+      line-height: 1.3;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      color: var(--bsn-ink-soft);
+      max-width: 540px;
+      margin-bottom: var(--s-8);
+      font-weight: 500;
+      line-height: 1.75;
+    }
+    .hero-actions {
+      display: flex; gap: var(--s-4); flex-wrap: wrap;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-6);
+      margin-top: var(--s-14);
+      padding-top: var(--s-8);
+      border-top: 1px dashed rgba(92, 21, 204, 0.25);
+    }
+    .stat .num {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+      color: var(--bsn-purple);
+      line-height: 1;
+    }
+    .stat .lbl {
+      font-size: 0.85rem;
+      color: var(--bsn-muted);
+      font-weight: 600;
+      margin-top: var(--s-2);
+    }
+
+    /* Hero visual — stacked floating cards */
+    .hero-visual {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 460px;
+      margin-inline: auto;
+      width: 100%;
+    }
+    .hero-card {
+      position: absolute;
+      border-radius: var(--radius-lg);
+      padding: var(--s-8);
+      box-shadow: 0 30px 60px -25px rgba(11, 4, 32, 0.4);
+      animation: float 6s ease-in-out infinite;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-card-1 {
+      top: 0; right: 0;
+      width: 78%; aspect-ratio: 1.3;
+      background: var(--bsn-purple);
+      color: #fff;
+      --r: -3deg;
+      transform: rotate(var(--r));
+    }
+    .hero-card-2 {
+      bottom: 0; left: 0;
+      width: 60%; aspect-ratio: 1;
+      background: var(--bsn-teal);
+      --r: 4deg;
+      transform: rotate(var(--r));
+      animation-delay: -2s;
+    }
+    .hero-card-3 {
+      top: 40%; left: 32%;
+      width: 38%; aspect-ratio: 1;
+      background: var(--bsn-orange);
+      --r: -7deg;
+      transform: rotate(var(--r));
+      animation-delay: -4s;
+    }
+    .hero-card .big-bsn {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.3rem);
+      color: var(--bsn-orange);
+      line-height: 1;
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        5px 5px 0 var(--bsn-teal),
+        6px 6px 0 #fff,
+        10px 10px 0 var(--bsn-purple-deep);
+    }
+    .hero-card-2 .big-bsn {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--bsn-orange);
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        4px 4px 0 var(--bsn-purple),
+        5px 5px 0 #fff;
+    }
+    .hero-card-3 .big-bsn {
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      color: #fff;
+      text-shadow: 4px 4px 0 var(--bsn-purple-deep);
+    }
+    .hero-card .micro {
+      font-size: 0.78rem; font-weight: 700;
+      opacity: 0.88;
+      letter-spacing: 0.06em;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(var(--r, 0)); }
+      50% { transform: translateY(-12px) rotate(var(--r, 0)); }
+    }
+
+    /* Mobile-only mini BSN stack — floats beside the heading on small screens */
+    .hero-mini-bsn { display: none; }
+    .hero-mini-bsn .mini-card {
+      position: absolute;
+      border-radius: 14px;
+      box-shadow: 0 14px 30px -12px rgba(11, 4, 32, 0.4);
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-mini-bsn .mc-purple {
+      top: 0; right: 0;
+      width: 78%; aspect-ratio: 1.25;
+      background: var(--bsn-purple);
+      --r: -4deg;
+      transform: rotate(var(--r));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-mini-bsn .mc-teal {
+      bottom: 0; left: 0;
+      width: 62%; aspect-ratio: 1;
+      background: var(--bsn-teal);
+      --r: 5deg;
+      transform: rotate(var(--r));
+      animation-delay: -2s;
+    }
+    .hero-mini-bsn .mc-orange {
+      top: 38%; left: 28%;
+      width: 40%; aspect-ratio: 1;
+      background: var(--bsn-orange);
+      --r: -8deg;
+      transform: rotate(var(--r));
+      animation-delay: -4s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-mini-bsn .mc-purple span {
+      font-family: var(--font-display);
+      color: var(--bsn-orange);
+      font-size: 1.05rem; line-height: 1;
+      text-shadow:
+        1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff,
+        2.5px 2.5px 0 var(--bsn-teal),
+        3.5px 3.5px 0 #fff,
+        5px 5px 0 var(--bsn-purple-deep);
+    }
+    .hero-mini-bsn .mc-orange span {
+      font-family: var(--font-display);
+      color: #fff;
+      font-size: 0.62rem; line-height: 1;
+      text-shadow: 1.5px 1.5px 0 var(--bsn-purple-deep);
+    }
+
+    /* =====================================================
+       MARQUEE — trust strip
+       ===================================================== */
+    .marquee {
+      background: var(--bsn-ink);
+      color: #fff;
+      padding: var(--s-8) 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .marquee-track {
+      display: flex; gap: var(--s-16);
+      width: max-content;
+      animation: scroll-marq 35s linear infinite;
+    }
+    .marquee-track span {
+      display: inline-flex; align-items: center; gap: var(--s-4);
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      color: #fff;
+      white-space: nowrap;
+    }
+    .marquee-track span::after {
+      content: ""; width: 16px; height: 16px;
+      background: var(--bsn-orange);
+      border: 1.5px solid var(--bsn-teal);
+      transform: rotate(-3deg);
+      flex-shrink: 0;
+    }
+    @keyframes scroll-marq {
+      from { transform: translateX(0); }
+      to { transform: translateX(50%); }
+    }
+
+    /* =====================================================
+       SECTION COMMONS
+       ===================================================== */
+    section { padding: var(--section-y) 0; position: relative; }
+    .section-head {
+      margin-bottom: var(--section-head-mb);
+      max-width: 720px;
+    }
+    .section-head.centered {
+      margin-inline: auto;
+      text-align: center;
+    }
+    .section-head h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-top: var(--s-6);
+      letter-spacing: -0.02em;
+    }
+    .section-head h2 .hl {
+      color: var(--bsn-purple);
+      position: relative;
+      display: inline-block;
+    }
+    .section-head h2 .hl::after {
+      content: "";
+      position: absolute;
+      bottom: 4px; right: 0; left: 0;
+      height: 12px;
+      background: var(--bsn-orange);
+      z-index: -1;
+      opacity: 0.4;
+      border-radius: 2px;
+    }
+    .section-head p {
+      margin-top: var(--s-4);
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      color: var(--bsn-muted);
+      line-height: 1.75;
+    }
+    .section-head.centered p { margin-inline: auto; }
+
+    /* =====================================================
+       WHY US — feature grid
+       ===================================================== */
+    .why {
+      background: var(--bsn-cream);
+      position: relative;
+    }
+    .why::before {
+      content: "";
+      position: absolute;
+      top: 0; right: 0; left: 0;
+      height: 80px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(241, 90, 36, 0.1), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(101, 200, 208, 0.15), transparent 40%);
+      pointer-events: none;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+    }
+    .why-card {
+      background: #fff;
+      padding: var(--s-8);
+      border-radius: var(--radius-lg);
+      border: 2px solid transparent;
+      transition: all var(--t-base) var(--ease-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+    .why-card::before {
+      content: "";
+      position: absolute;
+      top: -50%; right: -30%;
+      width: 200px; height: 200px;
+      background: var(--accent, var(--bsn-purple));
+      opacity: 0.08;
+      border-radius: 50%;
+      transition: all var(--t-slow) ease;
+    }
+    .why-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent, var(--bsn-purple));
+      box-shadow: var(--shadow-lift);
+    }
+    .why-card:hover::before { transform: scale(1.5); opacity: 0.14; }
+    .why-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      color: var(--accent, var(--bsn-purple));
+      text-shadow: 4px 4px 0 #fff, 6px 6px 0 var(--accent2, var(--bsn-teal));
+      display: inline-block;
+      margin-bottom: var(--s-6);
+      line-height: 1;
+    }
+    .why-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 900;
+      line-height: 1.5;
+      color: var(--bsn-ink);
+      position: relative;
+    }
+
+    /* =====================================================
+       SERVICES
+       ===================================================== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+    }
+    .service-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--s-8);
+      border: 2px solid var(--bsn-border);
+      position: relative;
+      overflow: hidden;
+      transition: all var(--t-base) var(--ease-bounce);
+      display: flex; flex-direction: column;
+    }
+    .service-card:nth-child(6n+1) { --svc: var(--bsn-purple); }
+    .service-card:nth-child(6n+2) { --svc: var(--bsn-orange); }
+    .service-card:nth-child(6n+3) { --svc: var(--bsn-teal-deep); }
+    .service-card:nth-child(6n+4) { --svc: var(--bsn-orange); }
+    .service-card:nth-child(6n+5) { --svc: var(--bsn-teal-deep); }
+    .service-card:nth-child(6n)   { --svc: var(--bsn-purple); }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--svc);
+      transform: translateY(100%);
+      transition: transform var(--t-slow) cubic-bezier(0.65, 0, 0.35, 1);
+      z-index: 0;
+    }
+    .service-card > * { position: relative; z-index: 1; transition: color var(--t-base) ease; }
+    .service-card:hover {
+      border-color: var(--svc);
+      transform: translateY(-6px);
+    }
+    .service-card:hover::after { transform: translateY(0); }
+    .service-card:hover h3,
+    .service-card:hover p,
+    .service-card:hover li,
+    .service-card:hover .svc-num { color: #fff; }
+    .service-card:hover .svc-icon {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .service-card:hover .svc-icon svg { stroke: #fff; }
+    .service-card:hover .svc-link { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .service-card:hover li::before { background: #fff; }
+
+    .svc-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: var(--s-6);
+    }
+    .svc-icon {
+      width: 56px; height: 56px;
+      border-radius: var(--radius-sm);
+      background: rgba(92, 21, 204, 0.06);
+      border: 2px solid var(--svc);
+      display: grid; place-items: center;
+      transition: all var(--t-base) ease;
+    }
+    .svc-icon svg {
+      width: 26px; height: 26px;
+      stroke: var(--svc);
+      stroke-width: 2;
+      fill: none;
+      transition: stroke var(--t-base) ease;
+    }
+    .svc-num {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: rgba(11,4,32,0.2);
+    }
+    .service-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-bottom: var(--s-4);
+      color: var(--bsn-ink);
+      line-height: 1.3;
+    }
+    .service-card p {
+      color: var(--bsn-muted);
+      font-size: 0.95rem;
+      margin-bottom: var(--s-6);
+      line-height: 1.65;
+    }
+    .service-card ul {
+      margin-bottom: var(--s-8);
+      flex: 1;
+      display: flex; flex-direction: column; gap: var(--s-2);
+    }
+    .service-card li {
+      font-size: 0.88rem;
+      color: var(--bsn-muted);
+      display: flex; align-items: center; gap: var(--s-2);
+      transition: color var(--t-base) ease;
+    }
+    .service-card li::before {
+      content: "";
+      width: 8px; height: 8px;
+      background: var(--svc);
+      border-radius: 2px;
+      flex-shrink: 0;
+      transition: background var(--t-base) ease;
+    }
+    .svc-link {
+      display: inline-flex; align-items: center; gap: var(--s-2);
+      font-weight: 800; font-family: var(--font-heading);
+      color: var(--svc);
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--bsn-border);
+      transition: all var(--t-base) ease;
+      font-size: 0.92rem;
+    }
+
+    /* =====================================================
+       INDUSTRIES we serve — horizontal strip
+       ===================================================== */
+    .industries {
+      background: var(--bsn-paper);
+      padding: var(--s-20) 0;
+    }
+    .ind-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--s-3);
+      margin-top: var(--s-10);
+    }
+    .ind-tile {
+      background: #fff;
+      border: 2px solid var(--bsn-border);
+      border-radius: var(--radius);
+      padding: var(--s-6) var(--s-4);
+      text-align: center;
+      transition: all var(--t-base) var(--ease-bounce);
+      display: flex; flex-direction: column; align-items: center; gap: var(--s-3);
+      cursor: default;
+    }
+    .ind-tile:hover {
+      transform: translateY(-4px);
+      border-color: var(--bsn-purple);
+      box-shadow: var(--shadow-card);
+    }
+    .ind-tile .ind-icon {
+      width: 48px; height: 48px;
+      background: rgba(92, 21, 204, 0.08);
+      border-radius: var(--radius-sm);
+      display: grid; place-items: center;
+      color: var(--bsn-purple);
+      transition: all var(--t-base) ease;
+    }
+    .ind-tile:nth-child(2n) .ind-icon { color: var(--bsn-orange); background: rgba(241, 90, 36, 0.1); }
+    .ind-tile:nth-child(3n) .ind-icon { color: var(--bsn-teal-deep); background: rgba(101, 200, 208, 0.18); }
+    .ind-tile:hover .ind-icon { transform: scale(1.1); }
+    .ind-tile svg { width: 24px; height: 24px; stroke-width: 2; }
+    .ind-tile .ind-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--bsn-ink);
+    }
+
+    /* =====================================================
+       PROCESS / METHODOLOGY
+       ===================================================== */
+    .process {
+      background: var(--bsn-ink);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .process::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(241, 90, 36, 0.15), transparent 40%),
+        radial-gradient(circle at 15% 80%, rgba(101, 200, 208, 0.12), transparent 40%);
+      pointer-events: none;
+    }
+    .process .container { position: relative; z-index: 1; }
+    .process .section-head h2 { color: #fff; }
+    .process .section-head h2 .hl { color: var(--bsn-orange); }
+    .process .section-head h2 .hl::after { background: var(--bsn-teal); opacity: 0.5; }
+    .process .section-head p { color: #c7c0db; }
+    .process .eyebrow { background: rgba(255, 255, 255, 0.1); color: var(--bsn-teal); }
+    .process .eyebrow::before { background: var(--bsn-orange); box-shadow: 3px 3px 0 var(--bsn-teal); }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-6);
+      position: relative;
+    }
+    /* Connector line behind steps */
+    .process-grid::before {
+      content: "";
+      position: absolute;
+      top: 56px;
+      right: 8%; left: 8%;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(101, 200, 208, 0.3) 0 8px,
+        transparent 8px 16px
+      );
+      z-index: 0;
+    }
+    .process-step {
+      padding: var(--s-8) var(--s-6);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      position: relative;
+      transition: all var(--t-base) ease;
+      z-index: 1;
+    }
+    .process-step:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--bsn-orange);
+      transform: translateY(-4px);
+    }
+    .ps-num {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      color: var(--bsn-orange);
+      text-shadow:
+        3px 3px 0 var(--bsn-teal),
+        6px 6px 0 var(--bsn-purple);
+      line-height: 1;
+      margin-bottom: var(--s-6);
+    }
+    .process-step h3 {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 1.1rem;
+      margin-bottom: var(--s-2);
+      color: #fff;
+    }
+    .process-step p {
+      font-size: 0.88rem;
+      color: #b3acca;
+      line-height: 1.65;
+    }
+
+    /* =====================================================
+       PORTFOLIO grid
+       ===================================================== */
+    .portfolio { background: var(--bsn-paper); }
+    .portfolio-head {
+      display: flex; justify-content: space-between; align-items: end;
+      flex-wrap: wrap; gap: var(--s-6);
+      margin-bottom: var(--section-head-mb);
+    }
+    .portfolio-head .section-head { margin-bottom: 0; flex: 1; min-width: 280px; }
+    .portfolio-head .btn { flex-shrink: 0; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+    }
+    .project-card {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg, var(--bsn-purple));
+      transition: transform var(--t-base) var(--ease-bounce);
+      display: block;
+    }
+    .project-card:hover { transform: translateY(-6px); }
+    .project-card.tall { aspect-ratio: 4 / 5; }
+    .project-card .pc-bg {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+    }
+    .project-card .pc-cubes {
+      position: absolute; inset: 0;
+      opacity: 0.85;
+    }
+    .project-card .pc-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(11, 4, 32, 0.85) 100%);
+      pointer-events: none;
+    }
+    .project-card .pc-content {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: var(--s-8);
+      color: #fff;
+      z-index: 2;
+    }
+    .project-card .pc-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      padding: var(--s-1) var(--s-3);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: var(--s-3);
+      letter-spacing: 0.04em;
+    }
+    .project-card .pc-name {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 1.3rem;
+      line-height: 1.25;
+      margin-bottom: var(--s-2);
+    }
+    .project-card .pc-desc {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+    .project-card .pc-bsn {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5rem);
+      color: var(--bsn-orange);
+      line-height: 1;
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        6px 6px 0 var(--bsn-teal),
+        7px 7px 0 #fff,
+        12px 12px 0 var(--bsn-purple-deep);
+      transform: rotate(-4deg);
+    }
+
+    /* =====================================================
+       SHOWCASE — visual brand callout
+       ===================================================== */
+    .showcase {
+      background: var(--bsn-purple);
+      color: #fff;
+      padding: var(--section-y) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .showcase::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+    .showcase-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--s-12);
+      align-items: center;
+    }
+    .showcase h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.9rem, 4.2vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: var(--s-6);
+    }
+    .showcase h2 .pop {
+      color: var(--bsn-orange);
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        5px 5px 0 var(--bsn-teal),
+        6px 6px 0 #fff;
+      font-family: var(--font-display);
+      font-weight: 400;
+      padding: 0 var(--s-1);
+    }
+    .showcase p {
+      font-size: 1.05rem; color: #d7cffa;
+      max-width: 540px;
+      line-height: 1.75;
+    }
+    .showcase .btn-primary {
+      background: var(--bsn-orange);
+      box-shadow: 0 14px 30px -10px var(--bsn-orange);
+      margin-top: var(--s-8);
+    }
+    .showcase .btn-primary:hover { background: #fff; color: var(--bsn-purple); }
+    .showcase-art {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 380px;
+      margin-inline: auto;
+      width: 100%;
+    }
+    .cube-grid { width: 100%; height: 100%; }
+
+    /* =====================================================
+       PRICING preview
+       ===================================================== */
+    .pricing { background: var(--bsn-cream); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+      align-items: stretch;
+    }
+    .price-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: var(--s-10) var(--s-8);
+      border: 2px solid var(--bsn-border);
+      position: relative;
+      transition: all var(--t-base) var(--ease-bounce);
+      display: flex; flex-direction: column;
+    }
+    .price-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lift);
+    }
+    .price-card.featured {
+      background: var(--bsn-ink);
+      color: #fff;
+      border-color: var(--bsn-orange);
+      transform: translateY(-12px);
+    }
+    .price-card.featured:hover { transform: translateY(-18px); }
+    .price-badge {
+      position: absolute;
+      top: -14px; right: var(--s-8);
+      background: var(--bsn-orange);
+      color: #fff;
+      padding: var(--s-2) var(--s-4);
+      border-radius: 999px;
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      box-shadow: 0 8px 20px -8px var(--bsn-orange);
+    }
+    .price-name {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--bsn-purple);
+      margin-bottom: var(--s-2);
+    }
+    .price-card.featured .price-name { color: var(--bsn-teal); }
+    .price-desc {
+      font-size: 0.92rem;
+      color: var(--bsn-muted);
+      margin-bottom: var(--s-6);
+      line-height: 1.65;
+    }
+    .price-card.featured .price-desc { color: #c7c0db; }
+    .price-tag {
+      display: flex; align-items: baseline; gap: var(--s-2);
+      padding-bottom: var(--s-6);
+      border-bottom: 1px dashed var(--bsn-border);
+      margin-bottom: var(--s-6);
+    }
+    .price-card.featured .price-tag { border-bottom-color: rgba(255,255,255,0.15); }
+    .price-tag .amount {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.6vw, 2.6rem);
+      color: var(--bsn-ink);
+      line-height: 1;
+    }
+    .price-card.featured .price-tag .amount { color: #fff; }
+    .price-tag .unit {
+      font-size: 0.9rem;
+      color: var(--bsn-muted);
+      font-weight: 600;
+    }
+    .price-card.featured .price-tag .unit { color: #c7c0db; }
+    .price-features {
+      flex: 1;
+      display: flex; flex-direction: column; gap: var(--s-3);
+      margin-bottom: var(--s-8);
+    }
+    .price-features li {
+      display: flex; gap: var(--s-3); align-items: flex-start;
+      font-size: 0.93rem;
+      line-height: 1.5;
+    }
+    .price-features li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      background: var(--bsn-orange);
+      mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/></svg>") center/contain no-repeat;
+      -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='black' d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/></svg>") center/contain no-repeat;
+      margin-top: 2px;
+    }
+    .price-card.featured .price-features li::before { background: var(--bsn-teal); }
+    .price-card .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .price-card:not(.featured) .btn { background: var(--bsn-ink); color: #fff; }
+    .price-card.featured .btn { background: var(--bsn-orange); color: #fff; }
+    .price-card.featured .btn:hover { background: #fff; color: var(--bsn-ink); }
+
+    /* =====================================================
+       TESTIMONIALS
+       ===================================================== */
+    .testimonials { background: var(--bsn-paper); }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+    }
+    .tcard {
+      background: var(--bsn-cream);
+      padding: var(--s-8);
+      border-radius: var(--radius-lg);
+      position: relative;
+      transition: all var(--t-base) ease;
+      display: flex; flex-direction: column;
+    }
+    .tcard:hover {
+      transform: translateY(-6px) rotate(-1deg);
+      box-shadow: var(--shadow-lift);
+      background: #fff;
+    }
+    .tcard:nth-child(2):hover { transform: translateY(-6px) rotate(1deg); }
+    .tcard .quote-mark {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--bsn-orange);
+      text-shadow: 4px 4px 0 var(--bsn-teal);
+      line-height: 0.6;
+      margin-bottom: var(--s-4);
+    }
+    .tcard blockquote {
+      font-size: 1rem;
+      color: var(--bsn-ink);
+      line-height: 1.75;
+      margin-bottom: var(--s-8);
+      font-weight: 500;
+      flex: 1;
+    }
+    .tcard .who {
+      display: flex; align-items: center; gap: var(--s-4);
+      padding-top: var(--s-6);
+      border-top: 1px dashed rgba(11, 4, 32, 0.15);
+    }
+    .tcard .avatar {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--av, var(--bsn-purple));
+      color: #fff;
+      display: grid; place-items: center;
+      font-family: var(--font-heading); font-weight: 900;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+    }
+    .tcard:nth-child(3n+1) .avatar { --av: var(--bsn-purple); }
+    .tcard:nth-child(3n+2) .avatar { --av: var(--bsn-orange); }
+    .tcard:nth-child(3n)   .avatar { --av: var(--bsn-teal-deep); }
+    .tcard .meta strong {
+      display: block;
+      font-family: var(--font-heading); font-weight: 900;
+      color: var(--bsn-ink);
+      font-size: 0.98rem;
+    }
+    .tcard .meta span {
+      font-size: 0.85rem;
+      color: var(--bsn-muted-2);
+      margin-top: 2px;
+    }
+
+    /* =====================================================
+       FAQ
+       ===================================================== */
+    .faq { background: var(--bsn-cream); }
+    .faq-list {
+      max-width: 880px;
+      margin-inline: auto;
+      display: flex; flex-direction: column; gap: var(--s-3);
+    }
+    .faq-item {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 2px solid transparent;
+      overflow: hidden;
+      transition: all var(--t-base) ease;
+    }
+    .faq-item[open] {
+      border-color: var(--bsn-purple);
+      box-shadow: var(--shadow-card);
+    }
+    .faq-item summary {
+      padding: var(--s-6) var(--s-8);
+      cursor: pointer;
+      list-style: none;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--s-4);
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--bsn-ink);
+      transition: color var(--t-base) ease;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary:hover { color: var(--bsn-purple); }
+    .faq-item[open] summary { color: var(--bsn-purple); }
+    .faq-icon {
+      width: 32px; height: 32px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: rgba(92, 21, 204, 0.08);
+      color: var(--bsn-purple);
+      display: grid; place-items: center;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      transition: all var(--t-base) ease;
+    }
+    .faq-item[open] .faq-icon {
+      background: var(--bsn-orange);
+      color: #fff;
+      transform: rotate(45deg);
+    }
+    .faq-item .faq-answer {
+      padding: 0 var(--s-8) var(--s-6);
+      color: var(--bsn-muted);
+      font-size: 0.96rem;
+      line-height: 1.75;
+    }
+
+    /* =====================================================
+       CONTACT
+       ===================================================== */
+    .contact { background: var(--bsn-paper); }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: var(--s-12);
+      align-items: stretch;
+    }
+    .contact-info {
+      background: var(--bsn-ink);
+      color: #fff;
+      padding: var(--s-12);
+      border-radius: var(--radius-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-info::before {
+      content: "";
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 240px; height: 240px;
+      background: var(--bsn-purple);
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.5;
+    }
+    .contact-info::after {
+      content: "";
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: var(--bsn-orange);
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+    }
+    .contact-info > * { position: relative; z-index: 1; }
+    .contact-info h3 {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(1.6rem, 2.4vw, 2rem);
+      margin-bottom: var(--s-4);
+      line-height: 1.25;
+    }
+    .contact-info > p {
+      color: #c7c0db;
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: var(--s-10);
+    }
+    .contact-channels {
+      display: flex; flex-direction: column; gap: var(--s-5);
+      margin-bottom: var(--s-10);
+    }
+    .contact-channel {
+      display: flex; gap: var(--s-4); align-items: center;
+      transition: transform var(--t-base) ease;
+    }
+    .contact-channel:hover { transform: translateX(-4px); }
+    .contact-channel .icn {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.08);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+      transition: background var(--t-base) ease;
+    }
+    .contact-channel:hover .icn { background: var(--bsn-orange); }
+    .contact-channel .icn svg { width: 20px; height: 20px; stroke: #fff; }
+    .contact-channel .ch-label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--bsn-teal);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+    .contact-channel .ch-value {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.02rem;
+    }
+    .contact-info .hours {
+      padding-top: var(--s-6);
+      border-top: 1px dashed rgba(255,255,255,0.15);
+      font-size: 0.9rem;
+      color: #c7c0db;
+    }
+    .contact-info .hours strong { color: #fff; display: block; margin-bottom: var(--s-1); }
+
+    .contact-form {
+      background: #fff;
+      padding: var(--s-12);
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--bsn-border);
+    }
+    .contact-form h3 {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+      color: var(--bsn-ink);
+      margin-bottom: var(--s-2);
+    }
+    .contact-form > p {
+      color: var(--bsn-muted);
+      margin-bottom: var(--s-8);
+      font-size: 0.95rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-4);
+    }
+    .form-group { display: flex; flex-direction: column; gap: var(--s-2); }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--bsn-ink);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: var(--s-4) var(--s-5);
+      border: 1.5px solid var(--bsn-border);
+      border-radius: var(--radius-sm);
+      background: var(--bsn-cream);
+      color: var(--bsn-ink);
+      transition: all var(--t-base) ease;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--bsn-purple);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(92, 21, 204, 0.1);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: var(--font-body);
+    }
+    .form-submit {
+      margin-top: var(--s-6);
+      width: 100%;
+      justify-content: center;
+      padding: var(--s-5) var(--s-8);
+      font-size: 1rem;
+    }
+    .form-note {
+      margin-top: var(--s-4);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--bsn-muted-2);
+    }
+
+    /* =====================================================
+       FINAL CTA
+       ===================================================== */
+    .cta-final {
+      padding: var(--section-y) 0;
+      background:
+        radial-gradient(ellipse at top, rgba(101, 200, 208, 0.18), transparent 50%),
+        var(--bsn-paper);
+    }
+    .cta-box {
+      background: var(--bsn-ink);
+      color: #fff;
+      border-radius: var(--radius-xl);
+      padding: clamp(48px, 8vw, 96px) clamp(24px, 5vw, 80px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-box::before {
+      content: "";
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 320px; height: 320px;
+      background: var(--bsn-orange);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.45;
+    }
+    .cta-box::after {
+      content: "";
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 320px; height: 320px;
+      background: var(--bsn-purple);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.55;
+    }
+    .cta-box > * { position: relative; z-index: 1; }
+    .cta-box h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: var(--s-4);
+    }
+    .cta-box h2 .stack-sm {
+      font-family: var(--font-display);
+      color: var(--bsn-orange);
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        5px 5px 0 var(--bsn-teal),
+        6px 6px 0 #fff,
+        10px 10px 0 var(--bsn-purple);
+      font-weight: 400;
+      padding: 0 var(--s-2);
+    }
+    .cta-box p {
+      font-size: 1.1rem; color: #c7c0db;
+      max-width: 560px; margin: 0 auto var(--s-8);
+      line-height: 1.75;
+    }
+    .cta-box .actions {
+      display: flex; gap: var(--s-4); justify-content: center; flex-wrap: wrap;
+    }
+    .cta-box .btn-primary { background: var(--bsn-orange); }
+    .cta-box .btn-primary:hover { background: #fff; color: var(--bsn-ink); }
+    .cta-box .btn-ghost { color: #fff; border-color: rgba(255,255,255,0.35); }
+    .cta-box .btn-ghost:hover { background: #fff; color: var(--bsn-ink); border-color: #fff; }
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+    .site-footer {
+      background: var(--bsn-ink);
+      color: #c7c0db;
+      padding: var(--s-20) 0 var(--s-8);
+      position: relative;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+      gap: var(--s-12);
+      margin-bottom: var(--s-16);
+    }
+    .footer-brand .mini-logo {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      color: var(--bsn-orange);
+      text-shadow:
+        2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+        5px 5px 0 var(--bsn-teal),
+        6px 6px 0 #fff,
+        10px 10px 0 var(--bsn-purple);
+      letter-spacing: 0.02em;
+    }
+    .footer-brand p {
+      margin-top: var(--s-8);
+      font-size: 0.95rem;
+      max-width: 340px;
+      line-height: 1.75;
+    }
+    .footer-col h4 {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: var(--s-6);
+      font-size: 1rem;
+    }
+    .footer-col li { margin-bottom: var(--s-2); }
+    .footer-col a {
+      font-size: 0.93rem;
+      transition: all var(--t-fast) ease;
+      display: inline-flex; align-items: center; gap: var(--s-2);
+    }
+    .footer-col a:hover { color: var(--bsn-orange); transform: translateX(-4px); }
+    .footer-col a::before { content: "←"; opacity: 0.5; transition: opacity var(--t-fast) ease; }
+    .footer-col a:hover::before { opacity: 1; }
+
+    .footer-contact .line {
+      display: flex; gap: var(--s-4); align-items: center;
+      margin-bottom: var(--s-4);
+      font-size: 0.93rem;
+    }
+    .footer-contact .line.is-link { cursor: pointer; transition: color var(--t-fast) ease; }
+    .footer-contact .line.is-link:hover { color: var(--bsn-orange); }
+    .footer-contact .line.is-link:hover .icn { background: var(--bsn-orange); color: #fff; }
+    .footer-contact .icn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.06);
+      display: grid; place-items: center;
+      color: var(--bsn-orange);
+      font-weight: 800;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      transition: all var(--t-base) ease;
+    }
+    .socials { display: flex; gap: var(--s-2); margin-top: var(--s-6); }
+    .socials a {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.06);
+      display: grid; place-items: center;
+      transition: all var(--t-base) ease;
+    }
+    .socials a:hover {
+      background: var(--bsn-orange);
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .socials svg { width: 16px; height: 16px; }
+    .socials a::before { content: none; }
+
+    .footer-bottom {
+      padding-top: var(--s-8);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: var(--s-4);
+      font-size: 0.85rem;
+    }
+    .footer-bottom .credit {
+      font-family: var(--font-heading);
+      font-weight: 700;
+    }
+    .footer-bottom .credit b { color: var(--bsn-orange); }
+
+    /* =====================================================
+       WHATSAPP FLOATING + SCROLL TOP
+       ===================================================== */
+    .wa-float {
+      position: fixed;
+      bottom: var(--s-6); left: var(--s-6);
+      z-index: 90;
+      background: #25D366;
+      color: #fff;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      box-shadow: 0 12px 28px -8px rgba(37, 211, 102, 0.6);
+      transition: all var(--t-base) var(--ease-bounce);
+      animation: pulse-wa 2.5s infinite;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    @keyframes pulse-wa {
+      0%, 100% { box-shadow: 0 12px 28px -8px rgba(37, 211, 102, 0.6), 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      50% { box-shadow: 0 12px 28px -8px rgba(37, 211, 102, 0.6), 0 0 0 18px rgba(37, 211, 102, 0); }
+    }
+
+    .to-top {
+      position: fixed;
+      bottom: var(--s-6); right: var(--s-6);
+      z-index: 89;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--bsn-ink);
+      color: #fff;
+      display: grid; place-items: center;
+      box-shadow: 0 10px 24px -10px rgba(11, 4, 32, 0.5);
+      transition: all var(--t-base) var(--ease-bounce);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+    }
+    .to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .to-top:hover {
+      background: var(--bsn-orange);
+      transform: translateY(-3px);
+    }
+
+    /* =====================================================
+       SCROLL REVEAL
+       ===================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s var(--ease-bounce);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal:nth-child(2) { transition-delay: 0.06s; }
+    .reveal:nth-child(3) { transition-delay: 0.12s; }
+    .reveal:nth-child(4) { transition-delay: 0.18s; }
+    .reveal:nth-child(5) { transition-delay: 0.24s; }
+    .reveal:nth-child(6) { transition-delay: 0.30s; }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+    @media (max-width: 1100px) {
+      .hero-inner { gap: var(--s-12); }
+      .hero-visual { max-width: 380px; }
+    }
+    @media (max-width: 980px) {
+      .hero-inner { display: block; }
+      .hero-visual { display: none; }
+      .hero-mini-bsn {
+        display: block;
+        position: relative;
+        float: left;
+        width: 138px;
+        height: 138px;
+        margin: var(--s-2) 0 var(--s-3) var(--s-5);
+        shape-outside: inset(0 round 12px);
+      }
+      .hero-h1 { margin-top: var(--s-4); }
+      .hero-sub, .hero-actions, .hero-stats { clear: left; }
+      .hero-sub { margin-top: var(--s-4); }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: var(--s-4); }
+      .why-grid, .services-grid, .testimonial-grid, .pricing-grid, .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-grid::before { display: none; }
+      .ind-grid { grid-template-columns: repeat(3, 1fr); }
+      .showcase-inner { grid-template-columns: 1fr; text-align: center; }
+      .showcase-inner > div:first-child p { margin-inline: auto; }
+      .contact-inner { grid-template-columns: 1fr; gap: var(--s-6); }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-10); }
+      .price-card.featured { transform: none; }
+      .price-card.featured:hover { transform: translateY(-6px); }
+      .nav-links { display: none; }
+      .menu-toggle { display: flex; }
+      html { scroll-padding-top: 72px; }
+    }
+    @media (max-width: 640px) {
+      :root { --container-pad: 16px; }
+      .hero {
+        padding: calc(var(--s-20) + var(--s-4)) 0 var(--s-16);
+      }
+      .hero-mini-bsn {
+        width: 118px;
+        height: 118px;
+        margin: var(--s-1) 0 var(--s-2) var(--s-4);
+      }
+      .hero-mini-bsn .mc-purple span { font-size: 0.92rem; }
+      .hero-mini-bsn .mc-orange span { font-size: 0.55rem; }
+      .why-grid, .services-grid, .testimonial-grid, .pricing-grid, .portfolio-grid, .process-grid {
+        grid-template-columns: 1fr;
+      }
+      .ind-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr; gap: var(--s-8); }
+      .form-grid { grid-template-columns: 1fr; }
+      .hero-h1 .stack {
+        text-shadow:
+          1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff,
+          5px 5px 0 var(--bsn-teal),
+          6px 6px 0 #fff,
+          10px 10px 0 var(--bsn-purple),
+          11px 11px 0 #fff;
+      }
+      .marquee-track span { font-size: 1.1rem; }
+      .footer-bottom { justify-content: center; text-align: center; }
+      .contact-info, .contact-form { padding: var(--s-8); }
+      .portfolio-head { flex-direction: column; align-items: flex-start; }
+      .wa-float { width: 54px; height: 54px; bottom: var(--s-4); left: var(--s-4); }
+      .to-top { width: 44px; height: 44px; bottom: var(--s-4); right: var(--s-4); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================== HEADER ================== -->
+  <header class="site-header" id="header">
+    <div class="container nav-wrap">
+      <a href="#home" class="brand-mark" aria-label="شريك الأعمال — الصفحة الرئيسية">
+        <span class="mini-logo">BSN</span>
+        <span class="brand-text">
+          <span class="brand-ar">شريك الأعمال</span>
+          <span class="brand-tag">Business Partner · IT</span>
+        </span>
+      </a>
+      <nav aria-label="القائمة الرئيسية">
+        <ul class="nav-links">
+          <li><a href="#home">الرئيسية</a></li>
+          <li><a href="#why">من نحن</a></li>
+          <li><a href="#services">خدماتنا</a></li>
+          <li><a href="#portfolio">أعمالنا</a></li>
+          <li><a href="#pricing">الأسعار</a></li>
+          <li><a href="#faq">الأسئلة</a></li>
+          <li><a href="https://wa.me/201500156690" class="nav-cta">تواصل معنا</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة" aria-controls="mobileNav" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================== MOBILE NAV DRAWER ================== -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+  <aside class="mobile-nav" id="mobileNav" aria-label="القائمة الجانبية">
+    <div class="mobile-nav-head">
+      <span class="mini-logo">BSN</span>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="إغلاق القائمة">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <a href="#home">الرئيسية</a>
+    <a href="#why">من نحن</a>
+    <a href="#services">خدماتنا</a>
+    <a href="#portfolio">أعمالنا</a>
+    <a href="#process">منهجيتنا</a>
+    <a href="#pricing">الأسعار</a>
+    <a href="#testimonials">آراء العملاء</a>
+    <a href="#faq">الأسئلة الشائعة</a>
+    <a href="#contact">تواصل معنا</a>
+    <a href="https://wa.me/201500156690" class="nav-cta-mobile">واتساب الآن →</a>
+  </aside>
+
+  <!-- ================== HERO ================== -->
+  <section class="hero" id="home">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow reveal">شريك الأعمال لتقنية المعلومات</span>
+        <div class="hero-mini-bsn" aria-hidden="true">
+          <div class="mini-card mc-purple"><span>BSN</span></div>
+          <div class="mini-card mc-teal"></div>
+          <div class="mini-card mc-orange"><span>BSN</span></div>
+        </div>
+        <h1 class="hero-h1 reveal">
+          <span class="stack">شريكك</span><br/>
+          <span class="stack">الاستراتيجي</span>
+          <span class="plain-line">للتحول الرقمي.</span>
+        </h1>
+        <p class="hero-sub reveal">
+          نساعد الشركات والمؤسسات على بناء حضور رقمي احترافي، ونحوّل التكنولوجيا إلى أداة استراتيجية تزيد الكفاءة، تجذب العملاء، وتحقق نمواً مستداماً.
+        </p>
+        <div class="hero-actions reveal">
+          <a href="https://wa.me/201500156690" class="btn btn-primary">
+            اطلب استشارة تقنية
+            <span class="arrow">→</span>
+          </a>
+          <a href="#services" class="btn btn-ghost">
+            استكشف خدماتنا
+          </a>
+        </div>
+        <div class="hero-stats reveal">
+          <div class="stat">
+            <div class="num">+12</div>
+            <div class="lbl">سنة خبرة</div>
+          </div>
+          <div class="stat">
+            <div class="num">+250</div>
+            <div class="lbl">مشروع منجز</div>
+          </div>
+          <div class="stat">
+            <div class="num">+180</div>
+            <div class="lbl">عميل سعيد</div>
+          </div>
+          <div class="stat">
+            <div class="num">3</div>
+            <div class="lbl">دول نخدمها</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="hero-card hero-card-1">
+          <div class="big-bsn">BSN</div>
+          <div class="micro">DIGITAL · SOLUTIONS · 2026</div>
+        </div>
+        <div class="hero-card hero-card-2">
+          <div class="big-bsn">BSN</div>
+        </div>
+        <div class="hero-card hero-card-3">
+          <div class="big-bsn">BSN</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== MARQUEE ================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>تصميم المواقع</span>
+      <span>متاجر إلكترونية</span>
+      <span>هويات تجارية</span>
+      <span>تسويق رقمي</span>
+      <span>SEO</span>
+      <span>تطوير برمجي</span>
+      <span>تصميم المواقع</span>
+      <span>متاجر إلكترونية</span>
+      <span>هويات تجارية</span>
+      <span>تسويق رقمي</span>
+      <span>SEO</span>
+      <span>تطوير برمجي</span>
+    </div>
+  </div>
+
+  <!-- ================== WHY US ================== -->
+  <section class="why" id="why">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow reveal">لماذا شريك الأعمال؟</span>
+        <h2 class="reveal">نتفوق على المنافسين بـ <span class="hl">منهجية مختلفة</span> ونتائج قابلة للقياس.</h2>
+        <p class="reveal">ست أسباب تجعلنا الاختيار الصحيح للشركات التي ترى التكنولوجيا استثماراً وليست مجرد مصروف.</p>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card reveal" style="--accent: var(--bsn-purple); --accent2: var(--bsn-orange);">
+          <div class="why-num">01</div>
+          <h3>خبرة تقنية تمتد لأكثر من 12 عاماً في السوق المصري والخليجي</h3>
+        </div>
+        <div class="why-card reveal" style="--accent: var(--bsn-orange); --accent2: var(--bsn-teal);">
+          <div class="why-num">02</div>
+          <h3>حلول تقنية متكاملة من مصدر واحد بدون تشتت بين أكثر من جهة</h3>
+        </div>
+        <div class="why-card reveal" style="--accent: var(--bsn-teal-deep); --accent2: var(--bsn-purple);">
+          <div class="why-num">03</div>
+          <h3>منهجية عمل استراتيجية قائمة على التخطيط والتحليل قبل التنفيذ</h3>
+        </div>
+        <div class="why-card reveal" style="--accent: var(--bsn-orange); --accent2: var(--bsn-purple);">
+          <div class="why-num">04</div>
+          <h3>تنفيذ احترافي وفق معايير مؤسسية عالية ومراجعة جودة دقيقة</h3>
+        </div>
+        <div class="why-card reveal" style="--accent: var(--bsn-purple); --accent2: var(--bsn-teal);">
+          <div class="why-num">05</div>
+          <h3>تركيز على نتائج قابلة للقياس والعائد الفعلي على الاستثمار</h3>
+        </div>
+        <div class="why-card reveal" style="--accent: var(--bsn-teal-deep); --accent2: var(--bsn-orange);">
+          <div class="why-num">06</div>
+          <h3>شراكة طويلة المدى ودعم فني مستمر بعد التسليم بضمان واضح</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== SERVICES ================== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow reveal">خدماتنا الرئيسية</span>
+        <h2 class="reveal">خدمات تقنية مصممة <span class="hl">للنمو الحقيقي</span> لشركتك.</h2>
+        <p class="reveal">نقدم مجموعة متكاملة من الحلول الرقمية التي تعزز حضور علامتك التجارية وتحقق أهدافك التجارية.</p>
+      </div>
+
+      <div class="services-grid">
+        <a href="https://bp-eg.com/ser-webdesign/" class="service-card reveal">
+          <div class="svc-top">
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><circle cx="7" cy="6" r="0.5" fill="currentColor"/></svg>
+            </div>
+            <span class="svc-num">/ 01</span>
+          </div>
+          <h3>تصميم المواقع الإلكترونية</h3>
+          <p>مواقع احترافية تعكس هوية شركتك، سريعة الأداء، متجاوبة، وجاهزة لمحركات البحث.</p>
+          <ul>
+            <li>أداء عالي وسرعة تصفح</li>
+            <li>توافق كامل مع جميع الأجهزة</li>
+            <li>تجربة مستخدم احترافية</li>
+            <li>SEO جاهز من اليوم الأول</li>
+          </ul>
+          <span class="svc-link">شاهد التفاصيل <span class="arrow">→</span></span>
+        </a>
+
+        <a href="https://bp-eg.com/ser-online-store/" class="service-card reveal">
+          <div class="svc-top">
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            </div>
+            <span class="svc-num">/ 02</span>
+          </div>
+          <h3>تصميم المتاجر الإلكترونية</h3>
+          <p>متاجر متكاملة تساعد شركتك على بيع منتجاتها بكفاءة مع أنظمة دفع آمنة وإدارة مرنة.</p>
+          <ul>
+            <li>واجهات استخدام احترافية</li>
+            <li>أنظمة دفع آمنة ومتعددة</li>
+            <li>إدارة منتجات وطلبات مرنة</li>
+            <li>قابلية واسعة للتوسع</li>
+          </ul>
+          <span class="svc-link">شاهد التفاصيل <span class="arrow">→</span></span>
+        </a>
+
+        <a href="https://bp-eg.com/branding/" class="service-card reveal">
+          <div class="svc-top">
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <span class="svc-num">/ 03</span>
+          </div>
+          <h3>الهويات التجارية</h3>
+          <p>بناء هوية متكاملة تعكس رؤية شركتك، من الشعار حتى الدليل الإرشادي الكامل وتطبيقاتها.</p>
+          <ul>
+            <li>تصميم شعار احترافي مميز</li>
+            <li>منظومة ألوان وخطوط رسمية</li>
+            <li>دليل إرشادي شامل للهوية</li>
+            <li>تطبيق الهوية رقمياً ومطبوعاً</li>
+          </ul>
+          <span class="svc-link">شاهد التفاصيل <span class="arrow">→</span></span>
+        </a>
+
+        <a href="#contact" class="service-card reveal">
+          <div class="svc-top">
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <span class="svc-num">/ 04</span>
+          </div>
+          <h3>البريد الإلكتروني للشركات</h3>
+          <p>إعداد بريد رسمي باسم نطاق شركتك مع توقيع احترافي يعزز مصداقية مراسلاتك المؤسسية.</p>
+          <ul>
+            <li>إيميلات رسمية بنطاق الشركة</li>
+            <li>تصميم توقيع موحد احترافي</li>
+            <li>توحيد الهوية في المراسلات</li>
+            <li>دعم فني وحماية متقدمة</li>
+          </ul>
+          <span class="svc-link">شاهد التفاصيل <span class="arrow">→</span></span>
+        </a>
+
+        <a href="#contact" class="service-card reveal">
+          <div class="svc-top">
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+            </div>
+            <span class="svc-num">/ 05</span>
+          </div>
+          <h3>التسويق الإلكتروني</h3>
+          <p>حملات مدروسة قائمة على البيانات لزيادة وعي العلامة، جذب العملاء، وتحسين معدلات التحويل.</p>
+          <ul>
+            <li>رفع الوعي بالعلامة التجارية</li>
+            <li>جذب عملاء مستهدفين فعلياً</li>
+            <li>تحسين معدلات التحويل</li>
+            <li>تحقيق أعلى عائد استثمار</li>
+          </ul>
+          <span class="svc-link">شاهد التفاصيل <span class="arrow">→</span></span>
+        </a>
+
+        <a href="#contact" class="service-card reveal">
+          <div class="svc-top">
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <span class="svc-num">/ 06</span>
+          </div>
+          <h3>تهيئة محركات البحث (SEO)</h3>
+          <p>تحسين ظهور موقعك في النتائج الأولى مع تحسينات تقنية، محتوى مهيكل، واستهداف كلمات مفتاحية دقيقة.</p>
+          <ul>
+            <li>تحسين البنية التقنية للموقع</li>
+            <li>إعداد محتوى متوافق ومهيكل</li>
+            <li>تحسين سرعة الموقع</li>
+            <li>استهداف كلمات مفتاحية دقيقة</li>
+          </ul>
+          <span class="svc-link">شاهد التفاصيل <span class="arrow">→</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== INDUSTRIES ================== -->
+  <section class="industries" id="industries">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow reveal">قطاعات نخدمها</span>
+        <h2 class="reveal">خبرة متراكمة عبر <span class="hl">قطاعات متنوعة</span>.</h2>
+        <p class="reveal">شغلنا مع شركات في مجالات مختلفة، مما أكسبنا فهماً عميقاً لاحتياجات كل قطاع.</p>
+      </div>
+
+      <div class="ind-grid">
+        <div class="ind-tile reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+          </div>
+          <div class="ind-name">العقارات والإنشاءات</div>
+        </div>
+        <div class="ind-tile reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          </div>
+          <div class="ind-name">المقاولات والصناعة</div>
+        </div>
+        <div class="ind-tile reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.29 1.51 4.04 3 5.5l7 7z"/></svg>
+          </div>
+          <div class="ind-name">الرعاية الصحية</div>
+        </div>
+        <div class="ind-tile reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+          </div>
+          <div class="ind-name">التجارة الإلكترونية</div>
+        </div>
+        <div class="ind-tile reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 110 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div class="ind-name">الأغذية والمشروبات</div>
+        </div>
+        <div class="ind-tile reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="ind-name">التعليم والتدريب</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PROCESS ================== -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow reveal">منهجية عملنا</span>
+        <h2 class="reveal">أربع مراحل واضحة <span class="hl">بدون مفاجآت</span> من البداية للإطلاق.</h2>
+        <p class="reveal">نتبع منهجية مؤسسية واضحة تضمن أن كل مشروع يتم تنفيذه بمعايير محترفة وفي الوقت المحدد.</p>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <div class="ps-num">01</div>
+          <h3>الاكتشاف والتحليل</h3>
+          <p>جلسات استكشافية لفهم البيزنس، الجمهور، المنافسين، والأهداف الفعلية للمشروع.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="ps-num">02</div>
+          <h3>الاستراتيجية والتخطيط</h3>
+          <p>خطة عمل مفصلة، اختيار الحلول التقنية المناسبة، ومخرجات قابلة للقياس.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="ps-num">03</div>
+          <h3>التصميم والتطوير</h3>
+          <p>تنفيذ مرحلي مع مراجعات منتظمة، اختبارات جودة، ومتابعة دقيقة لكل تفصيلة.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="ps-num">04</div>
+          <h3>الإطلاق والدعم</h3>
+          <p>إطلاق المشروع بثقة، تدريب الفريق، ودعم فني مستمر بعد التسليم بضمان واضح.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PORTFOLIO ================== -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <div class="portfolio-head">
+        <div class="section-head">
+          <span class="eyebrow reveal">سابقة أعمالنا</span>
+          <h2 class="reveal">مشاريع نفتخر <span class="hl">بتنفيذها</span> لعملاء يثقون فينا.</h2>
+          <p class="reveal">من المتاجر الإلكترونية حتى الهويات التجارية الكاملة — مختارات من شغلنا الأخير.</p>
+        </div>
+        <a href="https://www.behance.net/businespartner" class="btn btn-ghost reveal">
+          كل الأعمال <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="portfolio-grid">
+        <a href="#" class="project-card reveal" style="--bg: var(--bsn-purple);">
+          <div class="pc-bg" style="background: var(--bsn-purple);">
+            <span class="pc-bsn">BSN</span>
+          </div>
+          <div class="pc-overlay"></div>
+          <div class="pc-content">
+            <span class="pc-tag">Brand Identity</span>
+            <div class="pc-name">منافع · Manafie</div>
+            <p class="pc-desc">هوية بصرية كاملة لمدينة صناعية بطائف</p>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal" style="--bg: var(--bsn-teal-deep);">
+          <div class="pc-bg" style="background: var(--bsn-teal-deep);">
+            <span class="pc-bsn" style="color: #fff; text-shadow: 3px 3px 0 var(--bsn-purple), 6px 6px 0 var(--bsn-orange);">BSN</span>
+          </div>
+          <div class="pc-overlay"></div>
+          <div class="pc-content">
+            <span class="pc-tag">E-commerce</span>
+            <div class="pc-name">Rozet Pump</div>
+            <p class="pc-desc">موقع شركة مضخات حريق متكامل بـ React و Vite</p>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal" style="--bg: var(--bsn-orange);">
+          <div class="pc-bg" style="background: var(--bsn-orange);">
+            <span class="pc-bsn" style="color: #fff; text-shadow: 3px 3px 0 var(--bsn-teal), 6px 6px 0 var(--bsn-purple-deep);">BSN</span>
+          </div>
+          <div class="pc-overlay"></div>
+          <div class="pc-content">
+            <span class="pc-tag">Web Development</span>
+            <div class="pc-name">Drug Pharma Egypt</div>
+            <p class="pc-desc">منصة شركة أدوية بـ Laravel و React ولوحة إدارة Filament</p>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal" style="--bg: var(--bsn-ink);">
+          <div class="pc-bg" style="background: var(--bsn-ink);">
+            <span class="pc-bsn">BSN</span>
+          </div>
+          <div class="pc-overlay"></div>
+          <div class="pc-content">
+            <span class="pc-tag">Corporate Website</span>
+            <div class="pc-name">Golden Future Care</div>
+            <p class="pc-desc">موقع شركة سعودية لتوريد كابلات الشبكات</p>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal" style="--bg: var(--bsn-purple-deep);">
+          <div class="pc-bg" style="background: var(--bsn-purple-deep);">
+            <span class="pc-bsn" style="text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 5px 5px 0 var(--bsn-teal), 6px 6px 0 #fff, 10px 10px 0 var(--bsn-orange);">BSN</span>
+          </div>
+          <div class="pc-overlay"></div>
+          <div class="pc-content">
+            <span class="pc-tag">Brand Identity</span>
+            <div class="pc-name">AlKarma Engineering</div>
+            <p class="pc-desc">هوية بصرية كاملة لشركة هندسية + موقع متعدد اللغات</p>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal" style="--bg: var(--bsn-teal);">
+          <div class="pc-bg" style="background: var(--bsn-teal);">
+            <span class="pc-bsn" style="color: var(--bsn-orange); text-shadow: 3px 3px 0 var(--bsn-purple), 6px 6px 0 #fff;">BSN</span>
+          </div>
+          <div class="pc-overlay"></div>
+          <div class="pc-content">
+            <span class="pc-tag">SaaS Platform</span>
+            <div class="pc-name">بياع · Bayya'</div>
+            <p class="pc-desc">منصة بناء متاجر إلكترونية للأسواق العربية</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== SHOWCASE BANNER ================== -->
+  <section class="showcase">
+    <div class="container showcase-inner">
+      <div class="reveal">
+        <span class="eyebrow" style="background: rgba(255,255,255,0.12); color: var(--bsn-teal);">أرقامنا تتكلم</span>
+        <h2>أكثر من <span class="pop">250</span> مشروع<br/>نفّذناه لعملاء يثقون فينا.</h2>
+        <p>من المتاجر الإلكترونية للهويات التجارية، شغلنا منشور على Behance ومواقعنا حية على الإنترنت تتحدث عن نفسها.</p>
+        <a href="https://www.behance.net/businespartner" class="btn btn-primary">
+          استعرض الأعمال على Behance
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="showcase-art reveal" aria-hidden="true">
+        <svg class="cube-grid" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dot" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.2)"/>
+            </pattern>
+          </defs>
+          <rect width="360" height="360" fill="url(#dot)" />
+
+          <g transform="translate(40, 50) rotate(-4)">
+            <rect width="70" height="70" fill="#65C8D0" stroke="#fff" stroke-width="2"/>
+            <rect x="6" y="6" width="70" height="70" fill="#F15A24" stroke="#fff" stroke-width="2"/>
+          </g>
+          <g transform="translate(180, 30) rotate(3)">
+            <rect width="60" height="60" fill="#65C8D0" stroke="#fff" stroke-width="2"/>
+            <rect x="6" y="6" width="60" height="60" fill="#F15A24" stroke="#fff" stroke-width="2"/>
+          </g>
+          <g transform="translate(260, 130) rotate(-5)">
+            <rect width="80" height="80" fill="#65C8D0" stroke="#fff" stroke-width="2"/>
+            <rect x="7" y="7" width="80" height="80" fill="#F15A24" stroke="#fff" stroke-width="2"/>
+          </g>
+          <g transform="translate(80, 170) rotate(6)">
+            <rect width="90" height="90" fill="#65C8D0" stroke="#fff" stroke-width="2"/>
+            <rect x="8" y="8" width="90" height="90" fill="#F15A24" stroke="#fff" stroke-width="2"/>
+          </g>
+          <g transform="translate(220, 250) rotate(-2)">
+            <rect width="70" height="70" fill="#65C8D0" stroke="#fff" stroke-width="2"/>
+            <rect x="6" y="6" width="70" height="70" fill="#F15A24" stroke="#fff" stroke-width="2"/>
+          </g>
+          <g transform="translate(40, 280) rotate(4)">
+            <rect width="55" height="55" fill="#65C8D0" stroke="#fff" stroke-width="2"/>
+            <rect x="5" y="5" width="55" height="55" fill="#F15A24" stroke="#fff" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PRICING ================== -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow reveal">باقاتنا الرئيسية</span>
+        <h2 class="reveal">باقات <span class="hl">واضحة وشفافة</span> تناسب كل مرحلة لشركتك.</h2>
+        <p class="reveal">أسعار مرنة بدون رسوم خفية، مع إمكانية تخصيص الباقة بما يتناسب مع احتياجاتك الفعلية.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="price-card reveal">
+          <div class="price-name">باقة البداية</div>
+          <p class="price-desc">للمشاريع الصغيرة والشركات الناشئة اللي محتاجة حضور رقمي احترافي.</p>
+          <div class="price-tag">
+            <span class="amount">12,500</span>
+            <span class="unit">جنيه · للمشروع</span>
+          </div>
+          <ul class="price-features">
+            <li>موقع تعريفي حتى 5 صفحات</li>
+            <li>تصميم متجاوب على جميع الأجهزة</li>
+            <li>تحسين أولي لمحركات البحث</li>
+            <li>نموذج تواصل + ربط واتساب</li>
+            <li>دعم فني لمدة 3 شهور</li>
+          </ul>
+          <a href="https://wa.me/201500156690?text=عايز%20استفسر%20عن%20باقة%20البداية" class="btn">
+            ابدأ الآن <span class="arrow">→</span>
+          </a>
+        </div>
+
+        <div class="price-card featured reveal">
+          <span class="price-badge">الأكثر طلباً</span>
+          <div class="price-name">باقة الاحتراف</div>
+          <p class="price-desc">للشركات المتوسطة اللي عايزة منظومة رقمية متكاملة وهوية متماسكة.</p>
+          <div class="price-tag">
+            <span class="amount">28,000</span>
+            <span class="unit">جنيه · للمشروع</span>
+          </div>
+          <ul class="price-features">
+            <li>موقع كامل حتى 12 صفحة</li>
+            <li>هوية بصرية + شعار احترافي</li>
+            <li>تحسين SEO متقدم</li>
+            <li>لوحة تحكم Admin Panel</li>
+            <li>تكامل مع الواتساب والـCRM</li>
+            <li>دعم فني لمدة 6 شهور + تحديثات</li>
+          </ul>
+          <a href="https://wa.me/201500156690?text=عايز%20استفسر%20عن%20باقة%20الاحتراف" class="btn">
+            احجز استشارة <span class="arrow">→</span>
+          </a>
+        </div>
+
+        <div class="price-card reveal">
+          <div class="price-name">باقة المؤسسات</div>
+          <p class="price-desc">للمؤسسات والمشاريع المعقدة اللي محتاجة حلول مخصصة بالكامل.</p>
+          <div class="price-tag">
+            <span class="amount">حسب الطلب</span>
+            <span class="unit"></span>
+          </div>
+          <ul class="price-features">
+            <li>منصة ويب أو متجر إلكتروني كامل</li>
+            <li>هوية تجارية شاملة + Brand Book</li>
+            <li>أنظمة دفع وشحن متكاملة</li>
+            <li>تطبيق موبايل اختياري</li>
+            <li>إدارة الحملات التسويقية</li>
+            <li>دعم وصيانة سنوية</li>
+          </ul>
+          <a href="https://wa.me/201500156690?text=عايز%20استفسر%20عن%20باقة%20المؤسسات" class="btn">
+            تواصل معنا <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== TESTIMONIALS ================== -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow reveal">قصص نجاح نعتز بها</span>
+        <h2 class="reveal">آراء حقيقية من <span class="hl">شركاء رحلتنا.</span></h2>
+        <p class="reveal">كلمات تُلهمنا للمزيد من الإبداع، من عملاء عاشوا التجربة بأنفسهم.</p>
+      </div>
+
+      <div class="testimonial-grid">
+        <div class="tcard reveal">
+          <div class="quote-mark">"</div>
+          <blockquote>احترافية شريك الأعمال لا تقتصر على التصميم فقط، بل تمتد لفهم عميق لاحتياجات البيزنس. الموقع الجديد ساعدنا في زيادة مبيعاتنا بنسبة ملحوظة.</blockquote>
+          <div class="who">
+            <div class="avatar">أم</div>
+            <div class="meta">
+              <strong>أحمد المنصوري</strong>
+              <span>Rozet Pump · مدير عام</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal">
+          <div class="quote-mark">"</div>
+          <blockquote>الدقة في المواعيد والجودة في التنفيذ هي أكثر ما يميزهم. فريق العمل متعاون جداً وقدموا لنا حلولاً تقنية وفّرت علينا الكثير من الوقت والجهد.</blockquote>
+          <div class="who">
+            <div class="avatar">سع</div>
+            <div class="meta">
+              <strong>سارة العلي</strong>
+              <span>West Gate Construction</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal">
+          <div class="quote-mark">"</div>
+          <blockquote>تجربة مميزة من الألف للياء. التصميم يعكس هويتنا بامتياز، والدعم الفني سريع ومتجاوب دائماً. شكراً لكم على هذا المجهود.</blockquote>
+          <div class="who">
+            <div class="avatar">خي</div>
+            <div class="meta">
+              <strong>خالد يوسف</strong>
+              <span>Milestone LTD</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal">
+          <div class="quote-mark">"</div>
+          <blockquote>اللي عجبني إنهم بيفهموا اللي إنت عايزه قبل ما تقوله. مش بس مصممين، دول بيفكروا معاك في البيزنس نفسه. أنصح بيهم بشدة.</blockquote>
+          <div class="who">
+            <div class="avatar">عش</div>
+            <div class="meta">
+              <strong>عبدالرحمن عمار</strong>
+              <span>صاحب موقع شخصي</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal">
+          <div class="quote-mark">"</div>
+          <blockquote>منظومة العمل عندهم منظمة جداً، وكل خطوة في المشروع كانت واضحة بالنسبة لنا. المتجر الإلكتروني اشتغل من اليوم الأول.</blockquote>
+          <div class="who">
+            <div class="avatar">شت</div>
+            <div class="meta">
+              <strong>محمد شاكر</strong>
+              <span>Bakkah Store</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tcard reveal">
+          <div class="quote-mark">"</div>
+          <blockquote>الهوية التجارية اللي عملولنا غيّرت شكل الشركة في عيون العملاء بالكامل. حسّيت إنهم بيشتغلوا على المشروع كأنه مشروعهم.</blockquote>
+          <div class="who">
+            <div class="avatar">طم</div>
+            <div class="meta">
+              <strong>طارق منصور</strong>
+              <span>Agro Farm Industries</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== FAQ ================== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow reveal">أسئلة شائعة</span>
+        <h2 class="reveal">إجابات على <span class="hl">أكثر الأسئلة</span> اللي بييجي لينا.</h2>
+        <p class="reveal">جمعنا أكتر الاستفسارات اللي بنسمعها من العملاء عشان نوفر عليك وقتك.</p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary>
+            <span>كم تستغرق مدة تنفيذ موقع إلكتروني متكامل؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            بتختلف المدة حسب حجم المشروع وتعقيده. الموقع التعريفي العادي بياخد من 2 لـ 4 أسابيع، أما المشاريع الكبيرة زي المتاجر الإلكترونية أو المنصات المخصصة فممكن تاخد من شهرين لـ 4 شهور. بنوضح المدة الدقيقة في عرض السعر بعد جلسة الاستكشاف الأولى.
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>هل تقدمون دعماً فنياً بعد التسليم؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            أكيد. كل باقاتنا بتشمل فترة دعم فني مجاني بعد التسليم تتراوح بين 3 لـ 12 شهر حسب نوع الباقة. وبعد فترة الدعم المجاني، بنوفر باقات صيانة سنوية بأسعار تنافسية تشمل التحديثات والإضافات وحل أي مشاكل تقنية.
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>كيف يتم تحديد سعر المشروع؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            بنحدد السعر بناءً على عدة عوامل: نوع المشروع (موقع تعريفي، متجر، منصة)، عدد الصفحات والوظائف المطلوبة، الميزات الخاصة، ومدى التخصيص. بنبدأ دايماً بجلسة استكشاف مجانية لفهم احتياجاتك، وبعدها بنقدم لك عرض سعر تفصيلي وشفاف بدون أي رسوم خفية.
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>هل التصميم متجاوب مع الموبايل؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            كل مواقعنا متجاوبة 100% على جميع الأجهزة (موبايل، تابلت، لاب توب، شاشات كبيرة). بنختبر التصميم على أحجام شاشات مختلفة قبل التسليم. ومش بس متجاوبة، إحنا بنصمم بمبدأ Mobile-First يعني الموبايل أولوية لأن أكتر من 70% من زوار المواقع بييجوا من الموبايل.
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>ما هي التقنيات التي تستخدمونها؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            بنستخدم أحدث التقنيات في السوق: Laravel و Filament للأنظمة الإدارية، React و Next.js للواجهات التفاعلية، WordPress و Elementor للمواقع التعريفية اللي محتاجة سهولة إدارة، و Python للأتمتة والتكاملات. بنختار التقنية المناسبة لكل مشروع بناءً على متطلباته الفعلية مش بناءً على trend.
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>هل توفرون استضافة ودومين؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            نعم، بنوفر باقات استضافة سحابية احترافية بشهادات أمان SSL وسرعات عالية. كذلك بنساعدك في حجز اسم النطاق (الدومين) المناسب لشركتك. ولو عندك استضافة ودومين بالفعل، بنشتغل عليهم بدون أي مشكلة.
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>هل تخدمون عملاء خارج مصر؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            طبعاً. عندنا عملاء كتير في السعودية والإمارات والكويت وقطر والسودان. بنتعامل مع العملاء الخليجيين بسهولة عن طريق الواتساب والاجتماعات الأونلاين، وبنوفر طرق دفع مرنة (تحويل بنكي، PayPal، أو محافظ إلكترونية).
+          </div>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>
+            <span>هل يمكن تعديل التصميم بعد التسليم؟</span>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            خلال فترة الدعم المجاني، بنعمل تعديلات بسيطة بدون أي تكلفة إضافية (تغيير نصوص، ألوان، صور). أي إضافات أو تطوير لميزات جديدة بنحسب وقت العمل عليها بسعر تنافسي. وبنوفرلك لوحة تحكم سهلة الاستخدام تقدر من خلالها تعدل المحتوى بنفسك بدون الحاجة لخبرة تقنية.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== CONTACT ================== -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-head centered">
+        <span class="eyebrow reveal">تواصل معنا</span>
+        <h2 class="reveal">عندك فكرة <span class="hl">مشروع</span>؟ خلينا نسمعها.</h2>
+        <p class="reveal">جلسة استشارية مجانية لمناقشة مشروعك والإجابة على كل أسئلتك بدون أي التزام.</p>
+      </div>
+
+      <div class="contact-inner">
+        <div class="contact-info reveal">
+          <h3>نحب نسمع منك في أي وقت.</h3>
+          <p>اختار الوسيلة الأنسب ليك للتواصل، وراح نرد عليك في أقرب فرصة ممكنة.</p>
+
+          <div class="contact-channels">
+            <a href="https://wa.me/201500156690" class="contact-channel">
+              <span class="icn">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487 1.704.737 2.37.8 3.227.673.521-.078 1.605-.656 1.832-1.291.226-.635.226-1.18.158-1.291-.067-.111-.255-.18-.535-.32z"/></svg>
+              </span>
+              <div>
+                <span class="ch-label">WHATSAPP</span>
+                <span class="ch-value">+20 1500 156 690</span>
+              </div>
+            </a>
+
+            <a href="tel:+966568342521" class="contact-channel">
+              <span class="icn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              </span>
+              <div>
+                <span class="ch-label">السعودية</span>
+                <span class="ch-value">+966 568 342 521</span>
+              </div>
+            </a>
+
+            <a href="mailto:info@bp-eg.com" class="contact-channel">
+              <span class="icn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <div>
+                <span class="ch-label">EMAIL</span>
+                <span class="ch-value">info@bp-eg.com</span>
+              </div>
+            </a>
+
+            <div class="contact-channel">
+              <span class="icn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <div>
+                <span class="ch-label">العنوان</span>
+                <span class="ch-value">القاهرة، مصر · نخدم مصر والخليج</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hours">
+            <strong>ساعات العمل</strong>
+            السبت - الخميس · 10 صباحاً - 8 مساءً (توقيت القاهرة)
+          </div>
+        </div>
+
+        <form class="contact-form reveal" action="https://formsubmit.co/info@bp-eg.com" method="POST" id="contactForm">
+          <h3>ابعت رسالتك</h3>
+          <p>املأ النموذج وراح نرد عليك خلال 24 ساعة.</p>
+
+          <input type="hidden" name="_subject" value="رسالة جديدة من موقع شريك الأعمال">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name">الاسم الكامل *</label>
+              <input type="text" id="name" name="name" required placeholder="مثال: أحمد محمد">
+            </div>
+            <div class="form-group">
+              <label for="phone">رقم الجوال *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+20 100 000 0000">
+            </div>
+            <div class="form-group">
+              <label for="email">البريد الإلكتروني *</label>
+              <input type="email" id="email" name="email" required placeholder="example@domain.com">
+            </div>
+            <div class="form-group">
+              <label for="service">نوع الخدمة المطلوبة</label>
+              <select id="service" name="service">
+                <option value="">اختار الخدمة...</option>
+                <option value="موقع إلكتروني">تصميم موقع إلكتروني</option>
+                <option value="متجر إلكتروني">تصميم متجر إلكتروني</option>
+                <option value="هوية تجارية">هوية تجارية</option>
+                <option value="تسويق رقمي">تسويق رقمي</option>
+                <option value="تهيئة محركات بحث">تهيئة محركات بحث (SEO)</option>
+                <option value="استشارة">استشارة تقنية</option>
+                <option value="أخرى">خدمة أخرى</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label for="message">تفاصيل المشروع *</label>
+              <textarea id="message" name="message" required placeholder="احكيلنا أكتر عن مشروعك، أهدافه، والميزانية التقريبية..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit">
+            إرسال الرسالة
+            <span class="arrow">→</span>
+          </button>
+          <p class="form-note">معلوماتك آمنة معانا، ولن يتم مشاركتها مع أي طرف ثالث.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== FINAL CTA ================== -->
+  <section class="cta-final">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>هل عندك فكرة مشروع<br/>وعايز <span class="stack-sm">تنفذها</span> بشكل صح؟</h2>
+        <p>فريقنا جاهز للرد على استفساراتك، نناقش تفاصيل مشروعك ونقترح أفضل خطة تنفيذ بدون أي التزام مسبق.</p>
+        <div class="actions">
+          <a href="https://wa.me/201500156690" class="btn btn-primary">
+            ابدأ مشروعك الآن
+            <span class="arrow">→</span>
+          </a>
+          <a href="#contact" class="btn btn-ghost">
+            تواصل عبر النموذج
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== FOOTER ================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="mini-logo">BSN</div>
+          <p>شريكك الاستراتيجي للتحول الرقمي. نقدم حلولاً تقنية مبتكرة مصممة خصيصاً لدعم نمو أعمالك في مصر والخليج.</p>
+          <div class="socials">
+            <a href="https://www.facebook.com" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+            </a>
+            <a href="https://www.instagram.com" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.31-1.47.72-2.13 1.38C1.35 2.67.94 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.47 1.38 2.13.66.66 1.34 1.07 2.13 1.38.76.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.31 1.47-.72 2.13-1.38.66-.66 1.07-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.31-.79-.72-1.47-1.38-2.13C21.33 1.35 20.65.94 19.86.63 19.1.33 18.22.13 16.95.07 15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 16 12a4 4 0 0 1-4 4zm7.85-10.41a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-3.36-4-3.1-4 0v5.6h-3v-11h3v1.77c1.4-2.59 7-2.78 7 2.48v6.75z"/></svg>
+            </a>
+            <a href="https://www.behance.net/businespartner" aria-label="Behance">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zM15.5 17.7c-1.4 0-2.6-.6-2.6-2.6h6.4c0-2.6-.8-5.1-3.8-5.1-2.9 0-4.3 2-4.3 4.6 0 2.7 1.6 4.5 4.4 4.5 2.2 0 3.5-.9 3.9-2.7h-1.9c-.3.7-.9 1.3-2.1 1.3zM15.4 12c1.1 0 1.7.6 1.8 1.7h-3.8c.2-1 .8-1.7 2-1.7zM2 4v15h6.4c4.9 0 6-3.4 6-4.7 0-1.6-.8-2.7-2.4-3 .8-.5 1.5-1.4 1.5-2.5 0-1.6-1.2-3.4-4.6-3.4H2zm5 3c1.2 0 2 .5 2 1.6 0 1-.6 1.6-1.9 1.6H5V7h2zm.6 8.3H5V12h2.5c1.5 0 2 .8 2 1.7 0 1-.7 1.6-1.9 1.6z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>خدماتنا</h4>
+          <ul>
+            <li><a href="https://bp-eg.com/ser-webdesign/">تصميم المواقع</a></li>
+            <li><a href="https://bp-eg.com/ser-online-store/">المتاجر الإلكترونية</a></li>
+            <li><a href="https://bp-eg.com/branding/">الهويات التجارية</a></li>
+            <li><a href="#services">التسويق الإلكتروني</a></li>
+            <li><a href="#services">تهيئة محركات البحث</a></li>
+            <li><a href="#services">البريد المؤسسي</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>روابط هامة</h4>
+          <ul>
+            <li><a href="#home">الرئيسية</a></li>
+            <li><a href="#why">من نحن</a></li>
+            <li><a href="#portfolio">أعمالنا</a></li>
+            <li><a href="#process">منهجيتنا</a></li>
+            <li><a href="#pricing">الأسعار</a></li>
+            <li><a href="#faq">الأسئلة الشائعة</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col footer-contact">
+          <h4>تواصل معنا</h4>
+          <a href="https://wa.me/201500156690" class="line is-link">
+            <span class="icn">WA</span>
+            <span>+20 1500 156 690</span>
+          </a>
+          <a href="tel:+966568342521" class="line is-link">
+            <span class="icn">SA</span>
+            <span>+966 568 342 521</span>
+          </a>
+          <a href="mailto:info@bp-eg.com" class="line is-link">
+            <span class="icn">@</span>
+            <span>info@bp-eg.com</span>
+          </a>
+          <div class="line">
+            <span class="icn">📍</span>
+            <span>القاهرة، مصر</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="credit">جميع الحقوق محفوظة © 2026 · <b>شركة شريك الأعمال لتقنية المعلومات</b></div>
+        <div>صُمم وطُور بواسطة فريق شريك الأعمال 💜</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================== FLOATING ACTIONS ================== -->
+  <a href="https://wa.me/201500156690" class="wa-float" aria-label="تواصل عبر واتساب">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <button class="to-top" id="toTop" aria-label="العودة لأعلى الصفحة">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"/>
+      <polyline points="5 12 12 5 19 12"/>
+    </svg>
+  </button>
+
+  <script>
+    /* =====================================================
+       STICKY HEADER + SCROLL TO TOP
+       ===================================================== */
+    const header = document.getElementById('header');
+    const toTop = document.getElementById('toTop');
+
+    let scrollTicking = false;
+    function onScroll() {
+      const y = window.scrollY;
+      header.classList.toggle('scrolled', y > 20);
+      toTop.classList.toggle('visible', y > 600);
+      scrollTicking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(onScroll);
+        scrollTicking = true;
+      }
+    }, { passive: true });
+
+    toTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* =====================================================
+       MOBILE NAV DRAWER
+       ===================================================== */
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    const navOverlay = document.getElementById('navOverlay');
+    const mobileNavClose = document.getElementById('mobileNavClose');
+
+    function openNav() {
+      mobileNav.classList.add('open');
+      navOverlay.classList.add('open');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNav() {
+      mobileNav.classList.remove('open');
+      navOverlay.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    menuToggle.addEventListener('click', openNav);
+    mobileNavClose.addEventListener('click', closeNav);
+    navOverlay.addEventListener('click', closeNav);
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('open')) closeNav();
+    });
+
+    /* =====================================================
+       SCROLL REVEAL
+       ===================================================== */
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(r => io.observe(r));
+
+    /* =====================================================
+       SMOOTH SCROLL FOR INTERNAL ANCHORS
+       ===================================================== */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const targetId = a.getAttribute('href');
+        if (targetId.length > 1) {
+          const t = document.querySelector(targetId);
+          if (t) {
+            e.preventDefault();
+            t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+
+    /* =====================================================
+       FAQ — close others on open (accordion behavior)
+       ===================================================== */
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      item.addEventListener('toggle', () => {
+        if (item.open) {
+          faqItems.forEach(other => {
+            if (other !== item) other.open = false;
+          });
+        }
+      });
+    });
+
+    /* =====================================================
+       ACTIVE NAV LINK ON SCROLL
+       ===================================================== */
+    const sections = document.querySelectorAll('section[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+
+    function setActiveNav() {
+      const scrollPos = window.scrollY + 120;
+      let current = '';
+      sections.forEach(sec => {
+        if (sec.offsetTop <= scrollPos) current = sec.id;
+      });
+      navAnchors.forEach(a => {
+        const href = a.getAttribute('href').replace('#', '');
+        if (href === current) {
+          a.setAttribute('aria-current', 'page');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+    }
+    window.addEventListener('scroll', setActiveNav, { passive: true });
+    setActiveNav();
+  </script>
+</body>
+</html>

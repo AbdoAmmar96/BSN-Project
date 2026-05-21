@@ -65,7 +65,7 @@ export default function PackagesList() {
                 {items.map((p) => (
                   <div
                     key={p.id}
-                    className={`card relative ${!p.is_active ? 'opacity-50' : ''}`}
+                    className={`card relative flex flex-col h-full ${!p.is_active ? 'opacity-50' : ''}`}
                   >
                     {p.featured && (
                       <span className="absolute top-2 left-2 inline-flex items-center gap-1 bg-brand-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -105,7 +105,7 @@ export default function PackagesList() {
                       </ul>
                     )}
 
-                    <div className="flex gap-2 pt-3 border-t border-brand-ink/10">
+                    <div className="flex gap-2 pt-3 mt-auto border-t border-brand-ink/10">
                       <button
                         onClick={() => setEditing(p)}
                         className="inline-flex items-center gap-1 text-xs font-bold text-brand-purple hover:text-brand-orange"

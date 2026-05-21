@@ -27,6 +27,24 @@ export default function ProjectDetail() {
   const project = data?.project;
   const canEdit = isAdmin || (isDeveloper && project?.lead_developer_id === user?.id);
 
+  const statusMut = useMutation({
+    mutationFn: (status) => projectsApi.update(id, { status }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['project', id] });
+      toast.success('تم تحديث حالة المشروع');
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'تعذّر تغيير الحالة'),
+  });
+
+  const progressMut = useMutation({
+    mutationFn: (progress) => projectsApi.update(id, { progress }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['project', id] });
+      toast.success('تم تحديث نسبة الإنجاز');
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'تعذّر تحديث النسبة'),
+  });
+
   if (isLoading) return (
     <div className="space-y-4">
       <Skeleton height={28} width="40%" />
@@ -45,12 +63,21 @@ export default function ProjectDetail() {
         eyebrow={`${SERVICE_TYPE[project.service_type]?.label || project.service_type}`}
         title={project.title}
         backTo={backUrl}
-        action={
-          canEdit && (
-            <Badge color={status?.color} size="md">{status?.label}</Badge>
-          )
-        }
+        action={<Badge color={status?.color} size="md">{status?.label}</Badge>}
       />
+
+      {canEdit && (
+        <ProjectStatusBar
+          key={`${project.status}-${project.progress}`}
+          current={project.status}
+          progress={project.progress ?? 0}
+          isAdmin={isAdmin}
+          statusPending={statusMut.isPending}
+          progressPending={progressMut.isPending}
+          onChangeStatus={(s) => statusMut.mutate(s)}
+          onChangeProgress={(p) => progressMut.mutate(p)}
+        />
+      )}
 
       {/* Tabs */}
       <div className="flex gap-2 mb-5 border-b-2 border-brand-ink/10 overflow-x-auto">
@@ -190,10 +217,23 @@ function OverviewTab({ project }) {
 }
 
 function TasksTab({ project, canEdit, onNewTask, isClient }) {
+  const qc = useQueryClient();
   const tasksByStatus = (project.tasks || []).reduce((acc, t) => {
     (acc[t.status] = acc[t.status] || []).push(t);
     return acc;
   }, {});
+
+  const moveMut = useMutation({
+    mutationFn: ({ id, status }) => tasksApi.update(id, { status }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['project', String(project.id)] });
+      toast.success('تم تحديث المهمة');
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'تعذّر التحديث'),
+  });
+
+  // The lifecycle order, used to offer "back"/"forward" moves per task.
+  const FLOW = ['todo', 'in_progress', 'review', 'done'];
 
   return (
     <div>
@@ -222,6 +262,9 @@ function TasksTab({ project, canEdit, onNewTask, isClient }) {
               <div className="space-y-2">
                 {tasksByStatus[k]?.map(t => {
                   const p = TASK_PRIORITY[t.priority];
+                  const idx = FLOW.indexOf(t.status);
+                  const prev = idx > 0 ? FLOW[idx - 1] : null;
+                  const next = idx < FLOW.length - 1 ? FLOW[idx + 1] : null;
                   return (
                     <div key={t.id} className="p-3 rounded-xl bg-brand-purple/5 border border-brand-ink/10">
                       <div className="flex items-start gap-2">
@@ -233,6 +276,28 @@ function TasksTab({ project, canEdit, onNewTask, isClient }) {
                           )}
                         </div>
                       </div>
+                      {canEdit && (
+                        <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-brand-ink/10">
+                          {prev && (
+                            <button
+                              onClick={() => moveMut.mutate({ id: t.id, status: prev })}
+                              disabled={moveMut.isPending}
+                              className="text-[11px] font-bold px-2 py-1 rounded-lg border border-brand-ink/20 hover:border-brand-ink/50 disabled:opacity-40"
+                            >
+                              → {TASK_STATUS[prev].label}
+                            </button>
+                          )}
+                          {next && (
+                            <button
+                              onClick={() => moveMut.mutate({ id: t.id, status: next })}
+                              disabled={moveMut.isPending}
+                              className="text-[11px] font-bold px-2 py-1 rounded-lg bg-brand-orange text-white border border-brand-ink hover:-translate-y-0.5 transition disabled:opacity-40"
+                            >
+                              {TASK_STATUS[next].label} ←
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -437,5 +502,73 @@ function UploadDeliverableModal({ open, onClose, projectId }) {
         </label>
       </div>
     </Modal>
+  );
+}
+
+// Developers drive the project lifecycle; admins can pick any state.
+const DEV_FLOW = ['in_progress', 'review', 'revision', 'completed'];
+const ADMIN_FLOW = ['pending_assignment', 'in_progress', 'review', 'revision', 'completed', 'on_hold', 'cancelled'];
+
+function ProjectStatusBar({ current, progress, isAdmin, statusPending, progressPending, onChangeStatus, onChangeProgress }) {
+  const states = isAdmin ? ADMIN_FLOW : DEV_FLOW;
+  const [pct, setPct] = useState(progress);
+  const dirty = pct !== progress;
+
+  return (
+    <div className="rounded-2xl border-2 border-brand-ink/15 bg-white p-4 mb-5 space-y-4">
+      {/* Lifecycle */}
+      <div>
+        <div className="text-xs font-bold text-brand-ink/60 mb-2">حالة المشروع</div>
+        <div className="flex flex-wrap gap-2">
+          {states.map((s) => {
+            const info = PROJECT_STATUS[s];
+            const active = current === s;
+            return (
+              <button
+                key={s}
+                type="button"
+                disabled={statusPending || active}
+                onClick={() => onChangeStatus(s)}
+                className={clsx(
+                  'px-3.5 py-2 rounded-xl border-2 text-sm font-bold transition disabled:cursor-default',
+                  active
+                    ? clsx(info?.color, 'border-brand-ink')
+                    : 'bg-white text-brand-ink border-brand-ink/15 hover:border-brand-ink/50'
+                )}
+              >
+                {info?.label || s}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold text-brand-ink/60">نسبة الإنجاز</span>
+          <span className="font-display font-black text-brand-orange">{pct}%</span>
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          step="5"
+          value={pct}
+          onChange={(e) => setPct(Number(e.target.value))}
+          className="w-full accent-brand-orange"
+        />
+        {dirty && (
+          <button
+            type="button"
+            disabled={progressPending}
+            onClick={() => onChangeProgress(pct)}
+            className="mt-2 px-4 py-1.5 rounded-xl bg-brand-purple text-white font-bold text-sm disabled:opacity-50"
+          >
+            {progressPending ? 'جاري الحفظ...' : 'حفظ النسبة'}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

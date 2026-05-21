@@ -66,6 +66,7 @@ export const deliverablesApi = {
 export const PROJECT_STATUS = {
   draft: { label: 'مسودة', color: 'bg-gray-300 text-gray-700' },
   pending: { label: 'في الانتظار', color: 'bg-yellow-200 text-yellow-800' },
+  pending_assignment: { label: 'بانتظار التعيين', color: 'bg-yellow-300 text-yellow-900' },
   quoted: { label: 'عرض مرسل', color: 'bg-blue-200 text-blue-800' },
   approved: { label: 'موافق عليه', color: 'bg-brand-teal text-brand-purple-deep' },
   in_progress: { label: 'قيد التنفيذ', color: 'bg-brand-orange text-white' },

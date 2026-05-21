@@ -142,7 +142,7 @@ export default function ProjectForm() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="label">الحالة</label>
               <select className="field" {...register('status')}>
@@ -151,15 +151,16 @@ export default function ProjectForm() {
             </div>
             <div>
               <label className="label">الميزانية</label>
-              <div className="flex gap-1">
-                <input type="number" step="0.01" className="field flex-1 text-left" dir="ltr"
-                  {...register('budget')} />
-                <select className="field w-20" {...register('currency')}>
-                  <option value="EGP">EGP</option>
-                  <option value="USD">USD</option>
-                  <option value="SAR">SAR</option>
-                </select>
-              </div>
+              <input type="number" step="0.01" className="field text-left" dir="ltr"
+                {...register('budget')} />
+            </div>
+            <div>
+              <label className="label">العملة</label>
+              <select className="field" {...register('currency')}>
+                <option value="EGP">EGP</option>
+                <option value="USD">USD</option>
+                <option value="SAR">SAR</option>
+              </select>
             </div>
             <div>
               <label className="label">التقدّم %</label>

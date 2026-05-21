@@ -78,7 +78,7 @@ export default function PaymentFailure() {
               href={CONTACT.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="btn-ghost"
+              className="inline-flex items-center gap-2 bg-white !text-brand-ink font-display font-black text-sm px-6 py-3 rounded-full border-2 border-brand-ink shadow-brutal-sm hover:-translate-y-0.5 transition-transform"
             >
               <HelpCircle size={16} /> تواصل مع الدعم
             </a>
